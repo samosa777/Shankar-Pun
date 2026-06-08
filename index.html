@@ -3,34 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Admin Panel - Multi User</title>
+    <title>Master Menu Control Panel</title>
     <style>
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f0f2f5; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: #f8f9fa; 
             margin: 0; 
             padding: 20px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            color: #333;
         }
         .container { 
             width: 100%;
-            max-width: 600px; 
+            max-width: 700px; 
             background: #ffffff; 
             padding: 30px; 
             border-radius: 12px; 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+            margin: 20px auto;
         }
-        h1 { text-align: center; color: #333333; font-size: 24px; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #666666; font-size: 14px; margin-bottom: 25px; margin-top: 0;}
+        h1, h2, h3 { text-align: center; color: #1a1a1a; }
+        .subtitle { text-align: center; color: #666; font-size: 14px; margin-top: -10px; margin-bottom: 25px; }
         
         .form-group { margin-bottom: 15px; }
         input { 
             width: 100%; 
             padding: 12px; 
-            border: 1px solid #cccccc; 
+            border: 1px solid #ccc; 
             border-radius: 8px; 
             box-sizing: border-box; 
             font-size: 15px; 
@@ -39,7 +37,7 @@
         button { 
             width: 100%; 
             padding: 12px; 
-            background-color: #1877f2; 
+            background-color: #0066cc; 
             color: white; 
             border: none; 
             border-radius: 8px; 
@@ -47,101 +45,115 @@
             font-weight: bold;
             cursor: pointer; 
             margin-top: 10px;
-            transition: background-color 0.3s; 
+            transition: background 0.2s;
         }
-        button:hover { background-color: #166fe5; }
-        .btn-secondary { background-color: #42b72a; }
-        .btn-secondary:hover { background-color: #36a420; }
-        .btn-danger { background-color: #dc3545; margin-bottom: 20px;}
+        button:hover { background-color: #0052a3; }
+        .btn-green { background-color: #28a745; }
+        .btn-green:hover { background-color: #218838; }
+        .btn-danger { background-color: #dc3545; }
         .btn-danger:hover { background-color: #c82333; }
-        .btn-small { padding: 6px 12px; font-size: 12px; width: auto; margin-top: 0; }
-        .btn-edit { background-color: #ffc107; color: black; }
-        .btn-delete { background-color: #dc3545; }
-
-        /* Sections toggling */
-        #dashboardSection { display: none; }
         
-        /* Menu List Styles */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
+        /* App Sections */
+        #superAdminSection, #userSection, #dashboardSection { display: none; }
+        
+        /* User List Tabs for Admin */
+        .user-badge {
+            background: #e9ecef;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            border-left: 5px solid #0066cc;
+            transition: background 0.2s;
         }
+        .user-badge:hover { background: #dee2e6; }
+        
+        /* Menu Cards */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 20px; }
         .menu-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+            background: #fff;
+            border: 1px solid #eee;
             border-radius: 10px;
             padding: 15px;
             display: flex;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .menu-image {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border-radius: 8px;
             object-fit: cover;
             margin-right: 15px;
-            background-color: #f0f0f0;
+            background: #f0f0f0;
         }
         .menu-details { flex-grow: 1; }
-        .menu-title { font-size: 18px; font-weight: bold; color: #333; margin: 0 0 5px 0; }
+        .menu-title { font-size: 18px; font-weight: bold; margin: 0 0 5px 0; }
         .menu-price { font-size: 16px; font-weight: bold; color: #28a745; margin: 0; }
-        .menu-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        .action-btns { display: flex; flex-direction: column; gap: 5px; }
+        .btn-small { padding: 6px 12px; font-size: 13px; width: auto; margin: 0; }
         hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
     </style>
 </head>
 <body>
 
 <div class="container" id="authSection">
-    <h1>Restaurant Admin Panel</h1>
-    <p class="subtitle">Secure Login</p>
-    
+    <h1>Hotel Menu Management</h1>
+    <p class="subtitle">Secure Access Portal</p>
     <div class="form-group">
-        <input type="email" id="emailInput" placeholder="Enter Email Address" required>
+        <input type="email" id="emailInput" placeholder="Email Address" required>
     </div>
     <div class="form-group">
-        <input type="password" id="passwordInput" placeholder="Enter Password" required>
+        <input type="password" id="passwordInput" placeholder="Password" required>
     </div>
-    
     <button id="loginBtn">Login</button>
-    <button id="registerBtn" class="btn-secondary">Create New Account</button>
+    <button id="registerBtn" class="btn-green">Create Account</button>
 </div>
 
-<div class="container" id="dashboardSection">
-    <h1>My Custom Menu</h1>
-    <p class="subtitle" id="userEmailDisplay"></p>
-    <button id="logoutBtn" class="btn-danger">Logout</button>
+<div class="container" id="superAdminSection">
+    <h1>Master Admin Panel</h1>
+    <p class="subtitle" id="adminEmailDisplay"></p>
+    <button id="adminLogoutBtn" class="btn-danger">Logout Master System</button>
     
     <hr>
+    <h3>Registered User Accounts</h3>
+    <div id="usersListContainer"></div>
     
-    <h3>Add New Item</h3>
-    <div class="form-group">
-        <input type="text" id="itemName" placeholder="Dish Name (e.g., Veg Burger)" required>
+    <hr>
+    <div id="adminManagementZone" style="display: none;">
+        <h3 id="managingUserTitle">Managing Menu for: None</h3>
+        <div class="form-group">
+            <input type="text" id="adminItemName" placeholder="Dish Name">
+        </div>
+        <div class="form-group">
+            <input type="number" id="adminItemPrice" placeholder="Price (Rs.)">
+        </div>
+        <div class="form-group">
+            <input type="text" id="adminItemImage" placeholder="Image URL (Paste Link Here)">
+        </div>
+        <button id="adminAddBtn">Upload & Add Item to User Menu</button>
+        
+        <div id="adminMenuList" class="menu-grid"></div>
     </div>
-    <div class="form-group">
-        <input type="number" id="itemPrice" placeholder="Price (e.g., 150)" required>
-    </div>
-    <div class="form-group">
-        <input type="text" id="itemImage" placeholder="Image URL (Paste any image link here)" required>
-    </div>
-    <button id="addMenuBtn">Save to Menu</button>
+</div>
 
+<div class="container" id="userSection">
+    <h1>Restaurant Dashboard</h1>
+    <p class="subtitle" id="userEmailDisplay"></p>
+    <button id="userLogoutBtn" class="btn-danger">Logout</button>
+    
     <hr>
-    <h3>Your Menu Items</h3>
-    <div id="menuList" class="menu-grid"></div>
+    <h3>Your Menu Cards</h3>
+    <div id="userMenuList" class="menu-grid"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDocs, query, where, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
+    // Your verified Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyCtF4Oejs17wjZbZj7df4mTUitaKMR_CdI",
       authDomain: "hotel-menu-manager.firebaseapp.com",
@@ -156,153 +168,207 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    let currentUserId = null;
+    // CRITICAL: Set your master admin email here
+    const SUPER_ADMIN_EMAIL = "admin@hotel.com"; 
 
+    let selectedUserIdForAdmin = null;
+
+    // DOM Elements
     const authSection = document.getElementById('authSection');
-    const dashboardSection = document.getElementById('dashboardSection');
+    const superAdminSection = document.getElementById('superAdminSection');
+    const userSection = document.getElementById('userSection');
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
-    const menuList = document.getElementById('menuList');
+    const usersListContainer = document.getElementById('usersListContainer');
+    const adminMenuList = document.getElementById('adminMenuList');
+    const userMenuList = document.getElementById('userMenuList');
 
-    // Register User
+    // Register Function (Saves user metadata to database automatically)
     document.getElementById('registerBtn').addEventListener('click', async () => {
         const email = emailInput.value;
         const password = passwordInput.value;
-        if(!email || !password) return alert("Please enter email and password.");
+        if(!email || !password) return alert("Please fill details.");
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-            alert("Account created successfully!");
+            const credential = await createUserWithEmailAndPassword(auth, email, password);
+            // Save user reference for Master Admin visibility
+            await setDoc(doc(db, "users", credential.user.uid), {
+                uid: credential.user.uid,
+                email: email
+            });
+            alert("Account registered successfully!");
         } catch (error) {
             alert("Registration Error: " + error.message);
         }
     });
 
-    // Login User
+    // Login Function
     document.getElementById('loginBtn').addEventListener('click', async () => {
         const email = emailInput.value;
         const password = passwordInput.value;
-        if(!email || !password) return alert("Please enter email and password.");
+        if(!email || !password) return alert("Please fill details.");
         try {
             await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
-            alert("Login Failed: " + error.message);
+            alert("Login Error: " + error.message);
         }
     });
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await signOut(auth);
-    });
+    // Logout Functions
+    document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
+    document.getElementById('userLogoutBtn').addEventListener('click', () => signOut(auth));
 
-    // Load User Specific Menu
-    async function loadMenuItems() {
-        if (!currentUserId) return;
-        menuList.innerHTML = "Loading your menu...";
+    // Master Admin: Load all user accounts list
+    async function loadAllUsers() {
+        usersListContainer.innerHTML = "Fetching accounts...";
+        const querySnapshot = await getDocs(collection(db, "users"));
+        usersListContainer.innerHTML = "";
         
-        // QUERY: Fetch ONLY the logged-in user's data
-        const q = query(collection(db, "menu_items"), where("userId", "==", currentUserId));
-        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((userDoc) => {
+            const userData = userDoc.data();
+            if(userData.email !== SUPER_ADMIN_EMAIL) {
+                const div = document.createElement('div');
+                div.className = 'user-badge';
+                div.innerText = userData.email;
+                div.onclick = () => openUserMenuAsAdmin(userData.uid, userData.email);
+                usersListContainer.appendChild(div);
+            }
+        });
+    }
+
+    // Master Admin: Direct access to specific user data without re-login
+    async function openUserMenuAsAdmin(userId, userEmail) {
+        selectedUserIdForAdmin = userId;
+        document.getElementById('adminManagementZone').style.display = 'block';
+        document.getElementById('managingUserTitle').innerText = "Managing Menu for: " + userEmail;
+        loadItemsForAdmin();
+    }
+
+    // Master Admin: Load single user's menu items
+    async function loadItemsForAdmin() {
+        adminMenuList.innerHTML = "Loading menu...";
+        const q = query(collection(db, "menu_items"), where("userId", "==", selectedUserIdForAdmin));
+        const snap = await getDocs(q);
+        adminMenuList.innerHTML = "";
         
-        menuList.innerHTML = "";
-        
-        querySnapshot.forEach((docSnap) => {
-            const item = docSnap.data();
-            const itemId = docSnap.id;
-            
+        snap.forEach((itemDoc) => {
+            const item = itemDoc.data();
             const card = document.createElement('div');
             card.className = 'menu-card';
-            
-            // Fallback image if URL is empty
-            const imgUrl = item.image || "https://via.placeholder.com/80?text=No+Image";
-
             card.innerHTML = `
-                <img src="${imgUrl}" class="menu-image" alt="Dish Image">
+                <img src="${item.image || 'https://via.placeholder.com/90'}" class="menu-image">
                 <div class="menu-details">
                     <h4 class="menu-title">${item.name}</h4>
                     <p class="menu-price">Rs. ${item.price}</p>
                 </div>
-                <div class="menu-actions">
-                    <button class="btn-small btn-edit" onclick="editItem('${itemId}', '${item.name}', '${item.price}')">Edit</button>
-                    <button class="btn-small btn-delete" onclick="deleteItem('${itemId}')">Delete</button>
+                <div class="action-btns">
+                    <button class="btn-small btn-danger" onclick="deleteItemMaster('${itemDoc.id}')">Delete</button>
                 </div>
             `;
-            menuList.appendChild(card);
+            adminMenuList.appendChild(card);
         });
     }
 
-    // Add Menu Item with User ID
-    document.getElementById('addMenuBtn').addEventListener('click', async () => {
-        const name = document.getElementById('itemName').value;
-        const price = document.getElementById('itemPrice').value;
-        const image = document.getElementById('itemImage').value;
+    // Master Admin: Upload/Add menu items with images for specific user
+    document.getElementById('adminAddBtn').addEventListener('click', async () => {
+        const name = document.getElementById('adminItemName').value;
+        const price = document.getElementById('adminItemPrice').value;
+        const image = document.getElementById('adminItemImage').value;
         
-        if(!name || !price) return alert("Name and Price are required.");
+        if(!name || !price || !image) return alert("All fields including Image URL are required.");
         
         try {
-            await addDoc(collection(db, "menu_items"), { 
-                name: name, 
+            await addDoc(collection(db, "menu_items"), {
+                name: name,
                 price: price,
                 image: image,
-                userId: currentUserId // This binds the item to the specific user
+                userId: selectedUserIdForAdmin
             });
-            
-            document.getElementById('itemName').value = "";
-            document.getElementById('itemPrice').value = "";
-            document.getElementById('itemImage').value = "";
-            
-            alert("Item added successfully!");
-            loadMenuItems(); 
+            document.getElementById('adminItemName').value = "";
+            document.getElementById('adminItemPrice').value = "";
+            document.getElementById('adminItemImage').value = "";
+            alert("Menu item setup complete!");
+            loadItemsForAdmin();
         } catch (error) {
-            alert("Error adding item: " + error.message);
+            alert("Error: " + error.message);
         }
     });
 
-    // Global Edit Function
-    window.editItem = async (id, oldName, oldPrice) => {
-        const newName = prompt("Enter new name:", oldName);
-        if (newName === null) return; // User cancelled
+    // Master Admin Delete Function
+    window.deleteItemMaster = async (id) => {
+        if(confirm("Delete this item permanently?")) {
+            await deleteDoc(doc(db, "menu_items", id));
+            loadItemsForAdmin();
+        }
+    };
+
+    // Regular User: Load assigned menu card (Can ONLY edit text and price)
+    async function loadUserMenu(userId) {
+        userMenuList.innerHTML = "Loading your authorized menu...";
+        const q = query(collection(db, "menu_items"), where("userId", "==", userId));
+        const snap = await getDocs(q);
+        userMenuList.innerHTML = "";
         
-        const newPrice = prompt("Enter new price:", oldPrice);
-        if (newPrice === null) return; // User cancelled
+        snap.forEach((itemDoc) => {
+            const item = itemDoc.data();
+            const card = document.createElement('div');
+            card.className = 'menu-card';
+            card.innerHTML = `
+                <img src="${item.image || 'https://via.placeholder.com/90'}" class="menu-image">
+                <div class="menu-details">
+                    <h4 class="menu-title">${item.name}</h4>
+                    <p class="menu-price">Rs. ${item.price}</p>
+                </div>
+                <div class="action-btns">
+                    <button class="btn-small btn-green" onclick="editUserItem('${itemDoc.id}', '${item.name}', '${item.price}')">Change Details</button>
+                </div>
+            `;
+            userMenuList.appendChild(card);
+        });
+    }
+
+    // Regular User: Update function (Strictly text and price only)
+    window.editUserItem = async (id, currentName, currentPrice) => {
+        const newName = prompt("Modify Dish Name:", currentName);
+        if(newName === null) return;
+        const newPrice = prompt("Modify Price (Rs.):", currentPrice);
+        if(newPrice === null) return;
 
         try {
-            const itemRef = doc(db, "menu_items", id);
-            await updateDoc(itemRef, {
+            await updateDoc(doc(db, "menu_items", id), {
                 name: newName,
                 price: newPrice
             });
-            alert("Item updated successfully!");
-            loadMenuItems();
+            alert("Menu successfully updated!");
+            loadUserMenu(auth.currentUser.uid);
         } catch (error) {
-            alert("Error updating item: " + error.message);
+            alert("Update restricted: " + error.message);
         }
     };
 
-    // Global Delete Function
-    window.deleteItem = async (id) => {
-        if(confirm("Are you sure you want to delete this item?")) {
-            try {
-                await deleteDoc(doc(db, "menu_items", id));
-                loadMenuItems();
-            } catch (error) {
-                alert("Error deleting item: " + error.message);
-            }
-        }
-    };
-
-    // Listen to Auth State
+    // Central Auth Monitor
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            currentUserId = user.uid;
             authSection.style.display = 'none';
-            dashboardSection.style.display = 'block';
-            userEmailDisplay.innerText = "Logged in as: " + user.email;
-            loadMenuItems();
+            if(user.email === SUPER_ADMIN_EMAIL) {
+                // If Master Logs In
+                superAdminSection.style.display = 'block';
+                userSection.style.display = 'none';
+                document.getElementById('adminEmailDisplay').innerText = "System Master: " + user.email;
+                loadAllUsers();
+            } else {
+                // If Regular Restaurant Logs In
+                superAdminSection.style.display = 'none';
+                userSection.style.display = 'block';
+                document.getElementById('userEmailDisplay').innerText = "Authorized Restaurant: " + user.email;
+                loadUserMenu(user.uid);
+            }
         } else {
-            currentUserId = null;
+            // Logged Out State
             authSection.style.display = 'block';
-            dashboardSection.style.display = 'none';
+            superAdminSection.style.display = 'none';
+            userSection.style.display = 'none';
+            emailInput.value = "";
+            passwordInput.value = "";
         }
     });
 </script>
