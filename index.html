@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Menu Control Panel</title>
+    <title>Hotel Management System - Portal</title>
     <style>
         body { 
             font-family: 'Segoe UI', Arial, sans-serif; 
-            background-color: #f8f9fa; 
+            background-color: #f4f6f9; 
             margin: 0; 
             padding: 20px; 
             color: #333;
@@ -19,16 +19,17 @@
             padding: 30px; 
             border-radius: 12px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
-            margin: 20px auto;
+            margin: 4px auto;
         }
-        h1, h2, h3 { text-align: center; color: #1a1a1a; }
+        .login-box { max-width: 420px; margin-top: 10vh; }
+        h1, h2, h3 { text-align: center; color: #111111; }
         .subtitle { text-align: center; color: #666; font-size: 14px; margin-top: -10px; margin-bottom: 25px; }
         
         .form-group { margin-bottom: 15px; }
         input { 
             width: 100%; 
             padding: 12px; 
-            border: 1px solid #ccc; 
+            border: 1px solid #cccccc; 
             border-radius: 8px; 
             box-sizing: border-box; 
             font-size: 15px; 
@@ -37,7 +38,7 @@
         button { 
             width: 100%; 
             padding: 12px; 
-            background-color: #0066cc; 
+            background-color: #0056b3; 
             color: white; 
             border: none; 
             border-radius: 8px; 
@@ -47,27 +48,30 @@
             margin-top: 10px;
             transition: background 0.2s;
         }
-        button:hover { background-color: #0052a3; }
+        button:hover { background-color: #004085; }
         .btn-green { background-color: #28a745; }
-        .btn-green:hover { background-color: #218838; }
+        .btn-green:hover { background-color: #1e7e34; }
         .btn-danger { background-color: #dc3545; }
-        .btn-danger:hover { background-color: #c82333; }
+        .btn-danger:hover { background-color: #bd2130; }
         
         /* App Sections */
-        #superAdminSection, #userSection, #dashboardSection { display: none; }
+        #superAdminSection, #userSection { display: none; }
         
         /* User List Tabs for Admin */
         .user-badge {
-            background: #e9ecef;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 6px;
+            background: #f8f9fa;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            border-left: 5px solid #0066cc;
-            transition: background 0.2s;
+            border: 1px solid #eee;
+            border-left: 6px solid #0056b3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .user-badge:hover { background: #dee2e6; }
+        .user-badge:hover { background: #e9ecef; }
         
         /* Menu Cards */
         .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 20px; }
@@ -78,7 +82,7 @@
             padding: 15px;
             display: flex;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
         .menu-image {
             width: 90px;
@@ -93,36 +97,49 @@
         .menu-price { font-size: 16px; font-weight: bold; color: #28a745; margin: 0; }
         .action-btns { display: flex; flex-direction: column; gap: 5px; }
         .btn-small { padding: 6px 12px; font-size: 13px; width: auto; margin: 0; }
-        hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
+        .admin-box { background: #fdfdfd; border: 1px dashed #bbb; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        hr { border: 0; border-top: 1px solid #ddd; margin: 30px 0; }
     </style>
 </head>
 <body>
 
-<div class="container" id="authSection">
-    <h1>Hotel Menu Management</h1>
-    <p class="subtitle">Secure Access Portal</p>
+<div class="container login-box" id="authSection">
+    <h1>System Portal</h1>
+    <p class="subtitle">Authorized Sign In Only</p>
     <div class="form-group">
-        <input type="email" id="emailInput" placeholder="Email Address" required>
+        <input type="email" id="emailInput" placeholder="Username / Email" required>
     </div>
     <div class="form-group">
         <input type="password" id="passwordInput" placeholder="Password" required>
     </div>
-    <button id="loginBtn">Login</button>
-    <button id="registerBtn" class="btn-green">Create Account</button>
+    <button id="loginBtn">Secure Login</button>
 </div>
 
 <div class="container" id="superAdminSection">
-    <h1>Master Admin Panel</h1>
+    <h1>Master Controller Console</h1>
     <p class="subtitle" id="adminEmailDisplay"></p>
-    <button id="adminLogoutBtn" class="btn-danger">Logout Master System</button>
+    <button id="adminLogoutBtn" class="btn-danger">System Logout</button>
     
     <hr>
-    <h3>Registered User Accounts</h3>
+    
+    <div class="admin-box">
+        <h3>Create New User Account</h3>
+        <div class="form-group">
+            <input type="email" id="newDocEmail" placeholder="New User Email (e.g. hotel1@test.com)">
+        </div>
+        <div class="form-group">
+            <input type="password" id="newDocPassword" placeholder="New User Password">
+        </div>
+        <button id="createAccountBtn" class="btn-green">Generate & Register User</button>
+    </div>
+
+    <hr>
+    <h3>Active Registered Clients</h3>
     <div id="usersListContainer"></div>
     
     <hr>
     <div id="adminManagementZone" style="display: none;">
-        <h3 id="managingUserTitle">Managing Menu for: None</h3>
+        <h3 id="managingUserTitle">Target: None</h3>
         <div class="form-group">
             <input type="text" id="adminItemName" placeholder="Dish Name">
         </div>
@@ -130,30 +147,29 @@
             <input type="number" id="adminItemPrice" placeholder="Price (Rs.)">
         </div>
         <div class="form-group">
-            <input type="text" id="adminItemImage" placeholder="Image URL (Paste Link Here)">
+            <input type="text" id="adminItemImage" placeholder="Image URL / Link">
         </div>
-        <button id="adminAddBtn">Upload & Add Item to User Menu</button>
+        <button id="adminAddBtn">Upload Menu Item to Client Portfolio</button>
         
         <div id="adminMenuList" class="menu-grid"></div>
     </div>
 </div>
 
 <div class="container" id="userSection">
-    <h1>Restaurant Dashboard</h1>
+    <h1>Client Menu Panel</h1>
     <p class="subtitle" id="userEmailDisplay"></p>
     <button id="userLogoutBtn" class="btn-danger">Logout</button>
     
     <hr>
-    <h3>Your Menu Cards</h3>
+    <h3>Your Authorized Menu Grid</h3>
     <div id="userMenuList" class="menu-grid"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
     import { getFirestore, collection, doc, setDoc, getDocs, query, where, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
-    // Your verified Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyCtF4Oejs17wjZbZj7df4mTUitaKMR_CdI",
       authDomain: "hotel-menu-manager.firebaseapp.com",
@@ -168,12 +184,11 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // CRITICAL: Set your master admin email here
-    const SUPER_ADMIN_EMAIL = "admin@hotel.com"; 
+    // Super Admin Definition
+    const SUPER_ADMIN_EMAIL = "admin@master.com"; 
 
     let selectedUserIdForAdmin = null;
 
-    // DOM Elements
     const authSection = document.getElementById('authSection');
     const superAdminSection = document.getElementById('superAdminSection');
     const userSection = document.getElementById('userSection');
@@ -183,43 +198,51 @@
     const adminMenuList = document.getElementById('adminMenuList');
     const userMenuList = document.getElementById('userMenuList');
 
-    // Register Function (Saves user metadata to database automatically)
-    document.getElementById('registerBtn').addEventListener('click', async () => {
+    // Login Trigger
+    document.getElementById('loginBtn').addEventListener('click', async () => {
         const email = emailInput.value;
         const password = passwordInput.value;
-        if(!email || !password) return alert("Please fill details.");
+        if(!email || !password) return alert("Credentials required.");
         try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            alert("Login System Error: " + error.message);
+        }
+    });
+
+    // Secret Registration inside Super Admin Panel
+    document.getElementById('createAccountBtn').addEventListener('click', async () => {
+        const email = document.getElementById('newDocEmail').value;
+        const password = document.getElementById('newDocPassword').value;
+        if(!email || !password) return alert("Please enter both fields.");
+        
+        try {
+            // Register user in authentication
             const credential = await createUserWithEmailAndPassword(auth, email, password);
-            // Save user reference for Master Admin visibility
+            // Save to Database reference
             await setDoc(doc(db, "users", credential.user.uid), {
                 uid: credential.user.uid,
                 email: email
             });
-            alert("Account registered successfully!");
+            alert("Success: New User Created!");
+            document.getElementById('newDocEmail').value = "";
+            document.getElementById('newDocPassword').value = "";
+            
+            // Relogin Admin automatically to ensure token stability
+            alert("Notice: Refreshing current list database.");
+            loadAllUsers();
         } catch (error) {
-            alert("Registration Error: " + error.message);
+            alert("System Denied Registration: " + error.message);
         }
     });
 
-    // Login Function
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        if(!email || !password) return alert("Please fill details.");
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            alert("Login Error: " + error.message);
-        }
-    });
-
-    // Logout Functions
+    // Logout Process
     document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
     document.getElementById('userLogoutBtn').addEventListener('click', () => signOut(auth));
 
-    // Master Admin: Load all user accounts list
+    // Master Controller: Fetch and Display users
     async function loadAllUsers() {
-        usersListContainer.innerHTML = "Fetching accounts...";
+        usersListContainer.innerHTML = "Syncing database...";
         const querySnapshot = await getDocs(collection(db, "users"));
         usersListContainer.innerHTML = "";
         
@@ -228,24 +251,24 @@
             if(userData.email !== SUPER_ADMIN_EMAIL) {
                 const div = document.createElement('div');
                 div.className = 'user-badge';
-                div.innerText = userData.email;
+                div.innerHTML = `<span>${userData.email}</span>`;
                 div.onclick = () => openUserMenuAsAdmin(userData.uid, userData.email);
                 usersListContainer.appendChild(div);
             }
         });
     }
 
-    // Master Admin: Direct access to specific user data without re-login
+    // Direct Access to Client profile via Click
     async function openUserMenuAsAdmin(userId, userEmail) {
         selectedUserIdForAdmin = userId;
         document.getElementById('adminManagementZone').style.display = 'block';
-        document.getElementById('managingUserTitle').innerText = "Managing Menu for: " + userEmail;
+        document.getElementById('managingUserTitle').innerText = "Target Portfolio: " + userEmail;
         loadItemsForAdmin();
     }
 
-    // Master Admin: Load single user's menu items
+    // Load exact items for Admin
     async function loadItemsForAdmin() {
-        adminMenuList.innerHTML = "Loading menu...";
+        adminMenuList.innerHTML = "Fetching item nodes...";
         const q = query(collection(db, "menu_items"), where("userId", "==", selectedUserIdForAdmin));
         const snap = await getDocs(q);
         adminMenuList.innerHTML = "";
@@ -261,20 +284,20 @@
                     <p class="menu-price">Rs. ${item.price}</p>
                 </div>
                 <div class="action-btns">
-                    <button class="btn-small btn-danger" onclick="deleteItemMaster('${itemDoc.id}')">Delete</button>
+                    <button class="btn-small btn-danger" onclick="deleteItemMaster('${itemDoc.id}')">Remove Item</button>
                 </div>
             `;
             adminMenuList.appendChild(card);
         });
     }
 
-    // Master Admin: Upload/Add menu items with images for specific user
+    // Add elements with specific photo via Admin
     document.getElementById('adminAddBtn').addEventListener('click', async () => {
         const name = document.getElementById('adminItemName').value;
         const price = document.getElementById('adminItemPrice').value;
         const image = document.getElementById('adminItemImage').value;
         
-        if(!name || !price || !image) return alert("All fields including Image URL are required.");
+        if(!name || !price || !image) return alert("All text fields and image links are mandatory.");
         
         try {
             await addDoc(collection(db, "menu_items"), {
@@ -286,24 +309,24 @@
             document.getElementById('adminItemName').value = "";
             document.getElementById('adminItemPrice').value = "";
             document.getElementById('adminItemImage').value = "";
-            alert("Menu item setup complete!");
+            alert("Database entry created!");
             loadItemsForAdmin();
         } catch (error) {
-            alert("Error: " + error.message);
+            alert("Error adding entry: " + error.message);
         }
     });
 
-    // Master Admin Delete Function
+    // Delete item node
     window.deleteItemMaster = async (id) => {
-        if(confirm("Delete this item permanently?")) {
+        if(confirm("Confirm permanent removal?")) {
             await deleteDoc(doc(db, "menu_items", id));
             loadItemsForAdmin();
         }
     };
 
-    // Regular User: Load assigned menu card (Can ONLY edit text and price)
+    // Client execution zone
     async function loadUserMenu(userId) {
-        userMenuList.innerHTML = "Loading your authorized menu...";
+        userMenuList.innerHTML = "Syncing menu allocation data...";
         const q = query(collection(db, "menu_items"), where("userId", "==", userId));
         const snap = await getDocs(q);
         userMenuList.innerHTML = "";
@@ -319,18 +342,18 @@
                     <p class="menu-price">Rs. ${item.price}</p>
                 </div>
                 <div class="action-btns">
-                    <button class="btn-small btn-green" onclick="editUserItem('${itemDoc.id}', '${item.name}', '${item.price}')">Change Details</button>
+                    <button class="btn-small btn-green" onclick="editUserItem('${itemDoc.id}', '${item.name}', '${item.price}')">Change Text/Price</button>
                 </div>
             `;
             userMenuList.appendChild(card);
         });
     }
 
-    // Regular User: Update function (Strictly text and price only)
+    // Client modification limit (Strictly updates name & price text only)
     window.editUserItem = async (id, currentName, currentPrice) => {
-        const newName = prompt("Modify Dish Name:", currentName);
+        const newName = prompt("Modify Dish Name String:", currentName);
         if(newName === null) return;
-        const newPrice = prompt("Modify Price (Rs.):", currentPrice);
+        const newPrice = prompt("Modify Price Numeric Value:", currentPrice);
         if(newPrice === null) return;
 
         try {
@@ -338,32 +361,29 @@
                 name: newName,
                 price: newPrice
             });
-            alert("Menu successfully updated!");
+            alert("Local client parameters updated.");
             loadUserMenu(auth.currentUser.uid);
         } catch (error) {
-            alert("Update restricted: " + error.message);
+            alert("Transaction failed: " + error.message);
         }
     };
 
-    // Central Auth Monitor
+    // Main Control Interceptor
     onAuthStateChanged(auth, (user) => {
         if (user) {
             authSection.style.display = 'none';
             if(user.email === SUPER_ADMIN_EMAIL) {
-                // If Master Logs In
                 superAdminSection.style.display = 'block';
                 userSection.style.display = 'none';
-                document.getElementById('adminEmailDisplay').innerText = "System Master: " + user.email;
+                document.getElementById('adminEmailDisplay').innerText = "Master Node Status: " + user.email;
                 loadAllUsers();
             } else {
-                // If Regular Restaurant Logs In
                 superAdminSection.style.display = 'none';
                 userSection.style.display = 'block';
-                document.getElementById('userEmailDisplay').innerText = "Authorized Restaurant: " + user.email;
+                document.getElementById('userEmailDisplay').innerText = "Client Terminal Node: " + user.email;
                 loadUserMenu(user.uid);
             }
         } else {
-            // Logged Out State
             authSection.style.display = 'block';
             superAdminSection.style.display = 'none';
             userSection.style.display = 'none';
