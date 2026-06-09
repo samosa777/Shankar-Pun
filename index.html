@@ -1,463 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mantra - Clean Photo Only Terminal</title>
-    <style>
-        :root {
-            --bg-color: #0b0c10;
-            --card-bg: #1f2833;
-            --text-color: #c5c6c7;
-            --accent-gold: #e5b842;
-            --accent-hover: #cfa230;
-            --border-color: #45a29e;
-            --dark-border: #2f3e46;
-            --danger-color: #ea4335;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            background-color: var(--bg-color); 
-            margin: 0; 
-            padding: 0; 
-            color: var(--text-color);
-            min-height: 100vh;
-        }
+<title>Hotel Menu Pro</title>
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #151a21;
-            padding: 15px 30px;
-            border-bottom: 2px solid var(--accent-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-        }
-        .navbar h2 { margin: 0; color: var(--accent-gold); letter-spacing: 2px; font-size: 22px; }
-        
-        .btn-create-trigger {
-            background: transparent;
-            color: var(--accent-gold);
-            border: 1px solid var(--accent-gold);
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .btn-create-trigger:hover {
-            background: var(--accent-gold);
-            color: #000;
-        }
+<style>
 
-        .main-content { padding: 30px; max-width: 1400px; margin: 0 auto; }
-        .section-title { color: white; border-left: 4px solid var(--accent-gold); padding-left: 12px; margin-bottom: 5px; font-size: 20px; }
-        .section-subtitle { color: #85929e; font-size: 13px; margin-bottom: 25px; margin-top: 5px; }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
 
-        .client-fullscreen-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:
+linear-gradient(rgba(0,0,0,0.5),
+rgba(0,0,0,0.5)),
+url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=80');
 
-        .client-card {
-            background: var(--card-bg);
-            border: 1px solid var(--dark-border);
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            overflow: hidden;
-            user-select: none;
-        }
-        .client-card:hover, .client-card.active {
-            border-color: var(--accent-gold);
-            transform: translateY(-4px);
-        }
-        .client-card h3 { margin: 0 0 10px 0; color: white; font-size: 18px; }
-        .client-meta { font-size: 12px; color: #85929e; margin-bottom: 15px; }
+background-size:cover;
+background-position:center;
+}
 
-        .client-preview-box {
-            width: 100%;
-            height: 120px;
-            background: #11161d;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 1px solid #2c3540;
-        }
-        .client-preview-box img { width: 100%; height: 100%; object-fit: cover; }
-        .no-photo-text { font-size: 12px; color: #566573; font-style: italic; }
+.login-box{
+width:400px;
+padding:40px;
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(12px);
+border-radius:20px;
+box-shadow:0 8px 32px rgba(0,0,0,0.3);
+color:white;
+}
 
-        .workspace-panel {
-            background: #161c24;
-            border: 1px solid var(--dark-border);
-            border-radius: 16px;
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
+.logo{
+text-align:center;
+font-size:32px;
+margin-bottom:10px;
+}
 
-        /* Clean Photo Upload Container Only */
-        .upload-only-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: #11141a;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px dashed var(--accent-gold);
-            margin-top: 15px;
-        }
+.title{
+text-align:center;
+margin-bottom:30px;
+font-size:24px;
+font-weight:bold;
+}
 
-        input[type="file"] { color: #85929e; font-size: 14px; }
-        input[type="file"]::-webkit-file-upload-button {
-            background: #242933;
-            border: 1px solid var(--dark-border);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-right: 15px;
-            font-weight: bold;
-        }
-        input[type="file"]::-webkit-file-upload-button:hover { border-color: var(--accent-gold); }
+input{
+width:100%;
+padding:15px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+outline:none;
+}
 
-        button {
-            padding: 12px 24px;
-            font-weight: bold;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-gold { background: var(--accent-gold); color: black; }
-        .btn-gold:hover { background: var(--accent-hover); }
-        .btn-danger { background: var(--danger-color); color: white; }
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#ff6b00;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-        .gallery-card {
-            background: #222b36;
-            border-radius: 10px;
-            padding: 10px;
-            border: 1px solid #2d3846;
-            text-align: center;
-            position: relative;
-        }
-        .gallery-img { width: 100%; height: 150px; border-radius: 6px; object-fit: cover; background: #111; }
+button:hover{
+transform:scale(1.03);
+}
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.75);
-            backdrop-filter: blur(4px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-box {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--accent-gold);
-        }
-        .modal-box input {
-            background: #11141a;
-            border: 1px solid var(--dark-border);
-            padding: 12px 15px;
-            border-radius: 8px;
-            color: white;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-        }
+.footer{
+margin-top:20px;
+text-align:center;
+font-size:13px;
+opacity:0.8;
+}
 
-        #superAdminSection, #userSection, #authSection { display: none; }
-    </style>
+</style>
+
 </head>
+
 <body>
 
-<div class="main-content" id="authSection" style="max-width: 400px; margin-top: 15vh;">
-    <div style="background: var(--card-bg); padding: 35px; border-radius: 16px; border-top: 4px solid var(--accent-gold); text-align: center;">
-        <h2 style="color: var(--accent-gold); margin-bottom: 25px;">MANTRA CONSOLE</h2>
-        <input type="email" id="emailInput" placeholder="Master Username" style="background:#11141a; border:1px solid var(--dark-border); padding:12px; border-radius:8px; color:white; width:100%; margin-bottom:15px; box-sizing:border-box;" required>
-        <input type="password" id="passwordInput" placeholder="Security Password" style="background:#11141a; border:1px solid var(--dark-border); padding:12px; border-radius:8px; color:white; width:100%; margin-bottom:20px; box-sizing:border-box;" required>
-        <button id="loginBtn" class="btn-gold" style="width: 100%;">Sign In</button>
-    </div>
+<div class="login-box">
+
+<div class="logo">🍽️</div>
+
+<div class="title">
+Hotel Menu Pro
 </div>
 
-<div id="superAdminSection">
-    <div class="navbar">
-        <h2>MANTRA SYSTEM CONTROL</h2>
-        <div class="nav-actions">
-            <button class="btn-create-trigger" id="openModalBtn">+ Create User</button>
-            <button id="adminLogoutBtn" class="btn-danger" style="padding: 8px 16px; font-size: 13px;">Logout</button>
-        </div>
-    </div>
+<input
+type="email"
+id="username"
+placeholder="Admin Email">
 
-    <div class="main-content">
-        <div class="section-title">Active Restaurant Portfolios</div>
-        <div class="section-subtitle">Double-click on any client card to open photo workspace</div>
-        
-        <div id="usersListContainer" class="client-fullscreen-grid"></div>
+<input
+type="password"
+id="password"
+placeholder="Password">
 
-        <div id="adminManagementZone" class="workspace-panel" style="display: none;">
-            <h3 id="managingUserTitle" style="margin: 0; color: white;">Target Config</h3>
-            
-            <div class="upload-only-container">
-                <input type="file" id="adminItemFile" accept="image/*">
-                <button id="adminAddBtn" class="btn-gold">Upload Menu Photo</button>
-            </div>
+<button id="loginBtn">
+Login
+</button>
 
-            <div id="adminMenuList" class="gallery-grid"></div>
-        </div>
-    </div>
+<div class="footer">
+Smart QR Menu Management System
 </div>
 
-<div class="modal-overlay" id="createUserModal">
-    <div class="modal-box">
-        <h3 style="margin-top:0;">Generate Restaurant Node</h3>
-        <input type="email" id="newDocEmail" placeholder="Client Email">
-        <input type="text" id="newDocPassword" placeholder="Assign Static Password">
-        <div style="display: flex; gap: 10px;">
-            <button id="createAccountBtn" class="btn-gold" style="flex:1;">Generate Node</button>
-            <button id="closeModalBtn" style="background: #34495e; color: white;">Cancel</button>
-        </div>
-    </div>
 </div>
 
-<div class="main-content" id="userSection" style="max-width: 800px; background: var(--card-bg); border-radius: 12px; margin-top: 40px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #34495e; padding-bottom: 15px;">
-        <h2 id="userEmailDisplay" style="margin: 0; color: var(--accent-gold);">Portfolio Hub</h2>
-        <button id="userLogoutBtn" class="btn-danger" style="padding: 8px 16px;">Sign Out</button>
-    </div>
-    <div id="userMenuList" class="gallery-grid" style="margin-top:25px;"></div>
-</div>
+<script src="app.js"></script>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDocs, query, where, addDoc, deleteDoc, limit } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCtF4Oejs17wjZbZj7df4mTUitaKMR_CdI",
-      authDomain: "hotel-menu-manager.firebaseapp.com",
-      projectId: "hotel-menu-manager",
-      storageBucket: "hotel-menu-manager.firebasestorage.app",
-      messagingSenderId: "434432605981",
-      appId: "1:434432605981:web:a16c77f7462da05669abf4",
-      measurementId: "G-68CN4DCZHW"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    const SUPER_ADMIN_EMAIL = "admin@master.com"; 
-    const SUPER_ADMIN_PASS = "Master@2026";
-
-    let selectedUserIdForAdmin = null;
-
-    const authSection = document.getElementById('authSection');
-    const superAdminSection = document.getElementById('superAdminSection');
-    const userSection = document.getElementById('userSection');
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const usersListContainer = document.getElementById('usersListContainer');
-    const adminMenuList = document.getElementById('adminMenuList');
-    const userMenuList = document.getElementById('userMenuList');
-    const createUserModal = document.getElementById('createUserModal');
-
-    document.getElementById('openModalBtn').addEventListener('click', () => createUserModal.style.display = 'flex');
-    document.getElementById('closeModalBtn').addEventListener('click', () => createUserModal.style.display = 'none');
-
-    async function autoInitSuperAdmin() {
-        try { await createUserWithEmailAndPassword(auth, SUPER_ADMIN_EMAIL, SUPER_ADMIN_PASS); } catch (e) {}
-    }
-    autoInitSuperAdmin();
-
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        try { await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value); } catch (e) { alert("Error: " + e.message); }
-    });
-
-    document.getElementById('createAccountBtn').addEventListener('click', async () => {
-        const email = document.getElementById('newDocEmail').value;
-        const password = document.getElementById('newDocPassword').value;
-        if(!email || !password) return alert("Fields missing.");
-        try {
-            const customUserId = "user_" + Math.random().toString(36).substr(2, 9);
-            await setDoc(doc(db, "users", customUserId), { uid: customUserId, email: email, password: password });
-            alert("Success: Account Node Injected!");
-            createUserModal.style.display = 'none';
-            document.getElementById('newDocEmail').value = "";
-            document.getElementById('newDocPassword').value = "";
-            loadAllUsers();
-        } catch (e) { alert("Error: " + e.message); }
-    });
-
-    document.getElementById('adminLogoutBtn').addEventListener('click', () => signOut(auth));
-    document.getElementById('userLogoutBtn').addEventListener('click', () => signOut(auth));
-
-    async function loadAllUsers() {
-        usersListContainer.innerHTML = "Syncing Grid Nodes...";
-        const querySnapshot = await getDocs(collection(db, "users"));
-        usersListContainer.innerHTML = "";
-        
-        for (const userDoc of querySnapshot.docs) {
-            const userData = userDoc.data();
-            if(userData.email !== SUPER_ADMIN_EMAIL) {
-                const sampleQuery = query(collection(db, "menu_items"), where("userId", "==", userData.uid), limit(1));
-                const sampleSnap = await getDocs(sampleQuery);
-                let imgHtml = `<div class="no-photo-text">No photos active</div>`;
-                
-                if(!sampleSnap.empty) {
-                    sampleSnap.forEach(item => {
-                        const data = item.data();
-                        if(data.image) imgHtml = `<img src="${data.image}">`;
-                    });
-                }
-
-                const card = document.createElement('div');
-                card.className = 'client-card';
-                card.innerHTML = `
-                    <h3>${userData.email.split('@')[0].toUpperCase()}</h3>
-                    <div class="client-meta">Pass token: ${userData.password}</div>
-                    <div class="client-preview-box">${imgHtml}</div>
-                `;
-                
-                // Double click interaction
-                card.ondblclick = () => {
-                    document.querySelectorAll('.client-card').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    openUserMenuAsAdmin(userData.uid, userData.email);
-                };
-                usersListContainer.appendChild(card);
-            }
-        }
-    }
-
-    async function openUserMenuAsAdmin(userId, userEmail) {
-        selectedUserIdForAdmin = userId;
-        document.getElementById('adminManagementZone').style.display = 'block';
-        document.getElementById('managingUserTitle').innerText = "Workspace Portfolio -> " + userEmail;
-        loadItemsForAdmin();
-        document.getElementById('adminManagementZone').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    async function loadItemsForAdmin() {
-        adminMenuList.innerHTML = "Loading Photos...";
-        const q = query(collection(db, "menu_items"), where("userId", "==", selectedUserIdForAdmin));
-        const snap = await getDocs(q);
-        adminMenuList.innerHTML = "";
-        
-        snap.forEach((itemDoc) => {
-            const item = itemDoc.data();
-            const card = document.createElement('div');
-            card.className = 'gallery-card';
-            card.innerHTML = `
-                <img src="${item.image}" class="gallery-img">
-                <button class="btn-danger" style="padding:6px 12px; font-size:11px; margin-top:10px; width:100%;" onclick="deleteItemMaster('${itemDoc.id}')">Delete Photo</button>
-            `;
-            adminMenuList.appendChild(card);
-        });
-    }
-
-    // ONLY FILE UPLOAD EXECUTION
-    document.getElementById('adminAddBtn').addEventListener('click', async () => {
-        const fileInput = document.getElementById('adminItemFile');
-        const file = fileInput.files[0];
-        
-        if(!file) return alert("Please select a Photo file from your device first.");
-        
-        try {
-            document.getElementById('adminAddBtn').innerText = "Uploading to Cloud...";
-            document.getElementById('adminAddBtn').disabled = true;
-
-            const fileRef = ref(storage, "menu_photos/" + Date.now() + "_" + file.name);
-            const uploadSnapshot = await uploadBytes(fileRef, file);
-            const downloadUrl = await getDownloadURL(uploadSnapshot.ref);
-
-            // Storing without title or price as requested
-            await addDoc(collection(db, "menu_items"), { 
-                image: downloadUrl, 
-                userId: selectedUserIdForAdmin 
-            });
-
-            fileInput.value = "";
-            alert("Photo uploaded successfully!");
-            loadItemsForAdmin();
-            loadAllUsers(); 
-        } catch (e) { 
-            alert("Upload Failed: " + e.message); 
-        } finally {
-            document.getElementById('adminAddBtn').innerText = "Upload Menu Photo";
-            document.getElementById('adminAddBtn').disabled = false;
-        }
-    });
-
-    window.deleteItemMaster = async (id) => {
-        if(confirm("Delete this photo permanently?")) {
-            await deleteDoc(doc(db, "menu_items", id));
-            loadItemsForAdmin();
-            loadAllUsers();
-        }
-    };
-
-    async function loadUserMenu(userId) {
-        userMenuList.innerHTML = "Loading Photos...";
-        const q = query(collection(db, "menu_items"), where("userId", "==", userId));
-        const snap = await getDocs(q);
-        userMenuList.innerHTML = "";
-        
-        if(snap.empty) {
-            userMenuList.innerHTML = "<p style='color:#7f8c8d; text-align:center;'>No photos uploaded yet.</p>";
-            return;
-        }
-
-        snap.forEach((itemDoc) => {
-            const item = itemDoc.data();
-            const card = document.createElement('div');
-            card.className = 'gallery-card';
-            card.innerHTML = `<img src="${item.image}" class="gallery-img">`;
-            userMenuList.appendChild(card);
-        });
-    }
-
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            authSection.style.display = 'none';
-            if(user.email === SUPER_ADMIN_EMAIL) {
-                superAdminSection.style.display = 'block';
-                userSection.style.display = 'none';
-                loadAllUsers();
-            } else {
-                superAdminSection.style.display = 'none';
-                userSection.style.display = 'block';
-                document.getElementById('userEmailDisplay').innerText = "Terminal: " + user.email;
-                loadUserMenu(user.uid);
-            }
-        } else {
-            authSection.style.display = 'block';
-            superAdminSection.style.display = 'none';
-            userSection.style.display = 'none';
-        }
-    });
-</script>
 </body>
 </html>
