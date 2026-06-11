@@ -169,6 +169,7 @@ grid-column:auto;
 
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -206,29 +207,29 @@ Add New Hotel
 
 <div class="form-grid">
 
-<input type="text" placeholder="Hotel Name">
+<input type="text" id="hotelName" placeholder="Hotel Name">
 
-<input type="text" placeholder="Owner Name">
+<input type="text" id="ownerName" placeholder="Owner Name">
 
-<input type="text" placeholder="Mobile Number">
+<input type="text" id="mobile" placeholder="Mobile Number">
 
-<input type="text" placeholder="WhatsApp Number">
+<input type="text" id="whatsapp" placeholder="WhatsApp Number">
 
-<input type="email" placeholder="Login Email">
+<input type="email" id="email" placeholder="Login Email">
 
-<input type="password" placeholder="Login Password">
+<input type="password" id="password" placeholder="Login Password">
 
-<textarea class="full" placeholder="Full Hotel Address"></textarea>
+<textarea id="address" class="full" placeholder="Full Hotel Address"></textarea>
 
-<input type="text" placeholder="City">
+<input type="text" id="city" placeholder="City">
 
-<input type="text" placeholder="State">
+<input type="text" id="state" placeholder="State">
 
-<input type="text" placeholder="Country">
+<input type="text" id="country" placeholder="Country">
 
-<input type="text" placeholder="Google Maps Link">
+<input type="text" id="maps" placeholder="Google Maps Link">
 
-<input type="text" placeholder="Website URL">
+<input type="text" id="website" placeholder="Website URL">
 
 </div>
 
@@ -236,9 +237,9 @@ Add New Hotel
 
 <div class="form-grid">
 
-<input type="text" placeholder="Facebook Page URL">
+<input type="text" id="facebook" placeholder="Facebook Page URL">
 
-<input type="text" placeholder="Instagram Page URL">
+<input type="text" id="instagram" placeholder="Instagram Page URL">
 
 </div>
 
@@ -246,28 +247,30 @@ Add New Hotel
 
 <div class="form-grid">
 
-<select>
+<select id="plan">
 <option>Basic Plan</option>
 <option>Premium Plan</option>
 <option>Enterprise Plan</option>
 </select>
 
-<input type="date">
+<input type="date" id="startDate">
 
-<select class="full">
+<select id="status" class="full">
 <option>Active</option>
 <option>Inactive</option>
 </select>
 
 </div>
 
-<button>
+<button id="createHotelBtn">
 🚀 Create Hotel Account
 </button>
 
 </div>
 
 </div>
+
+<script type="module" src="add-hotel.js"></script>
 
 </body>
 </html>
