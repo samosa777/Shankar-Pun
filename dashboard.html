@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Hotel Menu Pro - Admin</title>
+<title>Hotel Menu Pro - Admin Dashboard</title>
 
 <style>
 
@@ -27,6 +27,8 @@ background:#111827;
 color:white;
 padding:20px;
 position:fixed;
+left:0;
+top:0;
 }
 
 .logo{
@@ -68,6 +70,17 @@ margin-bottom:30px;
 color:#111827;
 }
 
+.add-btn{
+background:#f59e0b;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+font-size:15px;
+}
+
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -83,7 +96,7 @@ box-shadow:0 2px 10px rgba(0,0,0,0.08);
 }
 
 .card h2{
-font-size:30px;
+font-size:32px;
 color:#f59e0b;
 }
 
@@ -97,6 +110,13 @@ background:white;
 padding:20px;
 border-radius:15px;
 box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.table-title{
+font-size:22px;
+font-weight:bold;
+margin-bottom:20px;
+color:#111827;
 }
 
 table{
@@ -114,19 +134,37 @@ th{
 background:#f9fafb;
 }
 
-.add-btn{
-background:#f59e0b;
-color:white;
-padding:12px 20px;
-border:none;
-border-radius:10px;
-cursor:pointer;
+.status-active{
+color:green;
 font-weight:bold;
 }
 
-</style>
+.status-inactive{
+color:red;
+font-weight:bold;
+}
 
+@media(max-width:768px){
+
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+}
+
+.main{
+margin-left:0;
+}
+
+body{
+flex-direction:column;
+}
+
+}
+
+</style>
 </head>
+
 <body>
 
 <div class="sidebar">
@@ -138,7 +176,7 @@ font-weight:bold;
 <div class="menu">
 <a href="#">📊 Dashboard</a>
 <a href="#">🏨 Hotels</a>
-<a href="#">➕ Add Hotel</a>
+<a href="add-hotel.html">➕ Add Hotel</a>
 <a href="#">📱 QR Menus</a>
 <a href="#">💳 Subscriptions</a>
 <a href="#">📈 Analytics</a>
@@ -151,21 +189,26 @@ font-weight:bold;
 <div class="main">
 
 <div class="header">
+
 <h1>Super Admin Dashboard</h1>
-<button class="add-btn" onclick="window.location.href='add-hotel.html'">
+
+<button
+class="add-btn"
+onclick="window.location.href='add-hotel.html'">
 + Add Hotel
 </button>
+
 </div>
 
 <div class="cards">
 
 <div class="card">
-<h2>0</h2>
+<h2 id="totalHotels">0</h2>
 <p>Total Hotels</p>
 </div>
 
 <div class="card">
-<h2>0</h2>
+<h2 id="activeHotels">0</h2>
 <p>Active Hotels</p>
 </div>
 
@@ -183,17 +226,19 @@ font-weight:bold;
 
 <div class="table-box">
 
-<h2 style="margin-bottom:20px;">
+<div class="table-title">
 Recent Hotels
-</h2>
+</div>
 
 <table>
 
 <tr>
-<th>Hotel</th>
+<th>Hotel Name</th>
 <th>Owner</th>
 <th>Status</th>
 </tr>
+
+<tbody id="hotelList">
 
 <tr>
 <td>No Data Yet</td>
@@ -201,11 +246,15 @@ Recent Hotels
 <td>-</td>
 </tr>
 
+</tbody>
+
 </table>
 
 </div>
 
 </div>
+
+<script type="module" src="dashboard.js"></script>
 
 </body>
 </html>
