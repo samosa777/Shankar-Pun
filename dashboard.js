@@ -1,61 +1,107 @@
-alert("dashboard.js loaded");
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Firebase config
+import {
+getFirestore,
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
-  authDomain: "hotel-menu-f25ed.firebaseapp.com",
-  projectId: "hotel-menu-f25ed",
-  storageBucket: "hotel-menu-f25ed.firebasestorage.app",
-  messagingSenderId: "750886705933",
-  appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
+apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
+authDomain: "hotel-menu-f25ed.firebaseapp.com",
+projectId: "hotel-menu-f25ed",
+storageBucket: "hotel-menu-f25ed.firebasestorage.app",
+messagingSenderId: "750886705933",
+appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
 };
 
 const app = initializeApp(firebaseConfig);
+
 const db = getFirestore(app);
+
 const auth = getAuth(app);
 
-// Ensure only logged-in users see dashboard
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    alert("Please login first.");
-    window.location.href = "index.html";
-    return;
-  }
+console.log("Dashboard JS Loaded");
 
-  // Fetch hotels from Firestore
-  const hotelListElement = document.getElementById("hotelList");
-  const totalHotelsElement = document.getElementById("totalHotels");
-  const activeHotelsElement = document.getElementById("activeHotels");
+onAuthStateChanged(auth, async (user)=>{
 
-  const hotelsSnapshot = await getDocs(collection(db, "hotels"));
-  hotelListElement.innerHTML = ""; // Clear placeholder row
+if(!user){
 
-  let total = 0;
-  let active = 0;
+window.location.href = "index.html";
+return;
 
-  hotelsSnapshot.forEach((doc) => {
-    const hotel = doc.data();
-    total++;
+}
 
-    if (hotel.status && hotel.status.toLowerCase() === "active") {
-      active++;
-    }
+try{
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${hotel.hotelName || "-"}</td>
-      <td>${hotel.ownerName || "-"}</td>
-      <td class="${hotel.status.toLowerCase() === "active" ? "status-active" : "status-inactive"}">
-        ${hotel.status || "-"}
-      </td>
-    `;
-    hotelListElement.appendChild(tr);
-  });
+const snapshot = await getDocs(
+collection(db,"hotels")
+);
 
-  totalHotelsElement.textContent = total;
-  activeHotelsElement.textContent = active;
+console.log("Hotels Found:", snapshot.size);
+
+const hotelList =
+document.getElementById("hotelList");
+
+hotelList.innerHTML = "";
+
+let totalHotels = 0;
+let activeHotels = 0;
+
+snapshot.forEach((doc)=>{
+
+const hotel = doc.data();
+
+totalHotels++;
+
+if(
+hotel.status &&
+hotel.status.toLowerCase() === "active"
+){
+activeHotels++;
+}
+
+hotelList.innerHTML += `
+<tr>
+<td>${hotel.hotelName || "-"}</td>
+<td>${hotel.ownerName || "-"}</td>
+<td>${hotel.status || "-"}</td>
+</tr>
+`;
+
+});
+
+document.getElementById(
+"totalHotels"
+).innerText = totalHotels;
+
+document.getElementById(
+"activeHotels"
+).innerText = activeHotels;
+
+if(totalHotels === 0){
+
+hotelList.innerHTML = `
+<tr>
+<td>No Hotels Found</td>
+<td>-</td>
+<td>-</td>
+</tr>
+`;
+
+}
+
+}catch(error){
+
+console.log(error);
+
+alert(error.message);
+
+}
+
 });
