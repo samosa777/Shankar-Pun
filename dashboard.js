@@ -1,4 +1,3 @@
-console.log("Dashboard JS Loaded");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
@@ -30,19 +29,24 @@ console.log("Dashboard JS Loaded");
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
+    alert("Please login first");
     window.location.href = "index.html";
     return;
   }
 
   try {
 
-    const snapshot = await getDocs(collection(db, "hotels"));
-
-    console.log("Hotels Found:", snapshot.size);
-
     const hotelList = document.getElementById("hotelList");
+    const totalHotelsElement = document.getElementById("totalHotels");
+    const activeHotelsElement = document.getElementById("activeHotels");
 
     hotelList.innerHTML = "";
+
+    const snapshot = await getDocs(
+      collection(db, "hotels")
+    );
+
+    console.log("Hotels Found:", snapshot.size);
 
     let totalHotels = 0;
     let activeHotels = 0;
@@ -70,8 +74,8 @@ onAuthStateChanged(auth, async (user) => {
 
     });
 
-    document.getElementById("totalHotels").innerText = totalHotels;
-    document.getElementById("activeHotels").innerText = activeHotels;
+    totalHotelsElement.innerText = totalHotels;
+    activeHotelsElement.innerText = activeHotels;
 
     if (totalHotels === 0) {
 
@@ -87,8 +91,11 @@ onAuthStateChanged(auth, async (user) => {
 
   } catch (error) {
 
-    console.log("Firestore Error:", error);
-    alert(error.message);
+    console.error("Firestore Error:", error);
+
+    alert(
+      "Dashboard Error: " + error.message
+    );
 
   }
 
