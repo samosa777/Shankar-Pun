@@ -65,12 +65,25 @@ onAuthStateChanged(auth, async (user) => {
       }
 
       hotelList.innerHTML += `
-        <tr>
-          <td>${hotel.hotelName || "-"}</td>
-          <td>${hotel.ownerName || "-"}</td>
-          <td>${hotel.status || "-"}</td>
-        </tr>
-      `;
+<tr>
+<td>
+<a
+href="hotel-details.html?id=${doc.id}"
+style="
+color:#f59e0b;
+font-weight:bold;
+text-decoration:none;
+">
+${hotel.hotelName || "-"}
+</a>
+</td>
+
+<td>${hotel.ownerName || "-"}</td>
+
+<td>${hotel.status || "-"}</td>
+
+</tr>
+`;
 
     });
 
