@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Hotel Details - Hotel Menu Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f7fc;
+display:flex;
+min-height:100vh;
+}
+
+.sidebar{
+width:260px;
+background:#111827;
+color:white;
+padding:25px;
+position:fixed;
+height:100vh;
+}
+
+.logo{
+font-size:24px;
+font-weight:700;
+text-align:center;
+color:#f59e0b;
+margin-bottom:40px;
+}
+
+.menu a{
+display:block;
+padding:14px;
+margin-bottom:10px;
+text-decoration:none;
+color:white;
+border-radius:10px;
+transition:.3s;
+}
+
+.menu a:hover{
+background:#1f2937;
+}
+
+.main{
+margin-left:260px;
+width:100%;
+padding:30px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.hotel-title{
+font-size:32px;
+font-weight:700;
+color:#111827;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:18px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+margin-bottom:25px;
+}
+
+.card h2{
+margin-bottom:20px;
+color:#111827;
+}
+
+.details-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
+}
+
+.detail-box{
+background:#f9fafb;
+padding:15px;
+border-radius:12px;
+}
+
+.label{
+font-size:13px;
+color:#666;
+margin-bottom:5px;
+}
+
+.value{
+font-size:16px;
+font-weight:600;
+color:#111827;
+}
+
+.upload-box{
+border:2px dashed #d1d5db;
+padding:30px;
+border-radius:15px;
+text-align:center;
+}
+
+input[type=file]{
+margin-top:15px;
+}
+
+.upload-btn{
+background:#f59e0b;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+margin-top:15px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th,td{
+padding:14px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+th{
+background:#f9fafb;
+}
+
+.edit-btn{
+background:#10b981;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.qr-box{
+text-align:center;
+padding:30px;
+}
+
+.qr-link{
+margin-top:15px;
+word-break:break-all;
+color:#2563eb;
+}
+
+@media(max-width:768px){
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+}
+
+.main{
+margin-left:0;
+}
+
+body{
+flex-direction:column;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+🏨 Hotel Menu Pro
+</div>
+
+<div class="menu">
+<a href="dashboard.html">📊 Dashboard</a>
+<a href="#client">👤 Client Details</a>
+<a href="#upload">📤 Upload Menu</a>
+<a href="#menu">🍽 Menu Items</a>
+<a href="#qr">📱 QR Menu</a>
+<a href="index.html">🚪 Logout</a>
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="header">
+<h1 class="hotel-title" id="hotelName">
+Loading Hotel...
+</h1>
+</div>
+
+<!-- CLIENT DETAILS -->
+
+<div class="card" id="client">
+
+<h2>Client Details</h2>
+
+<div class="details-grid">
+
+<div class="detail-box">
+<div class="label">Owner Name</div>
+<div class="value" id="ownerName">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">Email</div>
+<div class="value" id="email">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">Mobile</div>
+<div class="value" id="mobile">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">WhatsApp</div>
+<div class="value" id="whatsapp">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">City</div>
+<div class="value" id="city">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">Country</div>
+<div class="value" id="country">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">Address</div>
+<div class="value" id="address">-</div>
+</div>
+
+<div class="detail-box">
+<div class="label">Plan</div>
+<div class="value" id="plan">-</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- MENU UPLOAD -->
+
+<div class="card" id="upload">
+
+<h2>Upload Menu</h2>
+
+<div class="upload-box">
+
+<p>Select PDF, Excel or Menu File</p>
+
+<input type="file" id="menuFile">
+
+<br>
+
+<button class="upload-btn" id="uploadBtn">
+Upload Menu
+</button>
+
+</div>
+
+</div>
+
+<!-- MENU ITEMS -->
+
+<div class="card" id="menu">
+
+<h2>Menu Items</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Price</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="menuTable">
+
+<tr>
+<td colspan="3">
+No Menu Items Found
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- QR -->
+
+<div class="card" id="qr">
+
+<h2>QR Menu</h2>
+
+<div class="qr-box">
+
+<img
+id="qrImage"
+src=""
+width="220"
+alt="QR Code">
+
+<div
+class="qr-link"
+id="menuLink">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module" src="hotel-details.js"></script>
+
+</body>
+</html>
