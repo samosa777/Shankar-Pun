@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
@@ -17,31 +17,41 @@ const auth = getAuth(app);
 
 onAuthStateChanged(auth, async (user) => {
     if (!user || user.email !== "superadmin@power.com") {
-        window.location.href = "index.html";
+        window.location.replace("index.html");
         return;
     }
-    document.getElementById("authLoader").style.display = "none"; // Hide loader when verified
 
     try {
+        const hotelList = document.getElementById("hotelList");
+        const totalHotelsElement = document.getElementById("totalHotels");
+        const activeHotelsElement = document.getElementById("activeHotels");
+
         const snapshot = await getDocs(collection(db, "hotels"));
         let total = 0, active = 0;
         let html = "";
-        
+
         snapshot.forEach((doc) => {
             const h = doc.data();
             total++;
             if(h.status && h.status.toLowerCase() === "active") active++;
             html += `<tr>
-                <td><a href="hotel-details.html?id=${doc.id}" class="hotel-link">${h.hotelName || "Unnamed Entity"}</a></td>
+                <td><a href="hotel-details.html?id=${doc.id}" style="color:#f59e0b; font-weight:bold; text-decoration:none;">${h.hotelName || "Unnamed"}</a></td>
                 <td>${h.ownerName || "N/A"}</td>
-                <td><span class="badge-active">${h.status || "UNKNOWN"}</span></td>
+                <td>${h.status || "UNKNOWN"}</td>
             </tr>`;
         });
 
-        document.getElementById("totalHotels").innerText = total;
-        document.getElementById("activeHotels").innerText = active;
-        document.getElementById("hotelList").innerHTML = total === 0 ? `<tr><td colspan="3">No records found.</td></tr>` : html;
+        totalHotelsElement.innerText = total;
+        activeHotelsElement.innerText = active;
+        hotelList.innerHTML = total === 0 ? `<tr><td colspan="3">No records found.</td></tr>` : html;
     } catch (error) {
-        alert("Data Retrieval Failed: " + error.message);
+        alert("Error: " + error.message);
     }
+});
+
+// Logout function
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+    signOut(auth).then(() => {
+        window.location.replace("index.html");
+    });
 });
