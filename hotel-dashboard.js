@@ -1,8 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+getFirestore,
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
 getAuth,
-signInWithEmailAndPassword
+onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -15,37 +21,36 @@ appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const auth = getAuth(app);
 
-document.getElementById("loginBtn").addEventListener("click", async () => {
+onAuthStateChanged(auth, async(user)=>{
 
-const email = document.getElementById("username").value;
-const password = document.getElementById("password").value;
+if(!user){
 
-try {
+window.location.href="index.html";
+return;
 
-await signInWithEmailAndPassword(
-auth,
-email,
-password
+}
+
+const snapshot = await getDocs(
+collection(db,"hotels")
 );
 
-if(email === "superadmin@power.com"){
+snapshot.forEach((doc)=>{
 
-window.location.href = "dashboard.html";
+const hotel = doc.data();
 
-}else{
+if(hotel.email === user.email){
 
-window.location.href = "hotel-dashboard.html";
+document.getElementById("welcomeText").innerText =
+"Welcome Mr. " + hotel.ownerName;
 
-}
-
-}
-catch(error){
-
-alert(error.message);
-console.log(error);
+document.getElementById("hotelName").innerText =
+hotel.hotelName;
 
 }
+
+});
 
 });
