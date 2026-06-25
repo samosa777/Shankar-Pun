@@ -27,10 +27,8 @@ const auth = getAuth(app);
 onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
-
 window.location.href="index.html";
 return;
-
 }
 
 const snapshot = await getDocs(
@@ -41,13 +39,46 @@ snapshot.forEach((doc)=>{
 
 const hotel = doc.data();
 
-if(hotel.email === user.email){
+if(
+hotel.email &&
+hotel.email.toLowerCase() === user.email.toLowerCase()
+){
 
 document.getElementById("welcomeText").innerText =
 "Welcome Mr. " + hotel.ownerName;
 
 document.getElementById("hotelName").innerText =
 hotel.hotelName;
+
+document.getElementById("pHotel").innerText =
+hotel.hotelName || "";
+
+document.getElementById("pOwner").innerText =
+hotel.ownerName || "";
+
+document.getElementById("pEmail").innerText =
+hotel.email || "";
+
+document.getElementById("pMobile").innerText =
+hotel.mobile || "";
+
+document.getElementById("pAddress").innerText =
+hotel.address || "";
+
+document.getElementById("pCity").innerText =
+hotel.city || "";
+
+document.getElementById("pState").innerText =
+hotel.state || "";
+
+document.getElementById("pCountry").innerText =
+hotel.country || "";
+
+document.getElementById("pPlan").innerText =
+hotel.plan || "";
+
+document.getElementById("pStatus").innerText =
+hotel.status || "";
 
 }
 
