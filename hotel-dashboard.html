@@ -1,212 +1,111 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Owner Dashboard</title>
-
+<title>Owner Dashboard - Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background: #0f172a; color: #f8fafc; }
+.header {
+    background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 25px 40px;
+    font-size: 24px; font-weight: 700; color: #fbbf24; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
-
-body{
-background:#f3f6fb;
+.welcome {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+    margin: 30px 40px; padding: 35px 40px; border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid rgba(245, 158, 11, 0.2);
 }
-
-.header{
-background:#111827;
-color:white;
-padding:20px;
-font-size:24px;
-font-weight:bold;
+.welcome h2 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.welcome p { font-size: 18px; color: #fbbf24; font-weight: 500; }
+.tabs { display: flex; gap: 15px; margin: 0 40px 30px; flex-wrap: wrap; }
+.tab-btn {
+    padding: 14px 28px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    cursor: pointer; background: #1e293b; color: #94a3b8; font-weight: 600; font-size: 15px; transition: 0.3s;
 }
-
-.welcome{
-background:white;
-margin:20px;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
+.tab-btn:hover { background: #334155; color: #fff; }
+.tab-btn.active-btn { background: #f59e0b; color: #fff; border-color: #f59e0b; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+.content {
+    background: #1e293b; margin: 0 40px 40px; padding: 40px; border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); min-height: 400px;
 }
-
-.tabs{
-display:flex;
-gap:10px;
-margin:20px;
-flex-wrap:wrap;
+.tab { display: none; animation: fadeIn 0.4s ease; }
+.tab.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.tab h2 { font-size: 24px; color: #fbbf24; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.info-box { background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+.info-box b { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+.info-box span { font-size: 16px; color: #f8fafc; font-weight: 500; }
+.contact-btn {
+    padding: 14px 28px; background: linear-gradient(135deg, #10b981, #059669);
+    color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.3s;
 }
-
-.tab-btn{
-padding:12px 20px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#111827;
-color:white;
-}
-
-.content{
-background:white;
-margin:20px;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,.08);
-}
-
-.tab{
-display:none;
-}
-
-.tab.active{
-display:block;
-}
-
-.info{
-margin-bottom:12px;
-font-size:16px;
-}
-
-.contact-btn{
-padding:12px 20px;
-background:#16a34a;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
-
+.contact-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); }
+#contactInfo { margin-top: 25px; font-size: 16px; line-height: 1.8; color: #cbd5e1; }
+@media(max-width: 768px){ .header, .welcome, .tabs, .content { margin: 15px; padding: 20px; } }
 </style>
-
 </head>
-
 <body>
-
-<div class="header">
-Owner Dashboard
-</div>
-
+<div class="header">Owner Dashboard</div>
 <div class="welcome">
-<h2 id="welcomeText">Welcome</h2>
-<p id="hotelName">Loading...</p>
+    <h2 id="welcomeText">Welcome</h2>
+    <p id="hotelName">Loading...</p>
 </div>
-
 <div class="tabs">
-
-<button class="tab-btn" onclick="showTab('profile')">
-Profile
-</button>
-
-<button class="tab-btn" onclick="showTab('menu')">
-Menu
-</button>
-
-<button class="tab-btn" onclick="showTab('orders')">
-Orders
-</button>
-
-<button class="tab-btn" onclick="showTab('plan')">
-Plan
-</button>
-
-<button class="tab-btn" onclick="showTab('contact')">
-Contact Us
-</button>
-
+    <button class="tab-btn active-btn" onclick="showTab('profile', this)">Profile</button>
+    <button class="tab-btn" onclick="showTab('menu', this)">Menu</button>
+    <button class="tab-btn" onclick="showTab('orders', this)">Orders</button>
+    <button class="tab-btn" onclick="showTab('plan', this)">Plan</button>
+    <button class="tab-btn" onclick="showTab('contact', this)">Contact Us</button>
 </div>
-
 <div class="content">
-
-<div id="profile" class="tab active">
-
-<div class="info"><b>Hotel :</b> <span id="pHotel"></span></div>
-
-<div class="info"><b>Owner :</b> <span id="pOwner"></span></div>
-
-<div class="info"><b>Email :</b> <span id="pEmail"></span></div>
-
-<div class="info"><b>Mobile :</b> <span id="pMobile"></span></div>
-
-<div class="info"><b>Address :</b> <span id="pAddress"></span></div>
-
-<div class="info"><b>City :</b> <span id="pCity"></span></div>
-
-<div class="info"><b>State :</b> <span id="pState"></span></div>
-
-<div class="info"><b>Country :</b> <span id="pCountry"></span></div>
-
+    <div id="profile" class="tab active">
+        <h2>Hotel Profile</h2>
+        <div class="info-grid">
+            <div class="info-box"><b>Hotel</b><span id="pHotel"></span></div>
+            <div class="info-box"><b>Owner</b><span id="pOwner"></span></div>
+            <div class="info-box"><b>Email</b><span id="pEmail"></span></div>
+            <div class="info-box"><b>Mobile</b><span id="pMobile"></span></div>
+            <div class="info-box"><b>Address</b><span id="pAddress"></span></div>
+            <div class="info-box"><b>City</b><span id="pCity"></span></div>
+            <div class="info-box"><b>State</b><span id="pState"></span></div>
+            <div class="info-box"><b>Country</b><span id="pCountry"></span></div>
+        </div>
+    </div>
+    <div id="menu" class="tab">
+        <h2>Menu Management</h2>
+        <p style="color:#94a3b8;">Future Menu Management features will appear here.</p>
+    </div>
+    <div id="orders" class="tab">
+        <h2>Live Orders</h2>
+        <p style="color:#94a3b8;">Future Order Management tracking will appear here.</p>
+    </div>
+    <div id="plan" class="tab">
+        <h2>Active Subscription</h2>
+        <div class="info-grid">
+            <div class="info-box"><b>Plan Type</b><span id="pPlan"></span></div>
+            <div class="info-box"><b>Account Status</b><span id="pStatus" style="color:#10b981; font-weight:700;"></span></div>
+        </div>
+    </div>
+    <div id="contact" class="tab">
+        <h2>Premium Support</h2>
+        <button class="contact-btn" onclick="showContact()">Request Support Details</button>
+        <p id="contactInfo"></p>
+    </div>
 </div>
-
-<div id="menu" class="tab">
-<h2>Menu Section</h2>
-<p>Future Menu Management</p>
-</div>
-
-<div id="orders" class="tab">
-<h2>Orders Section</h2>
-<p>Future Order Management</p>
-</div>
-
-<div id="plan" class="tab">
-<h2>Subscription</h2>
-
-<div class="info">
-Plan :
-<span id="pPlan"></span>
-</div>
-
-<div class="info">
-Status :
-<span id="pStatus"></span>
-</div>
-
-</div>
-
-<div id="contact" class="tab">
-
-<h2>Contact Support</h2>
-
-<br>
-
-<button class="contact-btn"
-onclick="showContact()">
-Show Contact </button>
-
-<p id="contactInfo"></p>
-
-</div>
-
-</div>
-
 <script>
-
-function showTab(tabId){
-
-document.querySelectorAll('.tab')
-.forEach(tab=>tab.classList.remove('active'));
-
-document.getElementById(tabId)
-.classList.add('active');
-
+function showTab(tabId, btn) {
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-btn'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active-btn');
 }
-
 function showContact(){
-
-document.getElementById("contactInfo")
-.innerHTML =
-"Mobile : 9876543210 <br><br> Email : support@hotelmenu.com";
-
+    document.getElementById("contactInfo").innerHTML = "<b>Mobile:</b> +91 9876543210 <br> <b>Email:</b> enterprise@hotelmenupro.com";
 }
-
 </script>
-
 <script type="module" src="hotel-dashboard.js"></script>
-
 </body>
 </html>

@@ -1,9 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getAuth,
-signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
@@ -18,34 +14,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
-
-const email = document.getElementById("username").value;
-const password = document.getElementById("password").value;
-
-try {
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-if(email === "superadmin@power.com"){
-
-window.location.href = "dashboard.html";
-
-}else{
-
-window.location.href = "hotel-dashboard.html";
-
-}
-
-}
-catch(error){
-
-alert(error.message);
-console.log(error);
-
-}
-
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        if(email === "superadmin@power.com"){
+            window.location.href = "dashboard.html";
+        } else {
+            window.location.href = "hotel-dashboard.html";
+        }
+    } catch(error){
+        alert(error.message);
+        console.log(error);
+    }
 });
