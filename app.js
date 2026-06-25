@@ -16,17 +16,20 @@ const auth = getAuth(app);
 document.getElementById("loginBtn").addEventListener("click", async () => {
     const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-
+    const btn = document.getElementById("loginBtn");
+    
+    if(!email || !password) return alert("Credentials required");
+    
+    btn.innerText = "VERIFYING...";
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        
-        // Force redirect to prevent browser from caching the login state
-        if (email === "superadmin@power.com") {
-            window.location.replace("dashboard.html");
+        if(email === "superadmin@power.com"){
+            window.location.href = "dashboard.html";
         } else {
-            window.location.replace("hotel-dashboard.html");
+            window.location.href = "hotel-dashboard.html";
         }
-    } catch (error) {
-        alert("Authentication Failed: " + error.message);
+    } catch(error){
+        btn.innerText = "AUTHENTICATE";
+        alert("Access Denied: " + error.message);
     }
 });
