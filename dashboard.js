@@ -3,65 +3,45 @@ import { getFirestore, collection, getDocs } from "https://www.gstatic.com/fireb
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
-  authDomain: "hotel-menu-f25ed.firebaseapp.com",
-  projectId: "hotel-menu-f25ed",
-  storageBucket: "hotel-menu-f25ed.firebasestorage.app",
-  messagingSenderId: "750886705933",
-  appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
+    apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
+    authDomain: "hotel-menu-f25ed.firebaseapp.com",
+    projectId: "hotel-menu-f25ed",
+    storageBucket: "hotel-menu-f25ed.firebasestorage.app",
+    messagingSenderId: "750886705933",
+    appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-console.log("Dashboard JS Loaded");
-
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    alert("Please login first");
-    window.location.href = "index.html";
-    return;
-  }
-
-  try {
-    const hotelList = document.getElementById("hotelList");
-    const totalHotelsElement = document.getElementById("totalHotels");
-    const activeHotelsElement = document.getElementById("activeHotels");
-
-    hotelList.innerHTML = "";
-    const snapshot = await getDocs(collection(db, "hotels"));
-    console.log("Hotels Found:", snapshot.size);
-
-    let totalHotels = 0;
-    let activeHotels = 0;
-
-    snapshot.forEach((doc) => {
-      const hotel = doc.data();
-      totalHotels++;
-
-      let statusClass = "status-inactive";
-      if (hotel.status && hotel.status.toLowerCase() === "active") {
-        activeHotels++;
-        statusClass = "status-active";
-      }
-
-      hotelList.innerHTML += `
-        <tr>
-        <td><a href="hotel-details.html?id=${doc.id}" style="color:#fbbf24; font-weight:600; text-decoration:none; display:block;">${hotel.hotelName || "-"}</a></td>
-        <td>${hotel.ownerName || "-"}</td>
-        <td><span class="${statusClass}">${hotel.status || "-"}</span></td>
-        </tr>`;
-    });
-
-    totalHotelsElement.innerText = totalHotels;
-    activeHotelsElement.innerText = activeHotels;
-
-    if (totalHotels === 0) {
-      hotelList.innerHTML = `<tr><td>No Hotels Found</td><td>-</td><td>-</td></tr>`;
+    if (!user || user.email !== "superadmin@power.com") {
+        window.location.href = "index.html";
+        return;
     }
-  } catch (error) {
-    console.error("Firestore Error:", error);
-    alert("Dashboard Error: " + error.message);
-  }
+    document.getElementById("authLoader").style.display = "none"; // Hide loader when verified
+
+    try {
+        const snapshot = await getDocs(collection(db, "hotels"));
+        let total = 0, active = 0;
+        let html = "";
+        
+        snapshot.forEach((doc) => {
+            const h = doc.data();
+            total++;
+            if(h.status && h.status.toLowerCase() === "active") active++;
+            html += `<tr>
+                <td><a href="hotel-details.html?id=${doc.id}" class="hotel-link">${h.hotelName || "Unnamed Entity"}</a></td>
+                <td>${h.ownerName || "N/A"}</td>
+                <td><span class="badge-active">${h.status || "UNKNOWN"}</span></td>
+            </tr>`;
+        });
+
+        document.getElementById("totalHotels").innerText = total;
+        document.getElementById("activeHotels").innerText = active;
+        document.getElementById("hotelList").innerHTML = total === 0 ? `<tr><td colspan="3">No records found.</td></tr>` : html;
+    } catch (error) {
+        alert("Data Retrieval Failed: " + error.message);
+    }
 });
