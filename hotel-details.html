@@ -1,45 +1,76 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entity Control | Hotel Menu Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background: #050505; color: #ededed; display: flex; }
+#authLoader { position: fixed; inset: 0; background: #050505; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 20px; color: #D4AF37; }
 
-const firebaseConfig = { apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", authDomain: "hotel-menu-f25ed.firebaseapp.com", projectId: "hotel-menu-f25ed", storageBucket: "hotel-menu-f25ed.firebasestorage.app", messagingSenderId: "750886705933", appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+.sidebar { width: 260px; height: 100vh; background: #0a0a0a; border-right: 1px solid #1a1a1a; padding: 40px 20px; position: fixed; }
+.brand { font-family: 'Playfair Display', serif; font-size: 24px; color: #D4AF37; margin-bottom: 50px; text-align: center; }
+.nav-link { display: block; padding: 15px 20px; color: #888; text-decoration: none; margin-bottom: 10px; border-radius: 6px; font-size: 14px; }
+.nav-link:hover, .nav-link.active { background: #111; color: #D4AF37; }
 
-onAuthStateChanged(auth, async(user)=>{
-    if(!user){ window.location.replace("index.html"); return; }
-    
-    let isUserValid = false;
-    const snapshot = await getDocs(collection(db,"hotels"));
-    
-    snapshot.forEach((doc)=>{
-        const h = doc.data();
-        if(h.email && h.email.toLowerCase() === user.email.toLowerCase()){
-            // Block access if suspended mid-session
-            if(h.status && h.status.toLowerCase() !== "active"){
-                alert("Session Expired: Your account has been suspended.");
-                signOut(auth).then(() => window.location.replace("index.html"));
-                return;
-            }
-            
-            isUserValid = true;
-            document.getElementById("welcomeText").innerText = "Welcome, " + (h.ownerName || "Director");
-            document.getElementById("hotelName").innerText = h.hotelName || "Entity";
-            ["pHotel", "pOwner", "pEmail", "pMobile", "pCity", "pAddress", "pPlan", "pStatus"].forEach(id => {
-                let key = id.substring(1).toLowerCase();
-                if(key === 'hotel') key = 'hotelName';
-                if(key === 'owner') key = 'ownerName';
-                if(document.getElementById(id)) document.getElementById(id).innerText = h[key] || "N/A";
-            });
-        }
-    });
+.main-content { margin-left: 260px; padding: 40px 50px; width: calc(100% - 260px); }
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid #1a1a1a; padding-bottom: 20px; }
+.page-title { font-size: 28px; font-family: 'Playfair Display', serif; }
+.btn-primary { background: #D4AF37; color: #000; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; text-decoration: none; font-size: 13px; }
 
-    if(isUserValid) {
-        document.getElementById("authLoader").style.display = "none";
-    }
-});
+.section-block { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 30px; margin-bottom: 30px; }
+.section-title { font-size: 16px; color: #D4AF37; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-document.getElementById("logoutBtn")?.addEventListener("click", () => {
-    signOut(auth).then(() => window.location.replace("index.html"));
-});
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.input-group { display: flex; flex-direction: column; }
+.input-group label { font-size: 12px; color: #666; margin-bottom: 8px; text-transform: uppercase; }
+.input-group input { background: #111; border: 1px solid #222; padding: 12px; color: #fff; border-radius: 4px; outline: none; }
+.input-group input:disabled { color: #888; }
+
+.qr-container { display: flex; align-items: center; gap: 20px; background: #111; padding: 20px; border-radius: 8px; }
+.qr-link { color: #D4AF37; text-decoration: none; font-size: 14px; display: block; margin-top: 10px; word-break: break-all; }
+</style>
+</head>
+<body>
+
+<div id="authLoader">Authenticating Secure Connection...</div>
+
+<div class="sidebar">
+    <div class="brand">Menu Pro</div>
+    <a href="dashboard.html" class="nav-link">← Back to Command</a>
+</div>
+
+<div class="main-content">
+    <div class="top-bar">
+        <div class="page-title">Entity Configuration</div>
+    </div>
+
+    <div class="section-block">
+        <div class="section-title">Core Identity</div>
+        <div class="grid">
+            <div class="input-group"><label>Hotel Name</label><input type="text" id="v_hotelName" disabled></div>
+            <div class="input-group"><label>Owner Name</label><input type="text" id="v_ownerName" disabled></div>
+            <div class="input-group"><label>Email</label><input type="text" id="v_email" disabled></div>
+            <div class="input-group"><label>Mobile</label><input type="text" id="v_mobile" disabled></div>
+            <div class="input-group"><label>Status</label><input type="text" id="v_status" disabled></div>
+            <div class="input-group"><label>Plan</label><input type="text" id="v_plan" disabled></div>
+        </div>
+    </div>
+
+    <div class="section-block">
+        <div class="section-title">Deployment QR</div>
+        <div class="qr-container">
+            <img id="qrImage" src="" width="150" alt="QR Code">
+            <div>
+                <span style="color:#666; font-size:12px; text-transform:uppercase;">Live Link</span>
+                <a href="#" class="qr-link" id="menuLink" target="_blank">Loading...</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="hotel-details.js"></script>
+</body>
+</html>
