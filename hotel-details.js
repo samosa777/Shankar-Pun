@@ -20,9 +20,9 @@ const hotelId = params.get("id");
 let currentClientEmail = "";
 
 onAuthStateChanged(auth, async (user) => {
-    if (!user || user.email !== "superadmin@power.com") { window.location.href = "index.html"; return; }
+    if (!user || user.email !== "superadmin@power.com") { window.location.replace("index.html"); return; }
     document.getElementById("authLoader").style.display = "none";
-    if (!hotelId) { alert("Invalid Entity"); window.location.href = "dashboard.html"; return; }
+    if (!hotelId) { alert("Invalid Entity"); window.location.replace("dashboard.html"); return; }
     loadHotel();
 });
 
@@ -74,6 +74,22 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
         alert("Entity Records Updated Successfully");
         window.location.reload();
     } catch (e) { alert(e.message); document.getElementById("saveBtn").innerText = "Save Changes"; }
+});
+
+document.getElementById("updatePassDbBtn").addEventListener("click", async () => {
+    const newPass = document.getElementById("newDbPassword").value.trim();
+    if(!newPass) return alert("Please enter a new password.");
+    
+    try {
+        document.getElementById("updatePassDbBtn").innerText = "Updating...";
+        await updateDoc(doc(db, "hotels", hotelId), { accountPassword: newPass });
+        alert("Database updated! Note: For security, actual login passwords require using the Reset Link.");
+        document.getElementById("newDbPassword").value = "";
+        document.getElementById("updatePassDbBtn").innerText = "Update Database";
+    } catch(e) {
+        alert(e.message);
+        document.getElementById("updatePassDbBtn").innerText = "Update Database";
+    }
 });
 
 document.getElementById("resetPassBtn").addEventListener("click", async () => {
