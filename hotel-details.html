@@ -67,7 +67,7 @@ body { background: #050505; color: #ededed; display: flex; }
             <div class="input-group"><label>Mobile</label><input type="text" id="v_mobile" disabled></div>
             <div class="input-group"><label>WhatsApp</label><input type="text" id="v_whatsapp" disabled></div>
             <div class="input-group"><label>Address</label><input type="text" id="v_address" disabled></div>
-            <div class="input-group"><label>City (e.g. Nepalgunj)</label><input type="text" id="v_city" disabled></div>
+            <div class="input-group"><label>City</label><input type="text" id="v_city" disabled></div>
             <div class="input-group"><label>State</label><input type="text" id="v_state" disabled></div>
             <div class="input-group"><label>Country</label><input type="text" id="v_country" disabled></div>
             <div class="input-group"><label>Maps URL</label><input type="text" id="v_maps" disabled></div>
@@ -85,11 +85,12 @@ body { background: #050505; color: #ededed; display: flex; }
         </div>
     </div>
 
+    <!-- यहाँ पासवर्ड देखने और डायरेक्ट बदलने का ऑप्शन डाल दिया गया है -->
     <div class="section-block">
         <div class="section-title">Security & Credentials</div>
         <div class="grid-edit" style="margin-bottom: 20px;">
             <div class="input-group"><label>Registered Email (Username)</label><input type="email" id="v_email" disabled></div>
-            <div class="input-group"><label>Force New Password (Leave blank if unchanged)</label><input type="text" id="v_newPassword" disabled placeholder="Type new password here"></div>
+            <div class="input-group"><label>Current Password</label><input type="text" id="v_password" disabled></div>
         </div>
         <button class="btn-danger" id="resetPassBtn">Send Password Reset Link to Client</button>
     </div>

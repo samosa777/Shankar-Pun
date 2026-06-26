@@ -15,13 +15,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Route Protection: Redirect if already logged in
+// Check Super Admin Auth
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        if(user.email === "superadmin@power.com") { window.location.href = "dashboard.html"; }
-        else { window.location.href = "hotel-dashboard.html"; }
-    }
+    if (user && user.email === "superadmin@power.com") { window.location.href = "dashboard.html"; }
 });
+
+// Check Hotel User Local Session
+if(localStorage.getItem("hotelUserEmail")) {
+    window.location.href = "hotel-dashboard.html";
+}
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
     const email = document.getElementById("username").value.trim();
@@ -35,23 +37,34 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
     loader.style.display = "flex";
 
     try {
-        // Step 1: Check Inactive Status before logging in for Hotel Users
-        if (email !== "superadmin@power.com") {
+        if (email === "superadmin@power.com") {
+            // Super Admin Uses Secure Firebase Auth
+            await signInWithEmailAndPassword(auth, email, password);
+        } else {
+            // Hotel Users Use Database Auth for Direct Admin Control
             const q = query(collection(db, "hotels"), where("email", "==", email));
             const snap = await getDocs(q);
+            
             if (!snap.empty) {
                 const hotelData = snap.docs[0].data();
+                
+                // Password Matching Check
+                if (hotelData.password !== password) {
+                    throw new Error("Invalid Username or Password.");
+                }
+                
+                // Strict Active/Inactive Check
                 if (hotelData.status === "Inactive") {
                     throw new Error("Your account has been deactivated by the Super Admin.");
                 }
+                
+                // Set Local Session for Hotel User
+                localStorage.setItem("hotelUserEmail", email);
+                window.location.href = "hotel-dashboard.html";
             } else {
                  throw new Error("Account not found in database.");
             }
         }
-
-        // Step 2: Authenticate
-        await signInWithEmailAndPassword(auth, email, password);
-        // Routing handled by onAuthStateChanged above
     } catch(error){
         loader.style.display = "none";
         btn.innerText = "AUTHENTICATE";
