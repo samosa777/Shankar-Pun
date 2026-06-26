@@ -1,69 +1,87 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
-  authDomain: "hotel-menu-f25ed.firebaseapp.com",
-  projectId: "hotel-menu-f25ed",
-  storageBucket: "hotel-menu-f25ed.firebasestorage.app",
-  messagingSenderId: "750886705933",
-  appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
+    apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
+    authDomain: "hotel-menu-f25ed.firebaseapp.com",
+    projectId: "hotel-menu-f25ed",
+    storageBucket: "hotel-menu-f25ed.firebasestorage.app",
+    messagingSenderId: "750886705933",
+    appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// सिक्योरिटी: लॉगिन चेक
+const params = new URLSearchParams(window.location.search);
+const hotelId = params.get("id");
+let currentClientEmail = "";
+
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    alert("Unauthorized! Please login first.");
-    window.location.href = "index.html";
-    return;
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const hotelId = params.get("id");
-
-  if (!hotelId) {
-    alert("Hotel ID Missing");
-    window.location.href = "dashboard.html";
-    return;
-  }
-
-  loadHotel(hotelId);
+    if (!user || user.email !== "superadmin@power.com") { window.location.href = "index.html"; return; }
+    document.getElementById("authLoader").style.display = "none";
+    if (!hotelId) { alert("Invalid Entity"); window.location.href = "dashboard.html"; return; }
+    loadHotel();
 });
 
-async function loadHotel(hotelId) {
-  try {
-    const hotelRef = doc(db, "hotels", hotelId);
-    const hotelSnap = await getDoc(hotelRef);
+const fields = ["hotelName", "ownerName", "email", "mobile", "whatsapp", "address", "city", "state", "country", "maps", "website", "facebook", "instagram", "plan", "status"];
 
-    if (!hotelSnap.exists()) {
-      alert("Hotel Not Found");
-      window.location.href = "dashboard.html";
-      return;
-    }
+async function loadHotel() {
+    try {
+        const hotelSnap = await getDoc(doc(db, "hotels", hotelId));
+        if (!hotelSnap.exists()) return alert("Not Found");
+        const data = hotelSnap.data();
+        
+        document.getElementById("displayHotelName").innerText = data.hotelName || "Unnamed";
+        document.getElementById("displayDocId").innerText = "ID: " + hotelId;
+        currentClientEmail = data.email;
 
-    const hotel = hotelSnap.data();
-    // HTML Elements में डेटा लोड करना
-    document.getElementById("hotelName").innerText = hotel.hotelName || "Hotel";
-    document.getElementById("ownerName").innerText = hotel.ownerName || "-";
-    document.getElementById("email").innerText = hotel.email || "-";
-    document.getElementById("mobile").innerText = hotel.mobile || "-";
-    document.getElementById("whatsapp").innerText = hotel.whatsapp || "-";
-    document.getElementById("city").innerText = hotel.city || "-";
-    document.getElementById("country").innerText = hotel.country || "-";
-    document.getElementById("address").innerText = hotel.address || "-";
-    document.getElementById("plan").innerText = hotel.plan || "-";
+        fields.forEach(f => {
+            if(document.getElementById(`v_${f}`)) document.getElementById(`v_${f}`).value = data[f] || "";
+        });
 
-    const menuUrl = window.location.origin + "/menu.html?id=" + hotelId;
-    document.getElementById("menuLink").innerText = menuUrl;
-    document.getElementById("qrImage").src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(menuUrl);
-
-  } catch (error) {
-    console.error(error);
-    alert("Error loading data: " + error.message);
-  }
+        const menuUrl = window.location.origin + "/menu.html?id=" + hotelId;
+        document.getElementById("menuLink").innerText = menuUrl;
+        document.getElementById("menuLink").href = menuUrl;
+        document.getElementById("qrImage").src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(menuUrl);
+    } catch (error) { console.error(error); }
 }
+
+let isEditing = false;
+document.getElementById("toggleEditBtn").addEventListener("click", () => {
+    isEditing = true;
+    document.getElementById("toggleEditBtn").style.display = "none";
+    document.getElementById("saveBtn").style.display = "inline-block";
+    fields.forEach(f => {
+        if(document.getElementById(`v_${f}`)) {
+            document.getElementById(`v_${f}`).disabled = false;
+            document.getElementById(`v_${f}`).style.border = "1px solid #D4AF37";
+        }
+    });
+});
+
+document.getElementById("saveBtn").addEventListener("click", async () => {
+    try {
+        document.getElementById("saveBtn").innerText = "Saving...";
+        const updatedData = {};
+        fields.forEach(f => {
+            if(document.getElementById(`v_${f}`)) updatedData[f] = document.getElementById(`v_${f}`).value;
+        });
+        
+        await updateDoc(doc(db, "hotels", hotelId), updatedData);
+        alert("Entity Records Updated Successfully");
+        window.location.reload();
+    } catch (e) { alert(e.message); document.getElementById("saveBtn").innerText = "Save Changes"; }
+});
+
+document.getElementById("resetPassBtn").addEventListener("click", async () => {
+    if(!currentClientEmail) return alert("No email attached to this entity.");
+    if(confirm(`Send password reset link to ${currentClientEmail}?`)){
+        try {
+            await sendPasswordResetEmail(auth, currentClientEmail);
+            alert("Secure reset link sent to client's email.");
+        } catch(e) { alert(e.message); }
+    }
+});

@@ -3,11 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<!-- Security -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-
 <title>Client Portal | Hotel Menu Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -17,8 +12,7 @@ body { background: #050505; color: #ededed; }
 
 .navbar { padding: 25px 50px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; }
 .brand { font-family: 'Playfair Display', serif; font-size: 24px; color: #D4AF37; }
-.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; background: none; border: none; cursor: pointer; }
-.logout-btn:hover { color: #ff4444; }
+.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
 
 .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
 .welcome-box { border-left: 4px solid #D4AF37; padding-left: 20px; margin-bottom: 50px; }
@@ -43,7 +37,7 @@ body { background: #050505; color: #ededed; }
 
 <div class="navbar">
     <div class="brand">Hotel Menu Pro</div>
-    <button id="logoutBtn" class="logout-btn">Secure Logout</button>
+    <a href="index.html" class="logout-btn">Secure Logout</a>
 </div>
 
 <div class="container">
