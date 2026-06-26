@@ -1,19 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc",
-    authDomain: "hotel-menu-f25ed.firebaseapp.com",
-    projectId: "hotel-menu-f25ed",
-    storageBucket: "hotel-menu-f25ed.firebasestorage.app",
-    messagingSenderId: "750886705933",
-    appId: "1:750886705933:web:c3331f1dd8cfc99342ee44"
-};
+const firebaseConfig = { apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", authDomain: "hotel-menu-f25ed.firebaseapp.com", projectId: "hotel-menu-f25ed", storageBucket: "hotel-menu-f25ed.firebasestorage.app", messagingSenderId: "750886705933", appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// 5-Min Timer
+let logoutTimer;
+function resetTimer() { clearTimeout(logoutTimer); logoutTimer = setTimeout(() => { signOut(auth).then(() => window.location.href = "index.html"); }, 300000); }
+window.onload = resetTimer; window.onmousemove = resetTimer; window.onkeypress = resetTimer;
 
 const params = new URLSearchParams(window.location.search);
 const hotelId = params.get("id");
@@ -54,12 +52,17 @@ document.getElementById("toggleEditBtn").addEventListener("click", () => {
     isEditing = true;
     document.getElementById("toggleEditBtn").style.display = "none";
     document.getElementById("saveBtn").style.display = "inline-block";
+    
+    // Enable all inputs
     fields.forEach(f => {
         if(document.getElementById(`v_${f}`)) {
             document.getElementById(`v_${f}`).disabled = false;
             document.getElementById(`v_${f}`).style.border = "1px solid #D4AF37";
         }
     });
+    // Enable password change input
+    document.getElementById("v_newPassword").disabled = false;
+    document.getElementById("v_newPassword").style.border = "1px solid #D4AF37";
 });
 
 document.getElementById("saveBtn").addEventListener("click", async () => {
@@ -70,17 +73,25 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
             if(document.getElementById(`v_${f}`)) updatedData[f] = document.getElementById(`v_${f}`).value;
         });
         
+        const newPassword = document.getElementById("v_newPassword").value;
+        if(newPassword) {
+            // NOTE: Changing Auth password from client strictly requires Backend/Cloud Functions.
+            // We save it here to DB. If you have a Cloud Function trigger setup, it will sync automatically.
+            updatedData.adminForcedPassword = newPassword; 
+        }
+
         await updateDoc(doc(db, "hotels", hotelId), updatedData);
-        alert("Entity Records Updated Successfully");
+        alert("Entity Records & Status Updated Successfully.");
         window.location.reload();
     } catch (e) { alert(e.message); document.getElementById("saveBtn").innerText = "Save Changes"; }
 });
 
 document.getElementById("resetPassBtn").addEventListener("click", async () => {
-    if(!currentClientEmail) return alert("No email attached to this entity.");
-    if(confirm(`Send password reset link to ${currentClientEmail}?`)){
+    const emailField = document.getElementById("v_email").value || currentClientEmail;
+    if(!emailField) return alert("No email attached to this entity.");
+    if(confirm(`Send password reset link to ${emailField}?`)){
         try {
-            await sendPasswordResetEmail(auth, currentClientEmail);
+            await sendPasswordResetEmail(auth, emailField);
             alert("Secure reset link sent to client's email.");
         } catch(e) { alert(e.message); }
     }

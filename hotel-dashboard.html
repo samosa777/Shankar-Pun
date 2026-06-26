@@ -12,7 +12,8 @@ body { background: #050505; color: #ededed; }
 
 .navbar { padding: 25px 50px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; }
 .brand { font-family: 'Playfair Display', serif; font-size: 24px; color: #D4AF37; }
-.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; background: transparent; }
+.logout-btn:hover { color: #ff4444; }
 
 .container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
 .welcome-box { border-left: 4px solid #D4AF37; padding-left: 20px; margin-bottom: 50px; }
@@ -37,7 +38,7 @@ body { background: #050505; color: #ededed; }
 
 <div class="navbar">
     <div class="brand">Hotel Menu Pro</div>
-    <a href="index.html" class="logout-btn">Secure Logout</a>
+    <button id="userLogoutBtn" class="logout-btn">Secure Logout</button>
 </div>
 
 <div class="container">
@@ -64,13 +65,13 @@ body { background: #050505; color: #ededed; }
     </div>
 
     <div id="menu" class="tab-content">
-        <p style="color:#888;">Menu Management Module locked by Super Admin.</p>
+        <p style="color:#888;">Menu Management Module Active. (Integrate your menu UI here)</p>
     </div>
 
     <div id="plan" class="tab-content">
         <div class="grid-info">
             <div class="info-item"><label>Service Tier</label><div id="pPlan" style="color:#D4AF37;">-</div></div>
-            <div class="info-item"><label>Network Status</label><div id="pStatus">-</div></div>
+            <div class="info-item"><label>Network Status</label><div id="pStatus" style="color:#10b981;">Active</div></div>
         </div>
     </div>
 </div>

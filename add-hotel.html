@@ -13,7 +13,8 @@ body { background: #050505; color: #fff; padding: 40px; display: flex; justify-c
 .form-container { width: 100%; max-width: 900px; background: #0a0a0a; border: 1px solid #1a1a1a; padding: 50px; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
 .header { margin-bottom: 40px; border-bottom: 1px solid #1a1a1a; padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
 .title { font-family: 'Playfair Display', serif; font-size: 28px; color: #D4AF37; }
-.back-btn { color: #888; text-decoration: none; font-size: 14px; }
+.back-btn { color: #888; text-decoration: none; font-size: 14px; transition: 0.3s; }
+.back-btn:hover { color: #D4AF37; }
 
 .section-title { font-size: 14px; color: #D4AF37; text-transform: uppercase; letter-spacing: 2px; margin: 30px 0 15px; font-weight: 600; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -32,12 +33,12 @@ textarea { height: 80px; resize: none; }
 <div class="form-container">
     <div class="header">
         <div class="title">Deploy New Client Entity</div>
-        <a href="dashboard.html" class="back-btn">Cancel</a>
+        <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
     </div>
 
     <div class="section-title">Core Information</div>
     <div class="grid">
-        <input type="text" id="hotelName" placeholder="Hotel / Business Name (e.g. Hotel Mantra Thakali)">
+        <input type="text" id="hotelName" placeholder="Hotel Name (e.g. Hotel Mantra Thakali & Hospitality)">
         <input type="text" id="ownerName" placeholder="Principal Owner Name">
         <input type="email" id="email" placeholder="System Login Email">
         <input type="password" id="password" placeholder="Initial Security Password">
@@ -66,7 +67,7 @@ textarea { height: 80px; resize: none; }
         <input type="date" id="startDate">
         <select id="status">
             <option value="Active">Active</option>
-            <option value="Inactive">Suspended</option>
+            <option value="Inactive">Inactive</option>
         </select>
     </div>
 
