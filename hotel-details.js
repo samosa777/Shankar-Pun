@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = { apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", authDomain: "hotel-menu-f25ed.firebaseapp.com", projectId: "hotel-menu-f25ed", storageBucket: "hotel-menu-f25ed.firebasestorage.app", messagingSenderId: "750886705933", appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" };
 
@@ -14,7 +14,6 @@ window.onload = resetTimer; window.onmousemove = resetTimer; window.onkeypress =
 
 const params = new URLSearchParams(window.location.search);
 const hotelId = params.get("id");
-let currentClientEmail = "";
 
 onAuthStateChanged(auth, async (user) => {
     if (!user || user.email !== "superadmin@power.com") { window.location.href = "index.html"; return; }
@@ -23,8 +22,8 @@ onAuthStateChanged(auth, async (user) => {
     loadHotel();
 });
 
-// Added 'password' to fields array so it loads and saves automatically
-const fields = ["hotelName", "ownerName", "email", "password", "mobile", "whatsapp", "address", "city", "state", "country", "maps", "website", "facebook", "instagram", "plan", "status"];
+// All fields including password and status
+const fields = ["hotelName", "ownerName", "email", "password", "status", "mobile", "whatsapp", "address", "city", "state", "country", "maps", "website", "facebook", "instagram", "plan"];
 
 async function loadHotel() {
     try {
@@ -34,11 +33,16 @@ async function loadHotel() {
         
         document.getElementById("displayHotelName").innerText = data.hotelName || "Unnamed";
         document.getElementById("displayDocId").innerText = "ID: " + hotelId;
-        currentClientEmail = data.email;
 
         fields.forEach(f => {
-            if(document.getElementById(`v_${f}`)) document.getElementById(`v_${f}`).value = data[f] || "";
+            if(document.getElementById(`v_${f}`)) {
+                // If it's an old account, password might be undefined. Set it to empty string so you can type a new one.
+                document.getElementById(`v_${f}`).value = data[f] || "";
+            }
         });
+
+        // Default to Active if old account doesn't have status
+        if(!data.status) document.getElementById("v_status").value = "Active";
 
         const menuUrl = window.location.origin + "/menu.html?id=" + hotelId;
         document.getElementById("menuLink").innerText = menuUrl;
@@ -61,6 +65,12 @@ document.getElementById("toggleEditBtn").addEventListener("click", () => {
 
 document.getElementById("saveBtn").addEventListener("click", async () => {
     try {
+        const passVal = document.getElementById("v_password").value.trim();
+        if(!passVal) {
+            alert("Password cannot be empty. Please enter a password for the client.");
+            return;
+        }
+
         document.getElementById("saveBtn").innerText = "Saving...";
         const updatedData = {};
         fields.forEach(f => {
@@ -68,19 +78,10 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
         });
         
         await updateDoc(doc(db, "hotels", hotelId), updatedData);
-        alert("Entity Records, Password & Status Updated Successfully.");
+        alert("Credentials, Status, and Records Updated Successfully!");
         window.location.reload();
-    } catch (e) { alert(e.message); document.getElementById("saveBtn").innerText = "Save Changes"; }
-});
-
-// Old button kept as per your rule "kuch hatana mat"
-document.getElementById("resetPassBtn").addEventListener("click", async () => {
-    const emailField = document.getElementById("v_email").value || currentClientEmail;
-    if(!emailField) return alert("No email attached to this entity.");
-    if(confirm(`Send password reset link to ${emailField}?`)){
-        try {
-            await sendPasswordResetEmail(auth, emailField);
-            alert("Secure reset link sent to client's email.");
-        } catch(e) { alert(e.message); }
+    } catch (e) { 
+        alert(e.message); 
+        document.getElementById("saveBtn").innerText = "Save Changes"; 
     }
 });
