@@ -23,16 +23,18 @@ body { background: #050505; color: #ededed; line-height: 1.6; }
 .welcome-box h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 5px; color: #fff; }
 .welcome-box p { color: #888; font-size: 16px; }
 
-/* Tabs */
+/* Tabs Navigation */
 .tab-nav { display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
 .tab-nav::-webkit-scrollbar { display: none; }
 .tab-btn { background: transparent; border: none; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; padding: 10px 15px; cursor: pointer; transition: 0.3s; font-weight: 500; }
 .tab-btn.active { color: #D4AF37; border-bottom: 2px solid #D4AF37; }
 .tab-btn:hover { color: #fff; }
 
+/* Tab Content Areas */
 .tab-content { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 30px; border-radius: 8px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #D4AF37; margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
 
 /* Profile Grid */
 .grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
@@ -41,34 +43,29 @@ body { background: #050505; color: #ededed; line-height: 1.6; }
 .info-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 .info-item div { font-size: 15px; color: #fff; font-weight: 500; }
 
-/* Billing & Payment Section */
-.billing-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-.section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #D4AF37; margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
+/* Payment History Section */
+.history-list { max-height: 500px; overflow-y: auto; padding-right: 5px; }
+.history-item { background: #111; padding: 20px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #10b981; border-top: 1px solid #1a1a1a; border-right: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+.history-item:hover { background: #1a1a1a; border-color: #333; border-left-color: #10b981; }
+.history-date { color: #888; font-size: 13px; margin-bottom: 5px; }
+.history-remarks { color: #ccc; font-size: 15px; }
+.history-amount { color: #10b981; font-size: 22px; font-weight: 600; font-family: 'Inter', sans-serif; }
 
-/* Payment History */
-.payment-history-container { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; }
-.history-list { max-height: 400px; overflow-y: auto; padding-right: 5px; }
-.history-item { background: #1a1a1a; padding: 15px 20px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #10b981; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
-.history-item:hover { background: #222; }
-.history-date { color: #888; font-size: 13px; margin-bottom: 4px; }
-.history-remarks { color: #ccc; font-size: 14px; }
-.history-amount { color: #10b981; font-size: 20px; font-weight: 600; font-family: 'Inter', sans-serif; }
-
-/* Contact Us Admin Card */
-.contact-card { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; }
-.contact-desc { color: #888; font-size: 14px; margin-bottom: 25px; }
-.contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
-.contact-item .icon { font-size: 24px; background: #1a1a1a; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: #D4AF37; }
-.contact-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-.contact-item div { font-size: 15px; color: #fff; font-weight: 500; }
+/* Contact Us Tab */
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 20px; }
+.contact-desc { color: #888; font-size: 15px; margin-bottom: 30px; max-width: 600px; }
+.contact-item { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; }
+.contact-item:hover { border-color: #D4AF37; transform: translateY(-5px); }
+.contact-item .icon { font-size: 32px; background: #1a1a1a; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: #D4AF37; margin-bottom: 15px; }
+.contact-item label { display: block; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.contact-item div { font-size: 16px; color: #fff; font-weight: 500; }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .navbar { padding: 15px 20px; }
     .welcome-box h1 { font-size: 26px; }
     .tab-content { padding: 20px; }
-    .billing-grid { grid-template-columns: 1fr; } /* Stacks Contact US below History on mobile */
-    .history-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .history-item { flex-direction: column; align-items: flex-start; gap: 12px; }
     .history-amount { align-self: flex-start; }
 }
 </style>
@@ -92,10 +89,12 @@ body { background: #050505; color: #ededed; line-height: 1.6; }
         <button class="tab-btn active" onclick="showTab('profile', this)">Corporate Profile</button>
         <button class="tab-btn" onclick="showTab('menu', this)">Menu Assets</button>
         <button class="tab-btn" onclick="showTab('billing', this)">Billing & Payments</button>
+        <button class="tab-btn" onclick="showTab('contact', this)">Contact Support</button>
     </div>
 
     <!-- TAB 1: PROFILE -->
     <div id="profile" class="tab-content active">
+        <h3 class="section-title">Business Information</h3>
         <div class="grid-info">
             <div class="info-item"><label>Entity Name</label><div id="pHotel">-</div></div>
             <div class="info-item"><label>Principal Owner</label><div id="pOwner">-</div></div>
@@ -109,52 +108,42 @@ body { background: #050505; color: #ededed; line-height: 1.6; }
 
     <!-- TAB 2: MENU -->
     <div id="menu" class="tab-content">
+        <h3 class="section-title">Menu Management</h3>
         <p style="color:#888;">Menu Management Module Active. (Integrate your menu UI here)</p>
     </div>
 
-    <!-- TAB 3: BILLING & PAYMENTS (New) -->
+    <!-- TAB 3: BILLING & PAYMENTS -->
     <div id="billing" class="tab-content">
-        <div class="billing-grid">
+        <h3 class="section-title">Payment History</h3>
+        <div class="history-list" id="clientPaymentListContainer">
+            <p style="color:#888; text-align:center; padding: 20px;">Loading your payment records...</p>
+            <!-- History items will be injected here via JavaScript -->
+        </div>
+    </div>
+
+    <!-- TAB 4: CONTACT SUPPORT (New Separate Tab) -->
+    <div id="contact" class="tab-content">
+        <h3 class="section-title">Get In Touch</h3>
+        <p class="contact-desc">Need assistance with your account, billing, or technical issues? Reach out to our administrative team using the details below.</p>
+        
+        <div class="contact-grid">
+            <div class="contact-item">
+                <span class="icon">📞</span>
+                <label>Admin Mobile</label>
+                <div>+91 98765 43210</div> <!-- Replace with your Admin Mobile Number -->
+            </div>
             
-            <!-- Left Side: Payment History -->
-            <div class="payment-history-container">
-                <h3 class="section-title">Payment History</h3>
-                <div class="history-list" id="clientPaymentListContainer">
-                    <p style="color:#888; text-align:center;">Loading your payment records...</p>
-                    <!-- History items will be injected here via JavaScript -->
-                </div>
+            <div class="contact-item">
+                <span class="icon">✉️</span>
+                <label>Admin Email</label>
+                <div>superadmin@power.com</div> <!-- Replace with your Admin Email -->
             </div>
-
-            <!-- Right Side: Contact Us -->
-            <div class="contact-card">
-                <h3 class="section-title">Contact Support</h3>
-                <p class="contact-desc">Need help with your billing or subscription? Get in touch with our administrative team.</p>
-                
-                <div class="contact-item">
-                    <span class="icon">📞</span>
-                    <div>
-                        <label>Admin Mobile</label>
-                        <div>+91 98765 43210</div> <!-- Replace with your actual Mobile Number -->
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <span class="icon">✉️</span>
-                    <div>
-                        <label>Admin Email</label>
-                        <div>superadmin@power.com</div> <!-- Replace with your actual Email -->
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <span class="icon">📍</span>
-                    <div>
-                        <label>Head Office Location</label>
-                        <div>New Delhi, India</div> <!-- Replace with your actual Location -->
-                    </div>
-                </div>
+            
+            <div class="contact-item">
+                <span class="icon">📍</span>
+                <label>Head Office Location</label>
+                <div>New Delhi, India</div> <!-- Replace with your Office Address -->
             </div>
-
         </div>
     </div>
 </div>
@@ -173,7 +162,7 @@ window.renderClientPayments = function(paymentsArray) {
     const container = document.getElementById("clientPaymentListContainer");
     
     if(!paymentsArray || paymentsArray.length === 0) {
-        container.innerHTML = `<p style="color:#888; text-align:center; padding: 20px;">No payment records found on this account.</p>`;
+        container.innerHTML = `<p style="color:#888; text-align:center; padding: 30px; background: #111; border-radius: 6px; border: 1px solid #222;">No payment records found on this account.</p>`;
         return;
     }
 
