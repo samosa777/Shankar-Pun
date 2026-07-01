@@ -1,155 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Client Portal | Hotel Menu Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-/* Base & Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: #050505; color: #ededed; line-height: 1.6; }
-#authLoader { position: fixed; inset: 0; background: #050505; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 20px; color: #D4AF37; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Corporate Portal | Hotel Menu Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #050505; color: #ededed; line-height: 1.6; min-height: 100vh; }
+        #authLoader { position: fixed; inset: 0; background: #050505; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 20px; color: #D4AF37; font-family: 'Playfair Display', serif; letter-spacing: 2px; }
 
-/* Navigation */
-.navbar { padding: 20px 5%; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; position: sticky; top: 0; z-index: 100; }
-.brand { font-family: 'Playfair Display', serif; font-size: 24px; color: #D4AF37; }
-.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; background: transparent; transition: 0.3s; }
-.logout-btn:hover { color: #ff4444; }
+        .navbar { padding: 20px 5%; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; position: sticky; top: 0; z-index: 100; }
+        .brand { font-family: 'Playfair Display', serif; font-size: 24px; color: #D4AF37; font-weight: 700; }
+        .logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; background: transparent; transition: 0.3s; font-weight: 600; }
+        .logout-btn:hover { color: #ff4444; }
 
-/* Layout & Containers */
-.container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-.welcome-box { border-left: 4px solid #D4AF37; padding-left: 20px; margin-bottom: 40px; }
-.welcome-box h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 5px; color: #fff; }
-.welcome-box p { color: #888; font-size: 16px; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .welcome-box { border-left: 4px solid #D4AF37; padding-left: 20px; margin-bottom: 45px; }
+        .welcome-box h1 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 5px; color: #fff; }
+        .welcome-box p { color: #888; font-size: 16px; font-weight: 300; }
 
-/* Tabs Navigation */
-.tab-nav { display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
-.tab-nav::-webkit-scrollbar { display: none; }
-.tab-btn { background: transparent; border: none; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; padding: 10px 15px; cursor: pointer; transition: 0.3s; font-weight: 500; }
-.tab-btn.active { color: #D4AF37; border-bottom: 2px solid #D4AF37; }
-.tab-btn:hover { color: #fff; }
+        .tab-nav { display: flex; gap: 15px; margin-bottom: 35px; border-bottom: 1px solid #1a1a1a; padding-bottom: 1px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+        .tab-nav::-webkit-scrollbar { display: none; }
+        .tab-btn { background: transparent; border: none; color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; padding: 12px 20px; cursor: pointer; transition: 0.3s; font-weight: 500; border-bottom: 2px solid transparent; }
+        .tab-btn.active { color: #D4AF37; border-bottom: 2px solid #D4AF37; font-weight: 600; }
+        .tab-btn:hover { color: #fff; }
 
-/* Tab Content Areas */
-.tab-content { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 30px; border-radius: 8px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #D4AF37; margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
+        .tab-content { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 8px; display: none; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 22px; color: #D4AF37; margin-bottom: 25px; border-bottom: 1px solid #1a1a1a; padding-bottom: 12px; font-weight: 600; }
 
-/* Profile Grid */
-.grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
-.info-item { background: #111; padding: 20px; border-radius: 6px; border: 1px solid #1a1a1a; transition: 0.3s; }
-.info-item:hover { border-color: #333; }
-.info-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-.info-item div { font-size: 15px; color: #fff; font-weight: 500; }
+        .grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; }
+        .info-item { background: #111; padding: 22px; border-radius: 6px; border: 1px solid #1a1a1a; transition: 0.3s; }
+        .info-item:hover { border-color: #D4AF37; }
+        .info-item label { display: block; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; font-weight: 600; }
+        .info-item div { font-size: 15px; color: #fff; font-weight: 500; }
 
-/* Payment History Section */
-.history-list { max-height: 500px; overflow-y: auto; padding-right: 5px; }
-.history-item { background: #111; padding: 20px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #10b981; border-top: 1px solid #1a1a1a; border-right: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
-.history-item:hover { background: #1a1a1a; border-color: #333; border-left-color: #10b981; }
-.history-date { color: #888; font-size: 13px; margin-bottom: 5px; }
-.history-remarks { color: #ccc; font-size: 15px; }
-.history-amount { color: #10b981; font-size: 22px; font-weight: 600; font-family: 'Inter', sans-serif; }
+        .history-list { max-height: 500px; overflow-y: auto; padding-right: 5px; }
+        .history-item { background: #111; padding: 22px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #10b981; border-top: 1px solid #1a1a1a; border-right: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .history-item:hover { background: #151515; }
+        .history-date { color: #666; font-size: 12px; margin-bottom: 5px; font-weight: 600; }
+        .history-remarks { color: #ccc; font-size: 15px; }
+        .history-amount { color: #10b981; font-size: 22px; font-weight: 700; }
 
-/* Contact Us Tab */
-.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 20px; }
-.contact-desc { color: #888; font-size: 15px; margin-bottom: 30px; max-width: 600px; }
-.contact-item { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; }
-.contact-item:hover { border-color: #D4AF37; transform: translateY(-5px); }
-.contact-item .icon { font-size: 32px; background: #1a1a1a; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: #D4AF37; margin-bottom: 15px; }
-.contact-item label { display: block; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-.contact-item div { font-size: 16px; color: #fff; font-weight: 500; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-top: 25px; }
+        .contact-desc { color: #888; font-size: 15px; margin-bottom: 35px; max-width: 650px; font-weight: 300; }
+        .contact-item { background: #111; padding: 30px; border-radius: 8px; border: 1px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.3s; }
+        .contact-item:hover { border-color: #D4AF37; transform: translateY(-5px); }
+        .contact-item .icon { font-size: 32px; background: #0a0a0a; width: 65px; height: 65px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: #D4AF37; margin-bottom: 20px; border: 1px solid #1a1a1a; }
+        .contact-item label { display: block; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; font-weight: 600; }
+        .contact-item div { font-size: 16px; color: #fff; font-weight: 500; }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-    .navbar { padding: 15px 20px; }
-    .welcome-box h1 { font-size: 26px; }
-    .tab-content { padding: 20px; }
-    .history-item { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .history-amount { align-self: flex-start; }
-}
-</style>
+        @media (max-width: 768px) {
+            .navbar { padding: 15px 20px; }
+            .welcome-box h1 { font-size: 28px; }
+            .tab-content { padding: 25px 20px; }
+            .history-item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .history-amount { align-self: flex-start; }
+            .brand { font-size: 20px; }
+        }
+    </style>
 </head>
 <body>
-<div id="authLoader">Establishing Secure Connection...</div>
+<div id="authLoader">ESTABLISHING ENCRYPTED ENTERPRISE CONSOLE NODE...</div>
 
 <div class="navbar">
     <div class="brand">Hotel Menu Pro</div>
-    <button id="userLogoutBtn" class="logout-btn">Secure Logout</button>
+    <button id="userLogoutBtn" class="logout-btn">Secure Disconnect</button>
 </div>
 
 <div class="container">
     <div class="welcome-box">
-        <h1 id="welcomeText">Welcome</h1>
-        <p id="hotelName">Loading Entity Data...</p>
+        <h1 id="welcomeText">Welcome Member Node</h1>
+        <p id="hotelName">Allocating Corporate Entity Data Records...</p>
     </div>
 
-    <!-- TABS NAVIGATION -->
     <div class="tab-nav">
-        <button class="tab-btn active" onclick="showTab('profile', this)">Corporate Profile</button>
-        <button class="tab-btn" onclick="showTab('menu', this)">Menu Assets</button>
-        <button class="tab-btn" onclick="showTab('billing', this)">Billing & Payments</button>
-        <button class="tab-btn" onclick="showTab('contact', this)">Contact Support</button>
+        <button class="tab-btn active" onclick="showTab('profile', this)">Corporate Parameters</button>
+        <button class="tab-btn" onclick="showTab('menu', this)">Menu Digital Modules</button>
+        <button class="tab-btn" onclick="showTab('billing', this)">Attributed Statement History</button>
+        <button class="tab-btn" onclick="showTab('contact', this)">Administrative Intercom</button>
     </div>
 
-    <!-- TAB 1: PROFILE -->
+    <!-- PROFILE MATRIX -->
     <div id="profile" class="tab-content active">
-        <h3 class="section-title">Business Information</h3>
+        <h3 class="section-title">Core Business Architecture Details</h3>
         <div class="grid-info">
-            <div class="info-item"><label>Entity Name</label><div id="pHotel">-</div></div>
-            <div class="info-item"><label>Principal Owner</label><div id="pOwner">-</div></div>
-            <div class="info-item"><label>Registered Contact</label><div id="pEmail">-</div></div>
-            <div class="info-item"><label>Primary Phone</label><div id="pMobile">-</div></div>
-            <div class="info-item"><label>Location</label><div id="pCity">-</div></div>
-            <div class="info-item"><label>Full Address</label><div id="pAddress">-</div></div>
-            <div class="info-item"><label>Subscription Plan</label><div id="pPlan" style="color:#D4AF37;">-</div></div>
+            <div class="info-item"><label>Registered Corporate Entity Name</label><div id="pHotel">-</div></div>
+            <div class="info-item"><label>Registered Managing Officer</label><div id="pOwner">-</div></div>
+            <div class="info-item"><label>Core Communication Account Interface</label><div id="pEmail">-</div></div>
+            <div class="info-item"><label>Telephony Pipeline Reference</label><div id="pMobile">-</div></div>
+            <div class="info-item"><label>Metropolitan Base Coordinate Grid</label><div id="pCity">-</div></div>
+            <div class="info-item"><label>Complete Physical Corporate Geography Address</label><div id="pAddress">-</div></div>
+            <div class="info-item"><label>System Licensing Framework Subscription</label><div id="pPlan" style="color:#D4AF37; font-weight: 600;">-</div></div>
         </div>
     </div>
 
-    <!-- TAB 2: MENU -->
+    <!-- CLIENT DIGITAL MENU ASSETS -->
     <div id="menu" class="tab-content">
-        <h3 class="section-title">Menu Management</h3>
-        <p style="color:#888;">Menu Management Module Active. (Integrate your menu UI here)</p>
+        <h3 class="section-title">Digital Assets Customization Framework</h3>
+        <p style="color:#888; font-size:14px; font-weight:300;">Digital Menu Architecture Framework active. Customized item deployments are monitored safely.</p>
     </div>
 
-    <!-- TAB 3: BILLING & PAYMENTS -->
+    <!-- FINANCIAL HISTORICAL RECORDS -->
     <div id="billing" class="tab-content">
-        <h3 class="section-title">Payment History</h3>
+        <h3 class="section-title">Verified Inbound Payments Statements Ledger</h3>
         <div class="history-list" id="clientPaymentListContainer">
-            <p style="color:#888; text-align:center; padding: 20px;">Loading your payment records...</p>
-            <!-- History items will be injected here via JavaScript -->
+            <p style="color:#888; text-align:center; padding: 20px; font-size:14px;">Parsing ecosystem file nodes...</p>
         </div>
     </div>
 
-    <!-- TAB 4: CONTACT SUPPORT (New Separate Tab) -->
+    <!-- SUPPORT COMMUNICATION MATRIX -->
     <div id="contact" class="tab-content">
-        <h3 class="section-title">Get In Touch</h3>
-        <p class="contact-desc">Need assistance with your account, billing, or technical issues? Reach out to our administrative team using the details below.</p>
+        <h3 class="section-title">Establish Communications with Administration Core</h3>
+        <p class="contact-desc">Should your business vectors require architectural adjustments, financial clearing confirmations, or security parameters updates, contact administrative operational headquarters immediately.</p>
         
         <div class="contact-grid">
             <div class="contact-item">
                 <span class="icon">📞</span>
-                <label>Admin Mobile</label>
-                <div>+91 98765 43210</div> <!-- Replace with your Admin Mobile Number -->
+                <label>System Admin Telephony Line</label>
+                <div>+91 98765 43210</div>
             </div>
-            
             <div class="contact-item">
                 <span class="icon">✉️</span>
-                <label>Admin Email</label>
-                <div>superadmin@power.com</div> <!-- Replace with your Admin Email -->
+                <label>System Admin Interface Routing Email</label>
+                <div>superadmin@power.com</div>
             </div>
-            
             <div class="contact-item">
                 <span class="icon">📍</span>
-                <label>Head Office Location</label>
-                <div>New Delhi, India</div> <!-- Replace with your Office Address -->
+                <label>Administrative Central Command HQ</label>
+                <div>New Delhi, India</div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// Logic to switch between tabs smoothly
 function showTab(id, btn){
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -157,21 +144,18 @@ function showTab(id, btn){
     btn.classList.add('active');
 }
 
-// Global function to render payments for the client (Called from hotel-dashboard.js)
 window.renderClientPayments = function(paymentsArray) {
     const container = document.getElementById("clientPaymentListContainer");
     
     if(!paymentsArray || paymentsArray.length === 0) {
-        container.innerHTML = `<p style="color:#888; text-align:center; padding: 30px; background: #111; border-radius: 6px; border: 1px solid #222;">No payment records found on this account.</p>`;
+        container.innerHTML = `<p style="color:#888; text-align:center; padding: 40px; background: #111; border-radius: 6px; border: 1px solid #1a1a1a; font-size:14px;">No clear transacted settlement historical records trace verified on system nodes.</p>`;
         return;
     }
 
-    // Sort payments from newest to oldest
     paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     let html = "";
     paymentsArray.forEach(pay => {
-        // Format Date to DD-MM-YYYY
         let formattedDate = pay.date;
         if(pay.date) {
             const parts = pay.date.split('-');
@@ -181,10 +165,10 @@ window.renderClientPayments = function(paymentsArray) {
         html += `
             <div class="history-item">
                 <div>
-                    <div class="history-date">Paid on: ${formattedDate}</div>
-                    <div class="history-remarks">${pay.remarks || 'No remarks provided'}</div>
+                    <div class="history-date">Settled on: ${formattedDate}</div>
+                    <div class="history-remarks">${pay.remarks || 'Standard Automated System Clearance Receipt'}</div>
                 </div>
-                <div class="history-amount">₹ ${pay.amount}</div>
+                <div class="history-amount">₹ ${Number(pay.amount).toLocaleString('en-IN')}</div>
             </div>
         `;
     });
@@ -192,7 +176,6 @@ window.renderClientPayments = function(paymentsArray) {
     container.innerHTML = html;
 };
 </script>
-
 <script type="module" src="hotel-dashboard.js"></script>
 </body>
 </html>

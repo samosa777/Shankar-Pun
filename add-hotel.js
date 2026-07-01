@@ -8,7 +8,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Secondary App to avoid admin auto-logout (Old feature kept intact)
 const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
 const secondaryAuth = getAuth(secondaryApp);
 
@@ -26,23 +25,22 @@ document.getElementById("createHotelBtn").addEventListener("click", async () => 
     const data = {};
     fields.forEach(f => data[f] = document.getElementById(f).value);
 
-    if (!data.hotelName || !data.email || !data.password) return alert("Essential fields missing.");
-    document.getElementById("createHotelBtn").innerText = "DEPLOYING...";
+    if (!data.hotelName || !data.email || !data.password) return alert("Vital structural data configuration units are missing.");
+    document.getElementById("createHotelBtn").innerText = "INITIALIZING CORE DEPLOYMENT...";
 
     try {
         const userCred = await createUserWithEmailAndPassword(secondaryAuth, data.email, data.password);
         data.hotelUID = userCred.user.uid;
-        
-        // Removed 'delete data.password' so you can see it in Hotel Details
         data.createdAt = serverTimestamp();
+        data.payments = [];
 
         await addDoc(collection(db, "hotels"), data);
         await signOut(secondaryAuth);
         
-        alert("Client Entity Initialized Successfully.");
+        alert("Client Corporate System Identity Initialized Successfully within Ecosystem Architecture.");
         window.location.href = "dashboard.html";
     } catch (e) { 
-        alert(e.message); 
-        document.getElementById("createHotelBtn").innerText = "INITIALIZE DEPLOYMENT"; 
+        alert("Framework Exception Fault: " + e.message); 
+        document.getElementById("createHotelBtn").innerText = "INITIALIZE CLIENT ALLOCATION"; 
     }
 });

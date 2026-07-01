@@ -15,12 +15,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Check Super Admin Auth
 onAuthStateChanged(auth, (user) => {
-    if (user && user.email === "superadmin@power.com") { window.location.href = "dashboard.html"; }
+    if (user && user.email === "superadmin@power.com") { 
+        window.location.href = "dashboard.html"; 
+    }
 });
 
-// Check Hotel User Local Session
 if(localStorage.getItem("hotelUserEmail")) {
     window.location.href = "hotel-dashboard.html";
 }
@@ -31,43 +31,38 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
     const btn = document.getElementById("loginBtn");
     const loader = document.getElementById("authLoader");
     
-    if(!email || !password) return alert("Credentials required");
+    if(!email || !password) return alert("All authorization credentials are required.");
     
-    btn.innerText = "VERIFYING...";
+    btn.innerText = "AUTHENTICATING...";
     loader.style.display = "flex";
 
     try {
         if (email === "superadmin@power.com") {
-            // Super Admin Uses Secure Firebase Auth
             await signInWithEmailAndPassword(auth, email, password);
         } else {
-            // Hotel Users Use Database Auth for Direct Admin Control
             const q = query(collection(db, "hotels"), where("email", "==", email));
             const snap = await getDocs(q);
             
             if (!snap.empty) {
                 const hotelData = snap.docs[0].data();
                 
-                // Password Matching Check
                 if (hotelData.password !== password) {
-                    throw new Error("Invalid Username or Password.");
+                    throw new Error("Invalid username or system password allocation.");
                 }
                 
-                // Strict Active/Inactive Check
                 if (hotelData.status === "Inactive") {
-                    throw new Error("Your account has been deactivated by the Super Admin.");
+                    throw new Error("Your corporate account configuration has been deactivated by Super Admin.");
                 }
                 
-                // Set Local Session for Hotel User
                 localStorage.setItem("hotelUserEmail", email);
                 window.location.href = "hotel-dashboard.html";
             } else {
-                 throw new Error("Account not found in database.");
+                 throw new Error("Account records not found in systems architecture.");
             }
         }
     } catch(error){
         loader.style.display = "none";
-        btn.innerText = "AUTHENTICATE";
-        alert("Access Denied: " + error.message);
+        btn.innerText = "AUTHENTICATE SYSTEM";
+        alert("Access Denied Security Core: " + error.message);
     }
 });

@@ -28,25 +28,22 @@ const hotelId = params.get("id");
 onAuthStateChanged(auth, async (user) => {
     if (!user || user.email !== "superadmin@power.com") { window.location.href = "index.html"; return; }
     document.getElementById("authLoader").style.display = "none";
-    if (!hotelId) { alert("Invalid Entity"); window.location.href = "dashboard.html"; return; }
+    if (!hotelId) { alert("Invalid Client Request Parameter."); window.location.href = "dashboard.html"; return; }
     
-    // Set today's date automatically in the billing form
     document.getElementById('pay_date').valueAsDate = new Date();
-    
     loadHotel();
 });
 
-// Profile fields
 const fields = ["hotelName", "ownerName", "email", "password", "status", "mobile", "whatsapp", "address", "city", "state", "country", "maps", "website", "facebook", "instagram", "plan"];
 
 async function loadHotel() {
     try {
         const hotelSnap = await getDoc(doc(db, "hotels", hotelId));
-        if (!hotelSnap.exists()) return alert("Not Found");
+        if (!hotelSnap.exists()) return alert("Requested Database Entity Node Not Present.");
         const data = hotelSnap.data();
         
-        document.getElementById("displayHotelName").innerText = data.hotelName || "Unnamed";
-        document.getElementById("displayDocId").innerText = "ID: " + hotelId;
+        document.getElementById("displayHotelName").innerText = data.hotelName || "Unnamed Asset";
+        document.getElementById("displayDocId").innerText = "Ecosystem Location Index Node Reference ID: " + hotelId;
 
         fields.forEach(f => {
             if(document.getElementById(`v_${f}`)) {
@@ -56,13 +53,11 @@ async function loadHotel() {
 
         if(!data.status) document.getElementById("v_status").value = "Active";
 
-        // Load Payments
         renderPayments(data.payments || []);
 
     } catch (error) { console.error(error); }
 }
 
-// Toggle Edit
 document.getElementById("toggleEditBtn").addEventListener("click", () => {
     document.getElementById("toggleEditBtn").style.display = "none";
     document.getElementById("saveBtn").style.display = "inline-block";
@@ -71,48 +66,46 @@ document.getElementById("toggleEditBtn").addEventListener("click", () => {
         if(document.getElementById(`v_${f}`)) {
             document.getElementById(`v_${f}`).disabled = false;
             document.getElementById(`v_${f}`).style.border = "1px solid #D4AF37";
+            document.getElementById(`v_${f}`).style.background = "#050505";
         }
     });
 });
 
-// Save Profile Edits
 document.getElementById("saveBtn").addEventListener("click", async () => {
     try {
         const passVal = document.getElementById("v_password").value.trim();
         if(!passVal) {
-            alert("Password cannot be empty. Please enter a password for the client.");
+            alert("Cryptographic access pass phrases cannot resolve into empty vectors.");
             return;
         }
 
-        document.getElementById("saveBtn").innerText = "Saving...";
+        document.getElementById("saveBtn").innerText = "COMMITTING PARAMS...";
         const updatedData = {};
         fields.forEach(f => {
             if(document.getElementById(`v_${f}`)) updatedData[f] = document.getElementById(`v_${f}`).value;
         });
         
         await updateDoc(doc(db, "hotels", hotelId), updatedData);
-        alert("Profile Updated Successfully!");
+        alert("Systems Parameters Core Registry Updated Safely.");
         window.location.reload();
     } catch (e) { 
-        alert(e.message); 
-        document.getElementById("saveBtn").innerText = "Save Changes"; 
+        alert("Ecosystem File Sync Exception: " + e.message); 
+        document.getElementById("saveBtn").innerText = "Commit Parameter Modifications"; 
     }
 });
 
-
-// Add Payment Record Logic
 document.getElementById("addPaymentBtn").addEventListener("click", async () => {
     const date = document.getElementById("pay_date").value;
     const amount = document.getElementById("pay_amount").value;
     const remarks = document.getElementById("pay_remarks").value;
 
     if(!date || !amount) {
-        alert("Please provide both Date and Amount.");
+        alert("Valuation data parameters (Date and Capital Inflow metrics) must be complete.");
         return;
     }
 
     const btn = document.getElementById("addPaymentBtn");
-    btn.innerText = "Adding...";
+    btn.innerText = "RECORDING CAPITAL NODE...";
     btn.disabled = true;
 
     try {
@@ -120,70 +113,60 @@ document.getElementById("addPaymentBtn").addEventListener("click", async () => {
             id: Date.now().toString(),
             date: date,
             amount: amount,
-            remarks: remarks || "No remarks"
+            remarks: remarks || "System Admin Standard Remittance"
         };
 
-        // Push new payment object into the 'payments' array in Firestore
         await updateDoc(doc(db, "hotels", hotelId), {
             payments: arrayUnion(newPayment)
         });
 
-        alert("Payment Recorded Successfully!");
+        alert("Remittance Log Synchronized Successfully.");
         document.getElementById("pay_amount").value = "";
         document.getElementById("pay_remarks").value = "";
-        
-        // Reload UI to show the new record
         loadHotel();
 
     } catch (e) {
-        alert("Error adding payment: " + e.message);
+        alert("Capital Allocation Write Failure Exception: " + e.message);
     } finally {
-        btn.innerText = "Record Payment";
+        btn.innerText = "Commit Remittance Log";
         btn.disabled = false;
     }
 });
 
-// Render Payments on UI
 function renderPayments(paymentsArray) {
     const container = document.getElementById("paymentListContainer");
     const totalDisplay = document.getElementById("totalAmountDisplay");
     
     if(paymentsArray.length === 0) {
-        container.innerHTML = `<p style="color:#888; text-align:center; padding: 20px;">No payment records found.</p>`;
+        container.innerHTML = `<p style="color:#666; text-align:center; padding: 20px; font-size:14px;">No clear financial transacted values registered to this file node.</p>`;
         if(totalDisplay) totalDisplay.innerText = "0";
         return;
     }
 
     let totalAmount = 0;
-
-    // Sort by date descending (newest first)
     paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     let html = "";
     paymentsArray.forEach(pay => {
-        totalAmount += Number(pay.amount) || 0; // Calculating the total amount
-        
+        totalAmount += Number(pay.amount) || 0;
         html += `
             <div class="history-item">
                 <div>
                     <div class="history-date">${formatDate(pay.date)}</div>
                     <div class="history-remarks">${pay.remarks}</div>
                 </div>
-                <div class="history-amount">₹ ${pay.amount}</div>
+                <div class="history-amount">₹ ${Number(pay.amount).toLocaleString('en-IN')}</div>
             </div>
         `;
     });
 
     container.innerHTML = html;
-    if(totalDisplay) totalDisplay.innerText = totalAmount.toLocaleString('en-IN'); // Adding comma separation (e.g., 5,000)
+    if(totalDisplay) totalDisplay.innerText = totalAmount.toLocaleString('en-IN');
 }
 
-// Format date helper (YYYY-MM-DD to DD-MM-YYYY)
 function formatDate(dateStr) {
     if(!dateStr) return "";
     const parts = dateStr.split('-');
-    if(parts.length === 3) {
-        return `${parts[2]}-${parts[1]}-${parts[0]}`;
-    }
+    if(parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
     return dateStr;
 }
