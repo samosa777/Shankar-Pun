@@ -2,14 +2,24 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = { apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", authDomain: "hotel-menu-f25ed.firebaseapp.com", projectId: "hotel-menu-f25ed", storageBucket: "hotel-menu-f25ed.firebasestorage.app", messagingSenderId: "750886705933", appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" };
+const firebaseConfig = { 
+    apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", 
+    authDomain: "hotel-menu-f25ed.firebaseapp.com", 
+    projectId: "hotel-menu-f25ed", 
+    storageBucket: "hotel-menu-f25ed.firebasestorage.app", 
+    messagingSenderId: "750886705933", 
+    appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" 
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
 let logoutTimer;
-function resetTimer() { clearTimeout(logoutTimer); logoutTimer = setTimeout(() => { signOut(auth).then(() => window.location.href = "index.html"); }, 300000); }
+function resetTimer() { 
+    clearTimeout(logoutTimer); 
+    logoutTimer = setTimeout(() => { signOut(auth).then(() => window.location.href = "index.html"); }, 300000); 
+}
 window.onload = resetTimer; window.onmousemove = resetTimer; window.onkeypress = resetTimer;
 
 const params = new URLSearchParams(window.location.search);
@@ -36,7 +46,6 @@ async function loadHotel() {
 
         fields.forEach(f => {
             if(document.getElementById(`v_${f}`)) {
-                // If it's an old account, password might be undefined. Set it to empty string so you can type a new one.
                 document.getElementById(`v_${f}`).value = data[f] || "";
             }
         });
