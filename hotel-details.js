@@ -146,17 +146,23 @@ document.getElementById("addPaymentBtn").addEventListener("click", async () => {
 // Render Payments on UI
 function renderPayments(paymentsArray) {
     const container = document.getElementById("paymentListContainer");
+    const totalDisplay = document.getElementById("totalAmountDisplay");
     
     if(paymentsArray.length === 0) {
         container.innerHTML = `<p style="color:#888; text-align:center; padding: 20px;">No payment records found.</p>`;
+        if(totalDisplay) totalDisplay.innerText = "0";
         return;
     }
+
+    let totalAmount = 0;
 
     // Sort by date descending (newest first)
     paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     let html = "";
     paymentsArray.forEach(pay => {
+        totalAmount += Number(pay.amount) || 0; // Calculating the total amount
+        
         html += `
             <div class="history-item">
                 <div>
@@ -169,6 +175,7 @@ function renderPayments(paymentsArray) {
     });
 
     container.innerHTML = html;
+    if(totalDisplay) totalDisplay.innerText = totalAmount.toLocaleString('en-IN'); // Adding comma separation (e.g., 5,000)
 }
 
 // Format date helper (YYYY-MM-DD to DD-MM-YYYY)
