@@ -60,6 +60,7 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
 .history-date { color: #888; font-size: 12px; margin-bottom: 5px; }
 .history-amount { color: #10b981; font-size: 18px; font-weight: bold; }
 .history-remarks { color: #ccc; font-size: 14px; margin-top: 5px; }
+.total-badge { background: #10b981; color: #fff; padding: 6px 15px; border-radius: 4px; font-weight: bold; font-size: 16px; font-family: 'Inter', sans-serif; }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
@@ -91,14 +92,12 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
         </div>
     </div>
 
-    <!-- TABS NAVIGATION -->
     <div class="tabs-container">
         <button class="tab-btn active" onclick="openTab('tab-profile')">Profile & Credentials</button>
         <button class="tab-btn" onclick="openTab('tab-menu')">Menu Management</button>
         <button class="tab-btn" onclick="openTab('tab-billing')">Billing & Payments</button>
     </div>
 
-    <!-- TAB 1: PROFILE (Default Landing) -->
     <div id="tab-profile" class="tab-content active">
         <div class="profile-actions">
             <button class="btn-primary" id="toggleEditBtn">Enable Edit Mode</button>
@@ -146,7 +145,6 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
         </div>
     </div>
 
-    <!-- TAB 2: MENU MANAGEMENT -->
     <div id="tab-menu" class="tab-content">
         <div class="section-block">
             <div class="section-title">Menu Control Panel</div>
@@ -154,13 +152,11 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
         </div>
     </div>
 
-    <!-- TAB 3: BILLING & PAYMENTS -->
     <div id="tab-billing" class="tab-content">
         <div class="section-block">
             <div class="section-title">Billing & Payment Records</div>
             
             <div class="billing-grid">
-                <!-- Add Payment Form -->
                 <div class="add-payment-form">
                     <h3 style="color:#D4AF37; font-family:'Playfair Display', serif; margin-bottom: 20px; font-size: 18px;">Add New Payment</h3>
                     <div class="input-group">
@@ -178,11 +174,13 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
                     <button class="btn-primary" id="addPaymentBtn" style="width: 100%; margin-top: 10px;">Record Payment</button>
                 </div>
 
-                <!-- Payment History List -->
                 <div class="payment-history">
-                    <h3 style="color:#fff; font-family:'Playfair Display', serif; margin-bottom: 20px; font-size: 18px;">Payment History</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="color:#fff; font-family:'Playfair Display', serif; font-size: 18px;">Payment History</h3>
+                        <div class="total-badge">Total: ₹ <span id="totalAmountDisplay">0</span></div>
+                    </div>
+                    
                     <div id="paymentListContainer">
-                        <!-- History items will be injected here by JS -->
                         <p style="color:#888; text-align:center;">Loading records...</p>
                     </div>
                 </div>
@@ -193,7 +191,6 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
 
 </div>
 
-<!-- UI Tab Switch Logic -->
 <script>
     function openTab(tabId) {
         const contents = document.querySelectorAll('.tab-content');
@@ -207,7 +204,6 @@ body { background: #050505; color: #ededed; display: flex; min-height: 100vh; }
     }
 </script>
 
-<!-- Firebase Backend Script -->
 <script type="module" src="hotel-details.js"></script>
 </body>
 </html>
