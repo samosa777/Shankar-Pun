@@ -71,7 +71,6 @@ td { font-size: 14px; color: #ccc; }
     <button class="nav-link tab-btn active" onclick="switchTab('overview', this)">Overview</button>
     <button class="nav-link tab-btn" onclick="switchTab('clients', this)">Client Portfolios</button>
     <button class="nav-link tab-btn" onclick="switchTab('revenue', this)">Revenue Details</button>
-    <a href="add-hotel.html" class="nav-link" style="text-align: center;">Deploy New Hotel</a>
     
     <div class="spacer"></div>
     <button id="logoutBtn" class="nav-link" style="color: #ff4444; text-align: center;">Disconnect</button>
@@ -80,7 +79,6 @@ td { font-size: 14px; color: #ccc; }
 <div class="main-content">
     <div class="top-bar">
         <div class="page-title">Command Center</div>
-        <a href="add-hotel.html" class="action-btn">Initialize Client</a>
     </div>
 
     <div id="section-overview" class="view-section active">
@@ -98,6 +96,12 @@ td { font-size: 14px; color: #ccc; }
                 <div class="stat-label">Total Revenue Generated</div>
             </div>
         </div>
+        
+        <!-- Moved "Deploy New Hotel" nicely below the dashboard stats -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="add-hotel.html" class="action-btn" style="padding: 14px 30px; font-size: 16px;">Deploy New Hotel</a>
+        </div>
+
         <p style="color: #888; text-align: center; margin-top: 40px;">Select "Client Portfolios" or "Revenue Details" from the sidebar to view detailed records.</p>
     </div>
 
