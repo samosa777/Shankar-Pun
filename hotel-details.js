@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = { 
@@ -29,10 +29,14 @@ onAuthStateChanged(auth, async (user) => {
     if (!user || user.email !== "superadmin@power.com") { window.location.href = "index.html"; return; }
     document.getElementById("authLoader").style.display = "none";
     if (!hotelId) { alert("Invalid Entity"); window.location.href = "dashboard.html"; return; }
+    
+    // Set today's date automatically in the billing form
+    document.getElementById('pay_date').valueAsDate = new Date();
+    
     loadHotel();
 });
 
-// All fields including password and status
+// Profile fields
 const fields = ["hotelName", "ownerName", "email", "password", "status", "mobile", "whatsapp", "address", "city", "state", "country", "maps", "website", "facebook", "instagram", "plan"];
 
 async function loadHotel() {
@@ -50,16 +54,15 @@ async function loadHotel() {
             }
         });
 
-        // Default to Active if old account doesn't have status
         if(!data.status) document.getElementById("v_status").value = "Active";
 
-        const menuUrl = window.location.origin + "/menu.html?id=" + hotelId;
-        document.getElementById("menuLink").innerText = menuUrl;
-        document.getElementById("menuLink").href = menuUrl;
-        document.getElementById("qrImage").src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(menuUrl);
+        // Load Payments
+        renderPayments(data.payments || []);
+
     } catch (error) { console.error(error); }
 }
 
+// Toggle Edit
 document.getElementById("toggleEditBtn").addEventListener("click", () => {
     document.getElementById("toggleEditBtn").style.display = "none";
     document.getElementById("saveBtn").style.display = "inline-block";
@@ -72,6 +75,7 @@ document.getElementById("toggleEditBtn").addEventListener("click", () => {
     });
 });
 
+// Save Profile Edits
 document.getElementById("saveBtn").addEventListener("click", async () => {
     try {
         const passVal = document.getElementById("v_password").value.trim();
@@ -87,10 +91,92 @@ document.getElementById("saveBtn").addEventListener("click", async () => {
         });
         
         await updateDoc(doc(db, "hotels", hotelId), updatedData);
-        alert("Credentials, Status, and Records Updated Successfully!");
+        alert("Profile Updated Successfully!");
         window.location.reload();
     } catch (e) { 
         alert(e.message); 
         document.getElementById("saveBtn").innerText = "Save Changes"; 
     }
 });
+
+
+// Add Payment Record Logic
+document.getElementById("addPaymentBtn").addEventListener("click", async () => {
+    const date = document.getElementById("pay_date").value;
+    const amount = document.getElementById("pay_amount").value;
+    const remarks = document.getElementById("pay_remarks").value;
+
+    if(!date || !amount) {
+        alert("Please provide both Date and Amount.");
+        return;
+    }
+
+    const btn = document.getElementById("addPaymentBtn");
+    btn.innerText = "Adding...";
+    btn.disabled = true;
+
+    try {
+        const newPayment = {
+            id: Date.now().toString(),
+            date: date,
+            amount: amount,
+            remarks: remarks || "No remarks"
+        };
+
+        // Push new payment object into the 'payments' array in Firestore
+        await updateDoc(doc(db, "hotels", hotelId), {
+            payments: arrayUnion(newPayment)
+        });
+
+        alert("Payment Recorded Successfully!");
+        document.getElementById("pay_amount").value = "";
+        document.getElementById("pay_remarks").value = "";
+        
+        // Reload UI to show the new record
+        loadHotel();
+
+    } catch (e) {
+        alert("Error adding payment: " + e.message);
+    } finally {
+        btn.innerText = "Record Payment";
+        btn.disabled = false;
+    }
+});
+
+// Render Payments on UI
+function renderPayments(paymentsArray) {
+    const container = document.getElementById("paymentListContainer");
+    
+    if(paymentsArray.length === 0) {
+        container.innerHTML = `<p style="color:#888; text-align:center; padding: 20px;">No payment records found.</p>`;
+        return;
+    }
+
+    // Sort by date descending (newest first)
+    paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    let html = "";
+    paymentsArray.forEach(pay => {
+        html += `
+            <div class="history-item">
+                <div>
+                    <div class="history-date">${formatDate(pay.date)}</div>
+                    <div class="history-remarks">${pay.remarks}</div>
+                </div>
+                <div class="history-amount">₹ ${pay.amount}</div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+// Format date helper (YYYY-MM-DD to DD-MM-YYYY)
+function formatDate(dateStr) {
+    if(!dateStr) return "";
+    const parts = dateStr.split('-');
+    if(parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateStr;
+}
