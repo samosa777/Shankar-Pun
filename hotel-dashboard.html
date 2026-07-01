@@ -4,33 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Client Portal | Hotel Menu Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* Base & Reset */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: #050505; color: #ededed; }
+body { background: #050505; color: #ededed; line-height: 1.6; }
 #authLoader { position: fixed; inset: 0; background: #050505; z-index: 9999; display: flex; justify-content: center; align-items: center; font-size: 20px; color: #D4AF37; }
 
-.navbar { padding: 25px 50px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; }
+/* Navigation */
+.navbar { padding: 20px 5%; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; background: #0a0a0a; position: sticky; top: 0; z-index: 100; }
 .brand { font-family: 'Playfair Display', serif; font-size: 24px; color: #D4AF37; }
-.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; background: transparent; }
+.logout-btn { color: #888; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; background: transparent; transition: 0.3s; }
 .logout-btn:hover { color: #ff4444; }
 
-.container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
-.welcome-box { border-left: 4px solid #D4AF37; padding-left: 20px; margin-bottom: 50px; }
-.welcome-box h1 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 10px; }
+/* Layout & Containers */
+.container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+.welcome-box { border-left: 4px solid #D4AF37; padding-left: 20px; margin-bottom: 40px; }
+.welcome-box h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 5px; color: #fff; }
 .welcome-box p { color: #888; font-size: 16px; }
 
-.tab-nav { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
-.tab-btn { background: transparent; border: none; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; cursor: pointer; transition: 0.3s; }
+/* Tabs */
+.tab-nav { display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn { background: transparent; border: none; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; padding: 10px 15px; cursor: pointer; transition: 0.3s; font-weight: 500; }
 .tab-btn.active { color: #D4AF37; border-bottom: 2px solid #D4AF37; }
+.tab-btn:hover { color: #fff; }
 
-.tab-content { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; border-radius: 8px; display: none; }
-.tab-content.active { display: block; animation: fadeIn 0.4s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.tab-content { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 30px; border-radius: 8px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-.info-item label { display: block; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-.info-item div { font-size: 15px; color: #fff; }
+/* Profile Grid */
+.grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
+.info-item { background: #111; padding: 20px; border-radius: 6px; border: 1px solid #1a1a1a; transition: 0.3s; }
+.info-item:hover { border-color: #333; }
+.info-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.info-item div { font-size: 15px; color: #fff; font-weight: 500; }
+
+/* Billing & Payment Section */
+.billing-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+.section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #D4AF37; margin-bottom: 20px; border-bottom: 1px solid #1a1a1a; padding-bottom: 10px; }
+
+/* Payment History */
+.payment-history-container { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; }
+.history-list { max-height: 400px; overflow-y: auto; padding-right: 5px; }
+.history-item { background: #1a1a1a; padding: 15px 20px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #10b981; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+.history-item:hover { background: #222; }
+.history-date { color: #888; font-size: 13px; margin-bottom: 4px; }
+.history-remarks { color: #ccc; font-size: 14px; }
+.history-amount { color: #10b981; font-size: 20px; font-weight: 600; font-family: 'Inter', sans-serif; }
+
+/* Contact Us Admin Card */
+.contact-card { background: #111; padding: 25px; border-radius: 8px; border: 1px solid #222; }
+.contact-desc { color: #888; font-size: 14px; margin-bottom: 25px; }
+.contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px; }
+.contact-item .icon { font-size: 24px; background: #1a1a1a; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: #D4AF37; }
+.contact-item label { display: block; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.contact-item div { font-size: 15px; color: #fff; font-weight: 500; }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .navbar { padding: 15px 20px; }
+    .welcome-box h1 { font-size: 26px; }
+    .tab-content { padding: 20px; }
+    .billing-grid { grid-template-columns: 1fr; } /* Stacks Contact US below History on mobile */
+    .history-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .history-amount { align-self: flex-start; }
+}
 </style>
 </head>
 <body>
@@ -47,12 +87,14 @@ body { background: #050505; color: #ededed; }
         <p id="hotelName">Loading Entity Data...</p>
     </div>
 
+    <!-- TABS NAVIGATION -->
     <div class="tab-nav">
         <button class="tab-btn active" onclick="showTab('profile', this)">Corporate Profile</button>
         <button class="tab-btn" onclick="showTab('menu', this)">Menu Assets</button>
-        <button class="tab-btn" onclick="showTab('plan', this)">License Details</button>
+        <button class="tab-btn" onclick="showTab('billing', this)">Billing & Payments</button>
     </div>
 
+    <!-- TAB 1: PROFILE -->
     <div id="profile" class="tab-content active">
         <div class="grid-info">
             <div class="info-item"><label>Entity Name</label><div id="pHotel">-</div></div>
@@ -61,29 +103,107 @@ body { background: #050505; color: #ededed; }
             <div class="info-item"><label>Primary Phone</label><div id="pMobile">-</div></div>
             <div class="info-item"><label>Location</label><div id="pCity">-</div></div>
             <div class="info-item"><label>Full Address</label><div id="pAddress">-</div></div>
+            <div class="info-item"><label>Subscription Plan</label><div id="pPlan" style="color:#D4AF37;">-</div></div>
         </div>
     </div>
 
+    <!-- TAB 2: MENU -->
     <div id="menu" class="tab-content">
         <p style="color:#888;">Menu Management Module Active. (Integrate your menu UI here)</p>
     </div>
 
-    <div id="plan" class="tab-content">
-        <div class="grid-info">
-            <div class="info-item"><label>Service Tier</label><div id="pPlan" style="color:#D4AF37;">-</div></div>
-            <div class="info-item"><label>Network Status</label><div id="pStatus" style="color:#10b981;">Active</div></div>
+    <!-- TAB 3: BILLING & PAYMENTS (New) -->
+    <div id="billing" class="tab-content">
+        <div class="billing-grid">
+            
+            <!-- Left Side: Payment History -->
+            <div class="payment-history-container">
+                <h3 class="section-title">Payment History</h3>
+                <div class="history-list" id="clientPaymentListContainer">
+                    <p style="color:#888; text-align:center;">Loading your payment records...</p>
+                    <!-- History items will be injected here via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Us -->
+            <div class="contact-card">
+                <h3 class="section-title">Contact Support</h3>
+                <p class="contact-desc">Need help with your billing or subscription? Get in touch with our administrative team.</p>
+                
+                <div class="contact-item">
+                    <span class="icon">📞</span>
+                    <div>
+                        <label>Admin Mobile</label>
+                        <div>+91 98765 43210</div> <!-- Replace with your actual Mobile Number -->
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="icon">✉️</span>
+                    <div>
+                        <label>Admin Email</label>
+                        <div>superadmin@power.com</div> <!-- Replace with your actual Email -->
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="icon">📍</span>
+                    <div>
+                        <label>Head Office Location</label>
+                        <div>New Delhi, India</div> <!-- Replace with your actual Location -->
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
 <script>
+// Logic to switch between tabs smoothly
 function showTab(id, btn){
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     btn.classList.add('active');
 }
+
+// Global function to render payments for the client (Called from hotel-dashboard.js)
+window.renderClientPayments = function(paymentsArray) {
+    const container = document.getElementById("clientPaymentListContainer");
+    
+    if(!paymentsArray || paymentsArray.length === 0) {
+        container.innerHTML = `<p style="color:#888; text-align:center; padding: 20px;">No payment records found on this account.</p>`;
+        return;
+    }
+
+    // Sort payments from newest to oldest
+    paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    let html = "";
+    paymentsArray.forEach(pay => {
+        // Format Date to DD-MM-YYYY
+        let formattedDate = pay.date;
+        if(pay.date) {
+            const parts = pay.date.split('-');
+            if(parts.length === 3) formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+
+        html += `
+            <div class="history-item">
+                <div>
+                    <div class="history-date">Paid on: ${formattedDate}</div>
+                    <div class="history-remarks">${pay.remarks || 'No remarks provided'}</div>
+                </div>
+                <div class="history-amount">₹ ${pay.amount}</div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+};
 </script>
+
 <script type="module" src="hotel-dashboard.js"></script>
 </body>
 </html>
