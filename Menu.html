@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Premium CMS Menu Framework | Hotel Menu Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        :root {
+            --champagne-gold: #D4AF37; --obsidian-dark: #0a0a0c;
+            --surface-velvet: #121215; --card-dark: #181a1f;
+            --text-pure: #ffffff; --text-dim: #9ba1a6;
+            --luxury-border: rgba(212, 175, 55, 0.2); --danger-red: #ff3333;
+        }
+
+        body { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: var(--obsidian-dark); color: var(--text-pure); min-height: 100vh; overflow-x: hidden; }
+        #authLoader { position: fixed; inset: 0; background: #050505; z-index: 99999; display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--champagne-gold); font-family: 'Cinzel', serif; letter-spacing: 2px; }
+
+        .app-container { padding: 15px; max-width: 1200px; margin: auto; padding-bottom: 100px; }
+        .cms-header { text-align: center; margin: 20px 0 40px; position: relative; }
+        .cms-header h1 { font-family: 'Cinzel', serif; color: var(--champagne-gold); font-size: 24px; margin-bottom: 5px; }
+        @media(min-width: 600px) { .cms-header h1 { font-size: 32px; } }
+        .cms-header p { color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .btn-back-nav { position: absolute; left: 0; top: 5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn-back-nav:hover { background: var(--champagne-gold); color: #000; }
+
+        /* Workplace Grid and Mobile Formats */
+        .workspace-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media(min-width: 900px) { .workspace-layout { grid-template-columns: 1.2fr 1fr; } }
+
+        .panel-box { background: var(--surface-velvet); border: 1px solid var(--luxury-border); padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .panel-box h2 { font-family: 'Cinzel', serif; color: #fff; font-size: 18px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; letter-spacing: 1px; }
+
+        .menu-category-wrapper { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 20px; }
+        .category-meta-inputs { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; }
+        .input-text-lux { background: #000; border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; color: #fff; font-size: 14px; flex: 1; transition: 0.3s; }
+        .input-text-lux:focus { border-color: var(--champagne-gold); outline: none; }
+
+        .dish-item-editor { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr; gap: 10px; }
+        @media(min-width: 500px) { .dish-item-editor { grid-template-columns: 2fr 1fr; } }
+
+        .premium-action-dock { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(10,10,12,0.9); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 40px; border: 1px solid var(--luxury-border); z-index: 999; box-shadow: 0 20px 40px rgba(0,0,0,0.8); width: max-content; max-width: 95%; }
+        .dock-action-btn { background: var(--champagne-gold); color: #000; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 700; font-size: 12px; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
+        .dock-action-btn:hover { background: #fff; transform: translateY(-2px); }
+        .dock-action-btn.btn-sec-lux { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+        .dock-action-btn.btn-sec-lux:hover { border-color: var(--champagne-gold); color: var(--champagne-gold); }
+        .dock-action-btn.danger-lux { background: rgba(255,51,51,0.1); border: 1px solid #ff3333; color: #ff3333; }
+        .dock-action-btn.danger-lux:hover { background: #ff3333; color: #fff; }
+
+        /* QR Selector Design */
+        .qr-custom-grid { display: flex; flex-direction: column; align-items: center; gap: 20px; justify-content: center; padding: 20px 0; }
+        #qrOutputTargetNode { background: #fff; padding: 15px; border-radius: 12px; display: inline-block; }
+
+        /* Live Preview Menu Blocks */
+        .live-preview-container { border: 1px dashed rgba(212,175,55,0.3); border-radius: 16px; padding: 20px; background: #000; min-height: 300px; }
+        .preview-cat-header { font-family: 'Cinzel', serif; color: var(--champagne-gold); font-size: 20px; border-bottom: 1px solid var(--luxury-border); padding-bottom: 5px; margin: 25px 0 15px; text-align: center; }
+        .preview-dish-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+        .preview-dish-name { font-weight: 600; color: #fff; font-size: 15px; }
+        .preview-dish-dots { flex: 1; border-bottom: 1px dotted rgba(255,255,255,0.2); margin: 0 10px; position: relative; top: -4px; }
+        .preview-dish-price { font-family: 'Cinzel', serif; color: var(--champagne-gold); font-weight: 700; font-size: 15px; }
+        .preview-dish-desc { font-size: 12px; color: var(--text-dim); margin-top: -5px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div id="authLoader">PROCESSING ENCRYPTION LOCK AUTHENTICATION...</div>
+    
+    <div class="app-container">
+        <div class="cms-header">
+            <button class="btn-back-nav" id="backToPortalBtn">← Exit CMS</button>
+            <h1 id="cmsMainTitle">Luxury CMS Dynamic Workspace</h1>
+            <p id="cmsSubtitle">Secure Digital Artifact Deployment Configuration</p>
+        </div>
+
+        <div class="workspace-layout">
+            <div class="panel-box" id="editorPanelBlockContainer">
+                <h2>Menu Content Architecture</h2>
+                <div id="categoryEditorsAllocationNode"></div>
+                <button class="dock-action-btn btn-sec-lux" style="width:100%; padding:14px; border-radius:8px;" onclick="addCategoryNode()">+ Append New Menu Section Category</button>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:30px;">
+                <div class="panel-box">
+                    <h2>Live Client View Digital Artifact Preview</h2>
+                    <div class="live-preview-container" id="menuLivePreviewViewportTarget"></div>
+                </div>
+
+                <div class="panel-box" id="qrManagementControlBlock">
+                    <h2>Custom QR Code Telemetry Vector</h2>
+                    <div class="qr-custom-grid">
+                        <div id="qrOutputTargetNode"></div>
+                        <button class="dock-action-btn" onclick="downloadQrVectorGraphics()">Export QR Engine Vector</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="premium-action-dock">
+        <button class="dock-action-btn" onclick="commitEcosystemChangesToCloud()">Deploy Changes Live</button>
+        <button class="dock-action-btn btn-sec-lux" onclick="loadInitialEcosystemDataset()">Reset Changes</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", 
+            authDomain: "hotel-menu-f25ed.firebaseapp.com", 
+            projectId: "hotel-menu-f25ed", 
+            storageBucket: "hotel-menu-f25ed.firebasestorage.app", 
+            messagingSenderId: "750886705933", 
+            appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" 
+};
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetHotelId = urlParams.get('id');
+        const role = urlParams.get('role'); // admin or hotelowner
+
+        let activeMenuDB = [];
+        let qrCodeInstance = null;
+
+        // Session Protection Guard Gate Check Rule Allocation
+        onAuthStateChanged(auth, (user) => {
+            const currentSessionUserEmail = localStorage.getItem("hotelUserEmail");
+            if (!user || !currentSessionUserEmail) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            if (role === 'admin' && currentSessionUserEmail !== "superadmin@power.com") {
+                alert("Security Core Violation: Admin parameter misconfiguration.");
+                window.location.href = "index.html";
+                return;
+            }
+            
+            document.getElementById("authLoader").style.display = "none";
+        });
+
+        // Dynamic Redirection Setup based on Security Clearance Parameters
+        document.getElementById("backToPortalBtn").onclick = () => {
+            if (role === 'admin') {
+                window.location.href = `hotel-details.html?id=${targetHotelId}`;
+            } else {
+                window.location.href = "hotel-dashboard.html";
+            }
+        };
+
+        // Core Load Logic Interfacing Database Layer
+        async function loadInitialEcosystemDataset() {
+            if (!targetHotelId) return;
+            try {
+                const docRef = doc(db, "hotels", targetHotelId);
+                const snap = await getDoc(docRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    document.getElementById("cmsMainTitle").innerText = `${data.hotelName || 'Premium'} | Menu CMS Workspace`;
+                    activeMenuDB = data.menuData || [
+                        { id: "cat_1", title: "Starters Luxury", items: [{ id: "item_1", name: "Premium Truffle Fries", price: "450", desc: "Infused with organic white truffle essence." }] }
+                    ];
+                    drawWorkspaceInterfaces();
+                    initQrTelemetryEngine();
+                }
+            } catch (err) {
+                alert("Core Sync Error: " + err.message);
+            }
+        }
+
+        window.addCategoryNode = function() {
+            const newCatId = "cat_" + Date.now();
+            activeMenuDB.push({ id: newCatId, title: "New Menu Category", items: [] });
+            drawWorkspaceInterfaces();
+        };
+
+        window.updateCategoryTitle = function(catId, element) {
+            let cat = activeMenuDB.find(x => x.id === catId);
+            if (cat) {
+                cat.title = element.value;
+                drawLivePreviewOutput();
+            }
+        };
+
+        window.removeCategoryNode = function(catId) {
+            activeMenuDB = activeMenuDB.filter(x => x.id !== catId);
+            drawWorkspaceInterfaces();
+        };
+
+        window.addItemToCategoryNode = function(catId) {
+            let cat = activeMenuDB.find(x => x.id === catId);
+            if (cat) {
+                cat.items.push({ id: "item_" + Date.now(), name: "Signature Dish", price: "250", desc: "Garnished with exotic fresh organic herbs." });
+                drawWorkspaceInterfaces();
+            }
+        };
+
+        window.updateDishPropertyItem = function(catId, itemId, key, element) {
+            let cat = activeMenuDB.find(x => x.id === catId);
+            if (cat) {
+                let item = cat.items.find(x => x.id === itemId);
+                if (item) {
+                    item[key] = element.value;
+                    drawLivePreviewOutput();
+                }
+            }
+        };
+
+        window.removeDishItemNode = function(catId, itemId) {
+            let cat = activeMenuDB.find(x => x.id === catId);
+            if (cat) {
+                cat.items = cat.items.filter(x => x.id !== itemId);
+                drawWorkspaceInterfaces();
+            }
+        };
+
+        function drawWorkspaceInterfaces() {
+            const container = document.getElementById("categoryEditorsAllocationNode");
+            container.innerHTML = "";
+
+            activeMenuDB.forEach(cat => {
+                let itemsHtml = "";
+                cat.items.forEach(item => {
+                    itemsHtml += `
+                        <div class="dish-item-editor">
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                <input type="text" class="input-text-lux" value="${item.name}" oninput="updateDishPropertyItem('${cat.id}', '${item.id}', 'name', this)" placeholder="Dish Name">
+                                <input type="text" class="input-text-lux" value="${item.desc}" oninput="updateDishPropertyItem('${cat.id}', '${item.id}', 'desc', this)" placeholder="Short Description" style="font-size:12px;">
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                <input type="number" class="input-text-lux" value="${item.price}" oninput="updateDishPropertyItem('${cat.id}', '${item.id}', 'price', this)" placeholder="Price (₹)">
+                                <button class="dock-action-btn danger-lux" style="padding:10px; border-radius:8px;" onclick="removeDishItemNode('${cat.id}', '${item.id}')">Delete Item</button>
+                            </div>
+                        </div>`;
+                });
+
+                let catHtml = `
+                    <div class="menu-category-wrapper">
+                        <div class="category-meta-inputs">
+                            <input type="text" class="input-text-lux" style="font-weight:700; border-color:var(--luxury-border);" value="${cat.title}" oninput="updateCategoryTitle('${cat.id}', this)">
+                            <button class="dock-action-btn btn-sec-lux" style="padding:11px 15px;" onclick="addItemToCategoryNode('${cat.id}')">+ Add Dish</button>
+                            <button class="dock-action-btn danger-lux" style="padding:11px 15px;" onclick="removeCategoryNode('${cat.id}')">X</button>
+                        </div>
+                        <div style="padding-left:10px; display:flex; flex-direction:column; gap:10px;">${itemsHtml}</div>
+                    </div>`;
+                
+                container.insertAdjacentHTML('beforeend', catHtml);
+            });
+
+            drawLivePreviewOutput();
+        }
+
+        function drawLivePreviewOutput() {
+            const previewTarget = document.getElementById("menuLivePreviewViewportTarget");
+            previewTarget.innerHTML = "";
+
+            activeMenuDB.forEach(cat => {
+                if (cat.items.length === 0 && cat.title === "") return;
+                let html = `<div class="preview-cat-header">${cat.title || 'Unnamed Section'}</div>`;
+                
+                cat.items.forEach(item => {
+                    html += `
+                        <div>
+                            <div class="preview-dish-row">
+                                <div class="preview-dish-name">${item.name || 'Untitled Artifact'}</div>
+                                <div class="preview-dish-dots"></div>
+                                <div class="preview-dish-price">₹${item.price || '0'}</div>
+                            </div>
+                            <div class="preview-dish-desc">${item.desc || ''}</div>
+                        </div>`;
+                });
+                previewTarget.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function initQrTelemetryEngine() {
+            const publicMenuResolutionUrl = `https://shankarpun.com.np/menu/view.html?id=${targetHotelId}`;
+            document.getElementById("qrOutputTargetNode").innerHTML = "";
+            
+            qrCodeInstance = new QRCodeStyling({
+                width: 200, height: 200,
+                data: publicMenuResolutionUrl,
+                dotsOptions: { color: "#D4AF37", type: "dots" },
+                backgroundOptions: { color: "#ffffff" },
+                cornersSquareOptions: { type: "extra-rounded", color: "#0a0a0c" }
+            });
+            qrCodeInstance.append(document.getElementById("qrOutputTargetNode"));
+        }
+
+        window.downloadQrVectorGraphics = function() {
+            if (qrCodeInstance) qrCodeInstance.download({ name: `Menu-QR-${targetHotelId}`, extension: "png" });
+        };
+
+        window.commitEcosystemChangesToCloud = async function() {
+            if (!targetHotelId) return;
+            try {
+                const docRef = doc(db, "hotels", targetHotelId);
+                await updateDoc(docRef, { menuData: activeMenuDB });
+                alert("Ecosystem Optimization Successful. Digital Menu arrays updated live across public vectors.");
+            } catch (err) {
+                alert("Database Integration Failure: " + err.message);
+            }
+        };
+
+        loadInitialEcosystemDataset();
+    </script>
+</body>
+</html>

@@ -17,13 +17,10 @@ const db = getFirestore(app);
 
 onAuthStateChanged(auth, (user) => {
     if (user && user.email === "superadmin@power.com") { 
+        localStorage.setItem("hotelUserEmail", user.email);
         window.location.href = "dashboard.html"; 
     }
 });
-
-if(localStorage.getItem("hotelUserEmail")) {
-    window.location.href = "hotel-dashboard.html";
-}
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
     const email = document.getElementById("username").value.trim();
@@ -44,7 +41,8 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
             const snap = await getDocs(q);
             
             if (!snap.empty) {
-                const hotelData = snap.docs[0].data();
+                const hotelDoc = snap.docs[0];
+                const hotelData = hotelDoc.data();
                 
                 if (hotelData.password !== password) {
                     throw new Error("Invalid username or system password allocation.");
@@ -55,6 +53,7 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
                 }
                 
                 localStorage.setItem("hotelUserEmail", email);
+                localStorage.setItem("hotelDocId", hotelDoc.id);
                 window.location.href = "hotel-dashboard.html";
             } else {
                  throw new Error("Account records not found in systems architecture.");
