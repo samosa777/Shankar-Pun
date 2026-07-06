@@ -9,7 +9,7 @@
     <!-- External Libraries -->
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script> <!-- Added for URL State Compression -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 
     <style>
         /* --- CORE LUXURY VARIABLES --- */
@@ -98,13 +98,19 @@
         .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; }
         .mini-theme-btn:hover, .mini-theme-btn.selected { border-color: var(--champagne-gold); background: rgba(212,175,55,0.1); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
         
-        /* --- TELEGRAM STYLE QR MODAL --- */
+        /* --- TELEGRAM STYLE QR MODAL STYLES --- */
         .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
-        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
+        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 450px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 95vh; overflow-y: auto;}
         .qr-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
         .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0;}
         
+        /* Large QR Styling */
+        #qrCodeContainer { width: 100%; display: flex; justify-content: center; align-items: center; }
+        #qrCodeContainer svg { width: 100% !important; height: auto !important; max-width: 320px; }
+        
+        #qrDisplayedText { margin-top: 15px; font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; color: #000; text-align: center; display: none; width: 100%; word-break: break-word; }
+
         .qr-styles-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-styles-scroll::-webkit-scrollbar { height: 4px; }
         .qr-styles-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
@@ -363,21 +369,22 @@
         </div>
     </div>
 
+    <!-- QR CODE MODAL UPDATED FOR SIZE, NAME INPUT & TELEGRAM STYLE -->
     <div class="qr-modal-overlay" id="qrModalOverlay">
         <div class="qr-box">
             <div class="qr-header">
                 <h2>Share Menu QR</h2>
             </div>
             
-            <div class="qr-body">
+            <div class="qr-body" id="qrCaptureArea">
                 <div id="qrCodeContainer"></div>
+                <div id="qrDisplayedText"></div>
             </div>
 
             <div class="qr-custom-logo-settings" style="padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); text-align:left;">
                 <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 15px;">Pro Logo Editor (QR)</div>
                 
                 <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
-                    <!-- Fixed missing onchange event -->
                     <input type="file" id="qrLogoUploader" accept="image/*" class="mini-data-field" style="padding:8px; font-size:11px; flex:1;" onchange="handleQRLogoUpload(event)">
                     <button class="premium-btn btn-danger" style="padding:10px 15px; font-size:11px;" onclick="removeQRLogo()">Remove</button>
                 </div>
@@ -393,6 +400,10 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- NEW: TEXT BELOW QR CODE SETTING -->
+                <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 10px; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">Text Below QR Code</div>
+                <input type="text" id="qrTextBelowInput" class="mini-data-field" style="padding:10px; font-size:12px; width:100%; text-align:center;" placeholder="Enter Name or Text to show below QR" oninput="updateQRText()">
             </div>
 
             <div class="qr-styles-scroll" id="qrStylesSelector"></div>
@@ -435,10 +446,24 @@
                         <span style="font-size:14px; font-weight:700; color:var(--champagne-gold);">Custom Photo Book Configurator</span>
                     </div>
                     
+                    <!-- FIX APPLIED: URL INPUT ADDED TO PREVENT "PURANI PHOTO" ISSUE -->
                     <div style="margin-bottom: 15px;" id="adminUploadActionFieldsNode">
-                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload Menu Pages (Max 50 Images)</span>
-                        <input type="file" id="folioPageImagesUploader" accept="image/*" multiple class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleFolioUpload(event)">
-                        <div class="uploaded-images-admin-grid" id="adminFolioThumbsPreviewGrid"></div>
+                        <span style="font-size: 11px; color: var(--champagne-gold); text-transform: uppercase; font-weight: 700;">Add Menu Pages (Important for QR Sync)</span>
+                        
+                        <div class="mini-label-group super-url-field-node" style="margin-top:10px;">
+                            <span style="color:#fff;">1. Paste Image URL (Best for syncing completely via QR Code)</span>
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <input type="text" id="folioUrlInput" class="mini-data-field" placeholder="Paste Google Drive or Imgur link here...">
+                                <button class="premium-btn" style="padding:10px; font-size:10px; white-space:nowrap;" onclick="addFolioImageUrl()">Add URL</button>
+                            </div>
+                        </div>
+
+                        <div class="mini-label-group" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top:15px;">
+                            <span>2. Upload Local File (Warning: May be too large to sync via QR Code URL)</span>
+                            <input type="file" id="folioPageImagesUploader" accept="image/*" multiple class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleFolioUpload(event)">
+                        </div>
+                        
+                        <div class="uploaded-images-admin-grid" id="adminFolioThumbsPreviewGrid" style="margin-top:15px;"></div>
                     </div>
 
                     <div style="margin-bottom: 10px;">
@@ -465,7 +490,6 @@
                     
                     <div style="margin-bottom: 15px;" id="logoUploaderFieldInputContainer">
                         <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload New Logo</span>
-                        <!-- Fixed missing onchange event -->
                         <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleMainLogoUpload(event)">
                     </div>
                     
@@ -535,7 +559,6 @@
     </div>
 
     <script>
-        // Brand Data including logo and its style settings
         let brandData = { 
             name: "Hotel Mantra Thakali & Hospitality", 
             tag: "Premium Dining Experience", 
@@ -562,12 +585,13 @@
             "High-End Steakhouse", "Floating Artistic Gallery", "Comic Pop Art", "Luxury Card Grid"
         ];
 
+        // TELEGRAM STYLE ADDED AS DEFAULT (#1) WITH PROPER DOTS & CORNERS
         const qrStyles = [
-            { name: "Telegram Blue", dots: "rounded", corners: "extra-rounded", color: "#24A1DE", bg: "#ffffff" },
-            { name: "Neon Matrix", dots: "classy", corners: "square", color: "#00ff66", bg: "#000000" },
-            { name: "Luxury Gold", dots: "dots", corners: "extra-rounded", color: "#d4af37", bg: "#1e1e1e" },
-            { name: "Sunset Gradient", dots: "rounded", corners: "rounded", color: "#f43f5e", bg: "#ffffff" },
-            { name: "Cyberpunk Pink", dots: "classy-inversed", corners: "square", color: "#ec4899", bg: "#0f172a" }
+            { name: "Telegram Style", dots: "rounded", corners: "extra-rounded", cornersDot: "dot", color: "#24A1DE", bg: "#ffffff" },
+            { name: "Neon Matrix", dots: "classy", corners: "square", cornersDot: "square", color: "#00ff66", bg: "#000000" },
+            { name: "Luxury Gold", dots: "dots", corners: "extra-rounded", cornersDot: "dot", color: "#d4af37", bg: "#1e1e1e" },
+            { name: "Sunset Gradient", dots: "rounded", corners: "rounded", cornersDot: "square", color: "#f43f5e", bg: "#ffffff" },
+            { name: "Cyberpunk Pink", dots: "classy-inversed", corners: "square", cornersDot: "square", color: "#ec4899", bg: "#0f172a" }
         ];
 
         let customFolioPages = [
@@ -578,6 +602,7 @@
         let currentFolioStyle = "style-book-flip";
         let activeFolioPageIndex = 0;
         let databases = [];
+        let hasCustomFolio = false; // Add tracking flag
         
         for(let i=1; i<=20; i++) {
             databases.push({ id: i, title: themeNames[i-1] });
@@ -589,8 +614,9 @@
         let previewThemeId = 1;
         let menuModeStr = "theme"; 
         
+        // BADA QR CODE - INCREASED SIZE FOR MOBILE SCANNING
         const qrCodeInstance = new QRCodeStyling({
-            width: 250, height: 250, margin: 10, type: "svg",
+            width: 320, height: 320, margin: 5, type: "svg",
             imageOptions: { crossOrigin: "anonymous", margin: 8 }
         });
 
@@ -648,7 +674,6 @@
             loadAllSavedData();
             const urlParams = new URLSearchParams(window.location.search);
 
-            // LZ-STRING URL STATE DECODING (Crucial Fix for QR Data Sync)
             if(urlParams.has('s')) {
                 try {
                     let decoded = LZString.decompressFromEncodedURIComponent(urlParams.get('s'));
@@ -660,7 +685,6 @@
                             brandData.tag = parsed.b.tag;
                             brandData.phone = parsed.b.phone;
                             if(parsed.b.logoSettings) brandData.logoSettings = parsed.b.logoSettings;
-                            // Update logo only if url included it
                             if(parsed.b.logo) brandData.logo = parsed.b.logo;
                         }
                         if(parsed.t) currentThemeId = parsed.t;
@@ -668,7 +692,7 @@
                         if(parsed.p && parsed.p.length > 0) customFolioPages = parsed.p;
                         if(parsed.f) currentFolioStyle = parsed.f;
                         
-                        saveAllData(); // Force save downloaded state to mobile's local storage
+                        saveAllData(); 
                     }
                 } catch(e) { console.error("Sync data parse error", e); }
             }
@@ -762,7 +786,6 @@
             }
         }
 
-        // --- NEW/FIXED LOGO UPLOAD & TRANSFORM FUNCTIONS ---
         function handleMainLogoUpload(event) {
             const file = event.target.files[0];
             if(file) {
@@ -806,7 +829,6 @@
                 img.style.transform = `scale(${brandData.logoSettings.scale || 1}) translate(${brandData.logoSettings.x || 0}px, ${brandData.logoSettings.y || 0}px) rotate(${brandData.logoSettings.rotate || 0}deg)`;
                 img.style.borderRadius = `${brandData.logoSettings.radius || 0}%`;
                 
-                // Keep Admin inputs synced
                 let els = ['mainLogoScale','mainLogoX','mainLogoY','mainLogoRotate','mainLogoRadius'];
                 if(document.getElementById(els[0])) {
                     document.getElementById("mainLogoScale").value = brandData.logoSettings.scale || 1;
@@ -867,7 +889,7 @@
             document.getElementById("liveBrandTitleNode").innerText = brandData.name;
             document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
             document.getElementById("liveBrandContactNode").innerText = brandData.phone;
-            saveAllData(); // Important: Save so QR fetches freshest inputs
+            saveAllData(); 
         }
 
         function renderThemeMenu() {
@@ -950,10 +972,35 @@
             renderThemeMenu();
         }
 
+        // NEW METHOD: Added URL sync for Portfolio
+        function addFolioImageUrl() {
+            let url = document.getElementById("folioUrlInput").value;
+            if(!url) return;
+            url = autoFormatImageUrl(url);
+            
+            // Remove purani photos automatically
+            if(!hasCustomFolio && customFolioPages.length > 0 && customFolioPages[0].includes("unsplash.com")) {
+                customFolioPages = [];
+                hasCustomFolio = true;
+            }
+
+            customFolioPages.push(url);
+            document.getElementById("folioUrlInput").value = "";
+            renderFolio();
+            renderFolioAdminThumbs();
+            saveAllData();
+        }
+
         function handleFolioUpload(event) {
             const files = event.target.files;
             if(!files || files.length === 0) return;
             
+            // Remove purani photos automatically
+            if(!hasCustomFolio && customFolioPages.length > 0 && customFolioPages[0].includes("unsplash.com")) {
+                customFolioPages = [];
+                hasCustomFolio = true;
+            }
+
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -1012,8 +1059,20 @@
             renderFolio();
         }
 
+        // TEXT BELOW QR FUNCTION
+        function updateQRText() {
+            let txt = document.getElementById("qrTextBelowInput").value;
+            let displayNode = document.getElementById("qrDisplayedText");
+            if(txt.trim() === "") {
+                displayNode.style.display = "none";
+            } else {
+                displayNode.style.display = "block";
+                displayNode.innerText = txt;
+            }
+        }
+
         function showQR() {
-            saveAllData(); // FORCE Save so QR generates with newest edits
+            saveAllData(); 
             document.getElementById("qrModalOverlay").style.display = "flex";
             let qHtml = "";
             qrStyles.forEach((s, i) => {
@@ -1048,7 +1107,6 @@
             const s = qrStyles[index];
             let baseUrl = window.location.href.split('?')[0];
             
-            // SECURITY/SIZE FILTER: Filter out massive base64 image strings so QR doesn't break
             let exportDB = JSON.parse(JSON.stringify(activeDB));
             exportDB.forEach(cat => {
                 cat.items.forEach(it => {
@@ -1077,10 +1135,12 @@
             
             let customLogoSize = parseFloat(document.getElementById('qrLogoSize').value) || 0.4;
 
+            // Updated for Telegram styling Support 
             qrCodeInstance.update({
                 data: clientUrl,
                 dotsOptions: { color: s.color, type: s.dots },
                 cornersSquareOptions: { color: s.color, type: s.corners },
+                cornersDotOptions: { color: s.color, type: s.cornersDot || "square" }, // Crucial for perfect round dots
                 backgroundOptions: { color: s.bg },
                 imageOptions: { crossOrigin: "anonymous", margin: 8, imageSize: customLogoSize },
                 image: qrLogoRemoved ? null : (qrCurrentLogo || "https://images.unsplash.com/photo-1559251606-c623743a6d76?w=100")
@@ -1089,8 +1149,16 @@
             qrCodeInstance.append(document.getElementById("qrCodeContainer"));
         }
 
+        // NEW DOWNLOAD METHOD - Downloads QR with Name Below Using html2canvas
         function downloadQR() {
-            qrCodeInstance.download({ name: "menu-qr", extension: "png" });
+            let captureArea = document.getElementById("qrCaptureArea");
+            
+            html2canvas(captureArea, { scale: 3, useCORS: true }).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'premium-menu-qr.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
         }
     </script>
 </body>
