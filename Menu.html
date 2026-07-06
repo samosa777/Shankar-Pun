@@ -3,1024 +3,908 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hotel Mantra Thakali & Hospitality - Premium CMS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <title>Hotel Menu Management Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        /* --- CORE LUXURY VARIABLES --- */
         :root {
-            --champagne-gold: #D4AF37; --obsidian-dark: #0a0a0c;
-            --surface-velvet: #121215; --card-dark: #181a1f;
-            --input-bg: #1e2128; --text-pure: #ffffff; --text-dim: #9ba1a6;
-            --luxury-border: rgba(212, 175, 55, 0.2); --danger-red: #ff3333;
-            --interface-transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            --champagne-gold: #D4AF37;
+            --dark-bg: #050505;
+            --card-bg: #111111;
+            --text-light: #ededed;
+            --text-muted: #888888;
+            --border-color: #222222;
         }
 
-        body { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: var(--obsidian-dark); color: var(--text-pure); min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-
-        /* Full Screen Loader */
-        #authLoader { position: fixed; inset: 0; background: #050505; z-index: 99999; display: flex; justify-content: center; align-items: center; font-size: 20px; color: #D4AF37; font-family: 'Playfair Display', serif; letter-spacing: 2px; }
-
-        /* --- THEME SELECTION DASHBOARD --- */
-        .admin-dashboard-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--obsidian-dark); z-index: 99995; display: none; flex-direction: column; align-items: center; padding: 20px 15px; overflow-y: auto; box-sizing: border-box; }
-        .dashboard-top-bar { width: 100%; max-width: 1200px; display: flex; justify-content: flex-end; margin-bottom: 15px; }
-        .dashboard-back-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 11px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .dashboard-back-btn:hover { background: rgba(255, 51, 51, 0.1); border-color: rgba(255, 51, 51, 0.3); color: var(--danger-red); }
-
-        .dashboard-header { text-align: center; margin-bottom: 30px; margin-top: 10px; }
-        .dashboard-header h1 { font-family: 'Cinzel', serif; color: var(--champagne-gold); font-size: 28px; margin: 0 0 10px; }
-        .dashboard-header p { color: var(--text-dim); font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .dashboard-section-title { font-family: 'Cinzel', serif; color: #fff; width: 100%; max-width: 1200px; font-size: 18px; letter-spacing: 2px; margin: 20px 0 15px; padding-left: 10px; text-align: center; }
-        .menu-selection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; max-width: 900px; padding-bottom: 30px; margin: 0 auto; }
-        .menu-card-item { background: linear-gradient(145deg, var(--card-dark), #0f1115); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 50px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-        .menu-card-item:hover { transform: translateY(-5px); border-color: var(--champagne-gold); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15); }
-        .menu-card-item h3 { color: #fff; font-size: 20px; margin: 0 0 12px; font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 1px;}
-        .menu-card-item p { color: var(--text-dim); font-size: 11px; margin: 0; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        
-        .menu-card-item.custom-premium-card { background: linear-gradient(145deg, #1e1b15, #0a0907); border: 1px solid var(--champagne-gold); }
-        .menu-card-item.custom-premium-card h3 { color: var(--champagne-gold); }
-        .menu-card-item.custom-premium-card p { color: var(--champagne-gold); opacity: 0.8;}
-
-        /* --- MODERN FLOATING DOCK (NEW STANDARD UI) --- */
-        .modern-action-dock {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            display: none; align-items: center; justify-content: center; gap: 8px;
-            background: rgba(18, 18, 24, 0.85); backdrop-filter: blur(20px);
-            padding: 10px 15px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1);
-            z-index: 9999; box-shadow: 0 20px 40px rgba(0,0,0,0.8); width: max-content; max-width: 95%;
-            overflow-x: auto;
-        }
-        .modern-action-dock::-webkit-scrollbar { display: none; }
-        .dock-btn {
-            background: transparent; border: none; color: #fff; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 8px 12px; border-radius: 20px;
-            cursor: pointer; transition: 0.3s; font-family: 'Montserrat', sans-serif; font-size: 10px;
-            font-weight: 500; letter-spacing: 0.5px; opacity: 0.8; white-space: nowrap;
-        }
-        .dock-btn svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; }
-        .dock-btn:hover { background: rgba(255,255,255,0.1); opacity: 1; color: var(--champagne-gold); }
-        .dock-btn.danger { color: #ff6b6b; }
-        .dock-btn.danger:hover { background: rgba(255,107,107,0.15); }
-
-        /* General Buttons */
-        .premium-btn { background: var(--champagne-gold); color: #000; border: none; padding: 14px 20px; font-size: 13px; font-weight: 700; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); }
-        .premium-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4); }
-        .btn-outline { background: transparent; color: var(--text-pure); border: 1px solid rgba(255,255,255,0.2); }
-        .btn-outline:hover { background: rgba(255,255,255,0.1); }
-        .btn-danger { background: rgba(255, 51, 51, 0.1); color: var(--danger-red); border: 1px solid rgba(255, 51, 51, 0.3); box-shadow: none;}
-        .btn-danger:hover { background: var(--danger-red); color: #fff; box-shadow: 0 10px 25px rgba(255, 51, 51, 0.4); }
-        
-        /* Sliders Styling */
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]:focus { outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; background: var(--text-pure); cursor: pointer; margin-top: -7px; box-shadow: 0 2px 6px rgba(0,0,0,0.8); border: 3px solid var(--champagne-gold); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: rgba(255,255,255,0.15); border-radius: 2px; }
-
-        /* --- PRO PHOTO EDITOR UI PANEL --- */
-        .pro-editor-panel { background: #15161a; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 15px; margin-top: 10px; }
-        .editor-control-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-        .editor-control-row:last-child { margin-bottom: 0; }
-        .editor-icon-label { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 50px; flex-shrink: 0; gap: 4px; }
-        .editor-icon-label svg { width: 18px; height: 18px; fill: var(--text-dim); }
-        .editor-icon-label span { font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-        .editor-slider-wrap { flex-grow: 1; }
-
-        /* --- THEME CHANGER SIDEBAR --- */
-        .theme-quick-sidebar { position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh; background: rgba(10, 12, 15, 0.95); z-index: 100000; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); padding: 25px; overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; box-sizing: border-box; backdrop-filter: blur(20px);}
-        .theme-quick-sidebar.active { right: 0; }
-        .theme-quick-sidebar h3 { color: var(--champagne-gold); font-family: 'Cinzel', serif; margin-top: 0; margin-bottom: 20px; font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; }
-        .mini-theme-btn:hover, .mini-theme-btn.selected { border-color: var(--champagne-gold); background: rgba(212,175,55,0.1); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
-        
-        /* --- TELEGRAM STYLE QR MODAL --- */
-        .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
-        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
-        .qr-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
-        .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
-        .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0;}
-        
-        .qr-styles-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
-        .qr-styles-scroll::-webkit-scrollbar { height: 4px; }
-        .qr-styles-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        .qr-style-pill { background: rgba(255,255,255,0.05); color: #fff; padding: 8px 16px; border-radius: 30px; font-size: 11px; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
-        .qr-style-pill.active-pill { border-color: var(--champagne-gold); background: rgba(212,175,55,0.1); color: var(--champagne-gold); }
-        
-        .qr-footer { display: flex; gap: 10px; padding: 20px; background: #121215; flex-shrink: 0;}
-        .qr-footer button { flex: 1; padding: 12px; }
-
-        /* --- WORKSPACE OVERALL --- */
-        .workspace-master-container { display: none; width: 100%; min-height: 100vh; position: relative; padding-bottom: 90px; }
-
-        /* --- UNIVERSAL MENU CANVAS --- */
-        .luxury-menu-canvas { width: 100%; max-width: 550px; margin: 0 auto; padding: 30px 20px; box-sizing: border-box; transition: all 0.5s ease; min-height: 100vh; position: relative; }
-        .curated-brand-header { text-align: center; margin-bottom: 30px; padding-bottom: 25px; transition: all 0.5s ease; }
-        .brand-logo-frame { width: 90px; height: 90px; margin: 0 auto 15px; overflow: hidden; background: transparent; transition: all 0.5s ease; position: relative; }
-        .brand-logo-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s ease, border-radius 0.2s ease; }
-        .curated-brand-header h1 { margin: 0; font-size: 24px; text-transform: uppercase; transition: all 0.5s ease; }
-        .curated-brand-header p { font-size: 11px; margin: 8px 0 0; text-transform: uppercase; letter-spacing: 2px; }
-        .header-phone-contact { font-size: 12px; margin-top: 12px; font-weight: 600; opacity: 0.8; }
-        
-        .menu-section-wrapper { margin-bottom: 35px; }
-        .menu-section-heading { font-size: 16px; text-transform: uppercase; margin-bottom: 15px; font-weight: 700; transition: all 0.5s ease; }
-        .premium-food-card { display: flex; overflow: hidden; margin-bottom: 15px; min-height: 90px; transition: all 0.5s ease; cursor: default; }
-        .food-card-media-frame { width: 90px; min-width: 90px; height: 90px; transition: all 0.5s ease; }
-        .food-card-media-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .premium-food-card:hover .food-card-media-frame img { transform: scale(1.1); }
-        .food-card-details-box { padding: 12px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; transition: all 0.5s ease; }
-        .food-card-meta-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
-        .food-title-text { font-size: 14px; font-weight: 700; margin: 0; line-height: 1.3; }
-        .food-price-badge { font-size: 14px; font-weight: 700; white-space: nowrap; }
-        .food-description-text { font-size: 10px; margin: 6px 0 0; line-height: 1.4; opacity: 0.8; }
-
-        /* --- 10 DYNAMIC BOOK TRANSITION STYLES --- */
-        #uploadedFolioViewContainer { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: 10; background: #000; }
-        .uploaded-folio-viewport { position: relative; width: 100%; height: 100%; margin: 0; overflow: hidden; border-radius: 0; box-shadow: none; background: transparent; perspective: 1500px; cursor: pointer; touch-action: none; }
-        .uploaded-folio-track { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
-        .folio-page-node { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background: transparent; visibility: hidden; opacity: 0; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; transform-origin: left center; }
-        
-        .luxury-menu-canvas.uploaded-mode-active { padding: 0 !important; background: #000 !important; }
-        @media (max-width: 1023px) {
-            .luxury-menu-canvas.uploaded-mode-active { max-width: 100% !important; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .folio-page-node.active-page { visibility: visible; opacity: 1; pointer-events: auto; z-index: 5; transform: none; }
-        .folio-page-node.prev-page { visibility: visible; }
-
-        /* Style Transforms */
-        .style-book-flip .folio-page-node { opacity: 0; transform: rotateY(90deg); z-index: 1; }
-        .style-book-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); z-index: 5; }
-        .style-book-flip .folio-page-node.prev-page { opacity: 0; transform: rotateY(-90deg); z-index: 2; }
-
-        .style-vertical-slide .folio-page-node { transform: translateY(100%); }
-        .style-vertical-slide .folio-page-node.active-page { transform: translateY(0); }
-        .style-vertical-slide .folio-page-node.prev-page { transform: translateY(-100%); }
-
-        .style-horizontal-slide .folio-page-node { transform: translateX(100%); }
-        .style-horizontal-slide .folio-page-node.active-page { transform: translateX(0); }
-        .style-horizontal-slide .folio-page-node.prev-page { transform: translateX(-100%); }
-
-        .style-spin-drop .folio-page-node { opacity: 0; transform: rotate(180deg) scale(0.3); }
-        .style-spin-drop .folio-page-node.active-page { opacity: 1; transform: rotate(0deg) scale(1); }
-
-        .style-deck-peel .folio-page-node { transform: scale(0.85) translateZ(-200px); opacity: 0; }
-        .style-deck-peel .folio-page-node.active-page { transform: scale(1) translateZ(0); opacity: 1; z-index: 5; }
-        .style-deck-peel .folio-page-node.prev-page { transform: translateX(-120%) rotate(-15deg); opacity: 0; z-index: 6; }
-
-        .style-zoom-dissolve .folio-page-node { opacity: 0; transform: scale(1.3); }
-        .style-zoom-dissolve .folio-page-node.active-page { opacity: 1; transform: scale(1); }
-        .style-zoom-dissolve .folio-page-node.prev-page { opacity: 0; transform: scale(0.7); }
-
-        .style-door-flip .folio-page-node { opacity: 0; transform: rotateY(-180deg); transform-origin: center center; }
-        .style-door-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); }
-
-        .style-cube-rotation .folio-page-node { opacity: 0; transform: rotateX(-90deg) translateZ(200px); transform-origin: center bottom; }
-        .style-cube-rotation .folio-page-node.active-page { opacity: 1; transform: rotateX(0deg) translateZ(0); }
-
-        .style-elastic-curtain .folio-page-node { transform: translateY(-100%); transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-        .style-elastic-curtain .folio-page-node.active-page { transform: translateY(0); }
-
-        .style-shutter-expand .folio-page-node { opacity: 0; transform: scaleX(0); transform-origin: center; }
-        .style-shutter-expand .folio-page-node.active-page { opacity: 1; transform: scaleX(1); }
-
-        /* --- AUTO NUDGE HINT ANIMATIONS --- */
-        @keyframes nudge-horizontal {
-            0%, 100% { transform: translateX(0); }
-            5% { transform: translateX(-12px); }
-            10% { transform: translateX(0); }
-            15% { transform: translateX(-12px); }
-            20% { transform: translateX(0); }
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        @keyframes nudge-vertical {
-            0%, 100% { transform: translateY(0); }
-            5% { transform: translateY(-12px); }
-            10% { transform: translateY(0); }
-            15% { transform: translateY(-12px); }
-            20% { transform: translateY(0); }
+
+        /* Admin & Setup UI Container */
+        .admin-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        @keyframes nudge-zoom {
-            0%, 100% { transform: scale(1); }
-            5% { transform: scale(0.95); }
-            10% { transform: scale(1); }
-            15% { transform: scale(0.95); }
-            20% { transform: scale(1); }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
         }
-        
-        .hint-h { animation: nudge-horizontal 4s infinite; }
-        .hint-v { animation: nudge-vertical 4s infinite; }
-        .hint-z { animation: nudge-zoom 4s infinite; }
 
-        /* DIGITAL LAYOUT THEME STYLES */
-        .theme-1 .luxury-menu-canvas { background: #000; color: #fff; font-family: 'Cinzel', serif; }
-        .theme-1 .curated-brand-header { border-bottom: 1px solid #D4AF37; }
-        .theme-1 .brand-logo-frame { border: 2px solid #D4AF37; border-radius: 50%; }
-        .theme-1 h1, .theme-1 .menu-section-heading, .theme-1 .food-price-badge { color: #D4AF37; }
-        .theme-1 .premium-food-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; }
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: var(--champagne-gold);
+            letter-spacing: 1px;
+        }
 
-        .theme-2 .luxury-menu-canvas { background: #ffffff; color: #111; font-family: 'Montserrat', sans-serif; }
-        .theme-2 .curated-brand-header { border-bottom: 2px solid #f0f0f0; }
-        .theme-2 .brand-logo-frame { border-radius: 0; }
-        .theme-2 h1 { font-weight: 300; letter-spacing: 5px; }
-        .theme-2 .menu-section-heading { text-align: center; letter-spacing: 3px; color: #666; }
-        .theme-2 .premium-food-card { background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: none; }
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--champagne-gold);
+            color: var(--champagne-gold);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
 
-        .theme-3 .luxury-menu-canvas { background: #050510; color: #00ffff; font-family: 'Space Mono', monospace; }
-        .theme-3 .brand-logo-frame { border: 2px solid #00ffff; transform: rotate(45deg); }
-        .theme-3 .brand-logo-frame img { transform: rotate(-45deg) scale(1.4); }
-        .theme-3 h1 { color: #ff00ff; text-shadow: 2px 2px 10px rgba(255,0,255,0.5); }
-        .theme-3 .premium-food-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(0,255,255,0.3); }
+        .btn-back:hover {
+            background: var(--champagne-gold);
+            color: var(--dark-bg);
+        }
 
-        .theme-4 .luxury-menu-canvas { background: #f1f4e6; color: #2c4228; font-family: 'Cormorant Garamond', serif; }
-        .theme-4 .brand-logo-frame { border-radius: 50% 50% 0 50%; border: 3px solid #6b8e63; }
-        .theme-4 h1, .theme-4 .menu-section-heading { font-style: italic; }
-        .theme-4 .premium-food-card { background: transparent; border-bottom: 1px solid #d5ddcb; flex-direction: row-reverse; }
-        .theme-4 .food-card-media-frame { border-radius: 50px; margin: 10px; }
+        .tabs-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
 
-        .theme-5 .luxury-menu-canvas { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); color: #fff; font-family: 'Poppins', sans-serif; }
-        .theme-5 .brand-logo-frame { border-radius: 20px; }
-        .theme-5 .premium-food-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; }
+        .tab-link {
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 10px 5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
 
-        .theme-6 .luxury-menu-canvas { background: #2b0a0a; color: #f5e6e6; font-family: 'Playfair Display', serif; }
-        .theme-6 .brand-logo-frame { border: 2px solid #d84b4b; }
-        .theme-6 .menu-section-heading { text-align: center; background: #d84b4b; color: #fff; padding: 5px; }
-        .theme-6 .premium-food-card { background: #3d1414; border: 1px solid #5a2020; border-radius: 8px; }
+        .tab-link.active {
+            color: var(--champagne-gold);
+        }
 
-        .theme-7 .luxury-menu-canvas { background: #dfdfdf; color: #000; font-family: 'Oswald', sans-serif; text-transform: uppercase; }
-        .theme-7 .brand-logo-frame { box-shadow: 5px 5px 0 #000; }
-        .theme-7 h1 { font-weight: 900; letter-spacing: -1px; }
-        .theme-7 .premium-food-card { background: #fff; border: 2px solid #000; box-shadow: 5px 5px 0 #000; }
+        .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--champagne-gold);
+        }
 
-        .theme-8 .luxury-menu-canvas { background: #020813; color: #d0d7e5; }
-        .theme-8 .brand-logo-frame { border-radius: 50%; border: 2px solid #4299e1; }
-        .theme-8 .menu-section-heading { color: #63b3ed; border-bottom: 1px solid #2a4365; display: inline-block; }
-        .theme-8 .premium-food-card { background: #061123; border-left: 3px solid #3182ce; }
+        .tab-panel {
+            display: none;
+        }
 
-        .theme-9 .luxury-menu-canvas { background: #f4ece1; color: #3e322c; font-family: 'Cormorant Garamond', serif; }
-        .theme-9 .brand-logo-frame { border-radius: 50%; filter: sepia(0.5); }
-        .theme-9 .premium-food-card { border-bottom: 1px solid #d4c8bf; }
+        .tab-panel.active {
+            display: block;
+        }
 
-        .theme-10 .luxury-menu-canvas { background: #ffffff; color: #000; font-family: 'Space Mono', monospace; }
-        .theme-10 .curated-brand-header { border: 2px solid #000; padding: 15px; }
-        .theme-10 .premium-food-card { border: 2px solid #000; }
-
-        .theme-11 .luxury-menu-canvas { background: linear-gradient(to bottom, #ff7e5f, #feb47b); color: #fff; }
-        .theme-11 .premium-food-card { background: rgba(255,255,255,0.9); color: #333; border-radius: 20px; }
-
-        .theme-12 .luxury-menu-canvas { background: #faf9f5; color: #4a4741; }
-        .theme-12 .premium-food-card { flex-direction: row-reverse; border-bottom: 1px solid #eee; }
-
-        .theme-13 .luxury-menu-canvas { background: #1a0033; color: #ffb3ff; font-family: 'Oswald', sans-serif; }
-        .theme-13 .premium-food-card { background: #26004d; border: 1px solid #ff00ff; border-radius: 10px; }
-
-        .theme-14 .luxury-menu-canvas { background: #e0f2f1; color: #004d40; }
-        .theme-14 .premium-food-card { background: #ffffff; border-radius: 30px 10px 30px 10px; }
-        .theme-14 .food-card-media-frame { border-radius: 30px 0 0 10px; }
-
-        .theme-15 .luxury-menu-canvas { background: #000000; color: #00ff00; font-family: 'Courier New', Courier, monospace; }
-        .theme-15 .premium-food-card { background: #020a02; border: 1px solid #004400; }
-
-        .theme-16 .luxury-menu-canvas { background: #fcf4f4; color: #7a6363; font-family: 'Playfair Display', serif; }
-        .theme-16 .premium-food-card { background: #fff; border-radius: 25px; }
-        .theme-16 .food-card-media-frame { border-radius: 25px; margin: 5px; }
-
-        .theme-17 .luxury-menu-canvas { background: #1c1512; color: #d7ccc8; font-family: 'Cinzel', serif; }
-        .theme-17 .premium-food-card { background: #271d19; border: 1px solid #3e2723; border-radius: 8px; }
-
-        .theme-18 .luxury-menu-canvas { background: #f0f2f5; color: #333; }
-        .theme-18 .premium-food-card { background: #fff; border-radius: 15px; margin-bottom: 20px; }
-        .theme-18 .food-card-media-frame { border-radius: 15px 0 0 15px; }
-
-        .theme-19 .luxury-menu-canvas { background: #ffeb3b; color: #000; font-family: 'Oswald', sans-serif; }
-        .theme-19 .premium-food-card { background: #fff; border: 3px solid #000; border-radius: 10px; box-shadow: 4px 4px 0 #000; }
-
-        .theme-20 .luxury-menu-canvas { background: #eaeaea; color: #222; }
-        .theme-20 .premium-food-card { background: #fff; flex-direction: column; border-radius: 15px; border: 1px solid #ddd; }
-        .theme-20 .food-card-media-frame { width: 100%; height: 140px; border-radius: 15px 15px 0 0; }
-
-        /* --- THE OPERATIONAL STUDIO PANEL (Admin) --- */
-        .grand-operational-desk { position: fixed; bottom: 0; left: 0; width: 100%; height: 85vh; background: rgba(18,18,21,0.98); border-radius: 24px 24px 0 0; box-shadow: 0 -20px 60px rgba(0,0,0,0.9); z-index: 10000; display: flex; flex-direction: column; overflow: hidden; transform: translateY(100%); transition: var(--interface-transition); font-family: 'Montserrat', sans-serif; backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); }
-        .workspace-master-container.admin-active .grand-operational-desk { transform: translateY(0); }
-        .desk-header-row { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
-        .desk-header-row h3 { font-weight: 600; color: #fff; margin: 0; font-size: 15px; letter-spacing: 1px; }
-        .studio-top-corner-closer { background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 16px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; transition: 0.3s; display: flex; align-items: center; justify-content: center;}
-        
-        .desk-scrollable-body { flex-grow: 1; overflow-y: auto; padding: 20px; }
-        .desk-scrollable-body::-webkit-scrollbar { width: 4px; }
-        .desk-scrollable-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
-        
-        .super-admin-only-panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 16px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .cms-category-fieldset-box { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
-        .cms-category-title-strip { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        .compact-item-input-row { display: grid; grid-template-columns: 1fr; gap: 10px; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.02); }
-        .mini-label-group { display: flex; flex-direction: column; gap: 5px; }
-        .mini-label-group.super-url-field-node { display: flex; } /* Modified to always show for easy editing */
-        .mini-label-group span { font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
-        .mini-data-field { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; font-size: 13px; border-radius: 10px; transition: 0.3s; font-family: 'Montserrat', sans-serif;}
-        .mini-data-field:focus { border-color: var(--champagne-gold); outline: none; }
-        
-        .desk-footer-action-bar { background: rgba(0,0,0,0.5); padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; padding-bottom: max(15px, env(safe-area-inset-bottom)); }
-
-        .uploaded-images-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 10px; }
-        .uploaded-admin-thumb-frame { position: relative; aspect-ratio: 3/4; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden; background: #000; }
-        .uploaded-admin-thumb-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .thumb-remove-overlay-btn { position: absolute; top: 2px; right: 2px; background: rgba(255,0,0,0.8); border: none; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
 
         @media (min-width: 768px) {
-            .workspace-master-container { padding-bottom: 0; }
-            .modern-action-dock { top: 20px; bottom: auto; left: 50%; width: max-content; padding: 10px 25px; }
-            .dock-btn { flex-direction: row; gap: 8px; font-size: 12px; padding: 10px 15px; }
-            .dock-btn svg { margin-bottom: 0; }
-            .compact-item-input-row { grid-template-columns: 1fr 1fr; }
-            .workspace-master-container.role-super-admin .compact-item-input-row { grid-template-columns: 1fr 1fr 2fr; }
-            .theme-quick-sidebar { max-width: 350px; }
-            .super-admin-only-panel { grid-template-columns: repeat(3, 1fr); }
+            .grid-layout {
+                grid-template-columns: 1fr 1fr;
+            }
         }
-        @media (min-width: 1024px) {
-            .workspace-master-container { width: 100vw; height: 100vh; overflow: hidden; display: flex; flex-direction: row; }
-            .luxury-menu-canvas { flex: 0 0 450px; max-width: 450px; height: 100vh; overflow-y: auto; margin: 0; padding: 40px 20px; }
-            .theme-20 .luxury-menu-canvas { flex: 0 0 600px; max-width: 600px; }
-            .luxury-menu-canvas.uploaded-mode-active { max-width: 50% !important; flex: 0 0 50% !important; border-right: 1px solid rgba(255,255,255,0.1); }
-            .grand-operational-desk { position: relative; height: 100vh; width: auto; flex: 1; transform: translateY(0) !important; border-radius: 0; border-top: none; border-left: 1px solid rgba(255,255,255,0.1); display: none; }
-            .workspace-master-container.admin-active .grand-operational-desk { display: flex; }
-            .modern-action-dock { left: auto; right: 20px; transform: none; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
         }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--champagne-gold);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #181818;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            color: var(--text-light);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--champagne-gold);
+        }
+
+        .btn-action {
+            background: var(--champagne-gold);
+            color: var(--dark-bg);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .preview-box {
+            width: 100%;
+            min-height: 200px;
+            border: 2px dashed var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+
+        .qr-display-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .qr-canvas-holder {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Selection Status Tracker */
+        .status-badge {
+            background: #1a231a;
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Dynamic Themes Swatches Grid */
+        .theme-selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option-card {
+            border: 1px solid var(--border-color);
+            background: #161616;
+            padding: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-option-card.selected {
+            border-color: var(--champagne-gold);
+            background: #221c0e;
+        }
+
+        .theme-option-card h4 {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Dynamic Item List Styling */
+        .items-table-view {
+            margin-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #161616;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--champagne-gold);
+        }
+
+        .item-row-info h4 {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .item-row-info span {
+            font-size: 12px;
+            color: var(--champagne-gold);
+        }
+
+        .btn-delete-item {
+            background: #c0392b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* ------------------------------------------------------------- */
+        /* CLIENT INTERFACE ARCHITECTURE (Zero Auth, Pure Render Mode) */
+        /* ------------------------------------------------------------- */
+        #clientViewContainer {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: #000000;
+            padding: 0;
+            margin: 0;
+        }
+
+        .client-portfolio-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background: #0a0a0a;
+        }
+
+        .client-portfolio-wrapper img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            display: block;
+        }
+
+        /* Themes Engines Stylesheets for Client View Screen */
+        .client-theme-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 25px 20px;
+        }
+
+        .client-theme-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .client-theme-header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--champagne-gold);
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .client-theme-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .client-menu-card-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .client-menu-card-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #1a1a1a;
+        }
+
+        .client-menu-card-details {
+            flex: 1;
+        }
+
+        .client-menu-card-details h3 {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .client-menu-card-details p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .client-menu-card-price {
+            color: var(--champagne-gold);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Variant Stylings for Dynamic Client Themes */
+        .theme-elegant { background: #0b0f19; color: #f1f5f9; }
+        .theme-elegant .client-menu-card-item { background: #131a2c; border-color: #1e293b; }
+        .theme-elegant h1, .theme-elegant .client-menu-card-price { color: #38bdf8; }
+
+        .theme-minimalist { background: #ffffff; color: #111111; }
+        .theme-minimalist .client-menu-card-item { background: #f9f9f9; border-color: #e5e5e5; }
+        .theme-minimalist h1, .theme-minimalist h3 { color: #111111; font-family: 'Montserrat', sans-serif; }
+        .theme-minimalist .client-menu-card-price { color: #000000; }
+        
+        .theme-royal { background: #1c0d02; color: #fdfaf7; }
+        .theme-royal .client-menu-card-item { background: #2a1605; border-color: #3d230c; border-left: 3px solid #ffb914; }
+        .theme-royal h1, .theme-royal .client-menu-card-price { color: #ffb914; font-family: 'Cinzel', serif; }
     </style>
 </head>
 <body>
 
-    <div id="authLoader">VERIFYING SECURE ACCESS...</div>
-
-    <div class="admin-dashboard-overlay" id="adminMenuDashboard">
-        
-        <div class="dashboard-top-bar">
-            <!-- Modification 1: Changed Logout to Back Action -->
-            <button class="dashboard-back-btn" onclick="goBack()">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-                Back
-            </button>
+    <div id="clientViewContainer">
         </div>
 
-        <div class="dashboard-header">
-            <h1>Master Management Desk</h1>
-            <p>Select Premium Output View Mode</p>
+    <div id="adminPortalContainer" class="admin-container">
+        <header>
+            <h1 id="portalTitle">Menu Ecosystem Manager</h1>
+            <a href="hotel-dashboard.html" class="btn-back">Back to Dashboard</a>
+        </header>
+
+        <div class="tabs-nav">
+            <button class="tab-link active" onclick="switchManagementTab('portfolio-tab')">Your Menu Portfolio</button>
+            <button class="tab-link" onclick="switchManagementTab('themes-tab')">Master Digital Themes</button>
         </div>
-        
-        <div class="dashboard-section-title">Choose Your Menu Experience</div>
-        
-        <div class="menu-selection-grid">
-            
-            <div class="menu-card-item custom-premium-card" onclick="openMenu('uploaded')">
-                <svg style="width:60px; height:60px; fill:var(--champagne-gold); margin-bottom:20px;" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                <h3>Your Menu Portfolio</h3>
-                <p>Interactive Photo Display Folio</p>
-            </div>
 
-            <div class="menu-card-item" onclick="openMenu('theme'); setTimeout(() => toggleThemeSidebar(true), 150);">
-                <svg style="width:60px; height:60px; fill:#fff; margin-bottom:20px;" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                <h3>Master Digital Themes</h3>
-                <p>Explore 20+ Premium Layouts</p>
-            </div>
+        <div id="portfolio-tab" class="tab-panel active">
+            <div class="grid-layout">
+                <div class="card">
+                    <h2>Upload Static Menu Graphic</h2>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Upload image or paste link. Changes sync instantly on the same QR.</p>
+                    
+                    <div class="form-group">
+                        <label>Select Local Image File</label>
+                        <input type="file" id="portfolioFileInput" class="form-control" accept="image/*">
+                    </div>
 
-        </div>
-    </div>
+                    <div class="form-group">
+                        <label>OR Paste Image URL (Supports Google Drive Links)</label>
+                        <input type="text" id="portfolioUrlInput" class="form-control" placeholder="https://drive.google.com/file/d/...">
+                    </div>
 
-    <div class="modern-action-dock" id="topActionBar">
-        <!-- Modification 2: Removed exit button entirely -->
-        <button class="dock-btn" onclick="backToDash()">
-            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            <span>Back</span>
-        </button>
-        <button class="dock-btn" onclick="showQR()">
-            <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm13-2h3v2h-3v-2zm-3 0h2v2h-2v-2zm3 3h3v2h-3v-2zm-2 3h2v2h-2v-2zm-3-3h2v2h-2v-2zm3 3h2v2h-2v-2z"/></svg>
-            <span>QR Code</span>
-        </button>
-        <button class="dock-btn" id="dockThemeBtnNode" onclick="toggleThemeSidebar(true)">
-            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            <span>Theme</span>
-        </button>
-        <button class="dock-btn" id="dockEditBtnNode" onclick="toggleDesk(true)">
-            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-            <span>Edit</span>
-        </button>
-    </div>
+                    <button class="btn-action" onclick="commitPortfolioImage()">Save & Sync Image</button>
 
-    <div class="theme-quick-sidebar" id="themeSidebar">
-        <h3>Change Theme</h3>
-        <div id="sidebarThemeList" style="flex-grow: 1; overflow-y: auto;"></div>
-        <div style="display:flex; gap:10px; margin-top: 20px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.1);">
-            <button class="premium-btn btn-outline" style="flex:1;" onclick="toggleThemeSidebar(false)">Cancel</button>
-            <button class="premium-btn" style="flex:1;" onclick="confirmThemeChange()">Apply</button>
-        </div>
-    </div>
-
-    <div class="qr-modal-overlay" id="qrModalOverlay">
-        <div class="qr-box">
-            <div class="qr-header">
-                <h2>Share Menu QR</h2>
-            </div>
-            
-            <div class="qr-body">
-                <div id="qrCodeContainer"></div>
-            </div>
-
-            <div class="qr-custom-logo-settings" style="padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); text-align:left;">
-                <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 15px;">Pro Logo Editor (QR)</div>
-                
-                <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
-                    <input type="file" id="qrLogoUploader" accept="image/*" class="mini-data-field" style="padding:8px; font-size:11px; flex:1;">
-                    <button class="premium-btn btn-danger" style="padding:10px 15px; font-size:11px;" onclick="removeQRLogo()">Remove</button>
-                </div>
-                
-                <div class="pro-editor-panel">
-                    <div class="editor-control-row">
-                        <div class="editor-icon-label">
-                            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>
-                            <span>Zoom</span>
-                        </div>
-                        <div class="editor-slider-wrap">
-                            <input type="range" id="qrLogoSize" min="0.1" max="0.6" step="0.05" value="0.4" oninput="updateQRCustomSettings()">
-                        </div>
+                    <div class="preview-box">
+                        <img id="portfolioPreviewImage" src="" alt="No Active Menu Graphic Configured">
                     </div>
                 </div>
-            </div>
 
-            <div class="qr-styles-scroll" id="qrStylesSelector"></div>
-            <div class="qr-footer">
-                <button class="premium-btn btn-outline" style="color:var(--text-dim); border-color:var(--text-dim);" onclick="closeQR()">Cancel</button>
-                <button class="premium-btn" onclick="downloadQR()">Download QR</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="workspace-master-container" id="masterWorkspaceFramework">
-        
-        <div class="luxury-menu-canvas" id="canvasMenuMainFrame">
-            <div class="curated-brand-header" id="brandHeaderWrapperNode">
-                <div class="brand-logo-frame">
-                    <img id="liveMenuLogoView" src="https://images.unsplash.com/photo-1559251606-c623743a6d76?w=300&auto=format&fit=crop&q=80" crossorigin="anonymous">
-                </div>
-                <h1 id="liveBrandTitleNode">HOTEL MANTRA</h1>
-                <p id="liveBrandSloganNode">Thakali & Hospitality</p>
-                <div class="header-phone-contact" id="liveBrandContactNode">Contact: +977-9800000000</div>
-            </div>
-            
-            <div id="dynamicMenuTarget"></div>
-            
-            <div id="uploadedFolioViewContainer" style="display: none;">
-                <div class="uploaded-folio-viewport" id="folioViewportAnimationNode">
-                    <div class="uploaded-folio-track" id="folioPagesContainerNode"></div>
+                <div class="card qr-display-zone">
+                    <h2>Portfolio Access QR</h2>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Scan directly to see the structural photo menu layout instantly.</p>
+                    <div id="portfolioQrCanvas" class="qr-canvas-holder"></div>
+                    <button class="btn-action" style="background:transparent; border:1px solid var(--text-light); color:var(--text-light);" onclick="downloadQrCode('portfolio')">Download QR Code</button>
                 </div>
             </div>
         </div>
 
-        <div class="grand-operational-desk" id="adminOperationalDeskStudio">
-            <div class="desk-header-row">
-                <h3 id="deskHeaderTitleNode">Content Studio</h3>
-                <button class="studio-top-corner-closer" onclick="toggleDesk(false)">✕</button>
-            </div>
-            <div class="desk-scrollable-body">
-                
-                <div class="cms-category-fieldset-box" id="uploadedMenuSettingsBlock" style="display: none;">
-                    <div class="cms-category-title-strip">
-                        <span style="font-size:14px; font-weight:700; color:var(--champagne-gold);">Custom Photo Book Configurator</span>
+        <div id="themes-tab" class="tab-panel">
+            <div class="grid-layout">
+                <div class="card">
+                    <h2>Live Thematic Interface Setup</h2>
+                    
+                    <div id="selectedThemeStatus" class="status-badge">Master Digital Themes Selected: Classic Luxury</div>
+
+                    <div class="form-group">
+                        <label>Choose Active View Theme Layout</label>
+                        <div class="theme-selector-grid">
+                            <div class="theme-option-card selected" id="theme-luxury" onclick="selectThemeTrack('luxury')">
+                                <h4>Classic Luxury</h4>
+                            </div>
+                            <div class="theme-option-card" id="theme-elegant" onclick="selectThemeTrack('elegant')">
+                                <h4>Modern Elegant</h4>
+                            </div>
+                            <div class="theme-option-card" id="theme-minimalist" onclick="selectThemeTrack('minimalist')">
+                                <h4>Pure Minimalist</h4>
+                            </div>
+                            <div class="theme-option-card" id="theme-royal" onclick="selectThemeTrack('royal')">
+                                <h4>Imperial Royal</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--champagne-gold); font-size:16px; margin: 25px 0 15px 0; border-top:1px solid var(--border-color); padding-top:15px;">Add Dynamic Food Item</h3>
+                    
+                    <div class="form-group">
+                        <label>Item Nomenclature Title</label>
+                        <input type="text" id="itemNameInput" class="form-control" placeholder="e.g., Authentic Thakali Thali">
                     </div>
                     
-                    <div style="margin-bottom: 15px;" id="adminUploadActionFieldsNode">
-                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload Menu Pages (Max 50 Images)</span>
-                        <input type="file" id="folioPageImagesUploader" accept="image/*" multiple class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleFolioUpload(event)">
-                        <div class="uploaded-images-admin-grid" id="adminFolioThumbsPreviewGrid"></div>
+                    <div class="form-group">
+                        <label>Brief Preparation Summary Description</label>
+                        <input type="text" id="itemDescInput" class="form-control" placeholder="e.g., Served with organic local ghee and buckwheat">
                     </div>
 
-                    <div style="margin-bottom: 10px;">
-                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Select Page Turn Animation Motion Style</span>
-                        <select id="folioTransitionStyleChooser" class="mini-data-field" style="margin-top: 5px;" onchange="changeFolioMotionStyle(this.value)">
-                            <option value="style-book-flip">1. 3D Book Page Flip Effect</option>
-                            <option value="style-vertical-slide">2. Direct Vertical Slide Scroll</option>
-                            <option value="style-horizontal-slide">3. Smooth Horizontal Swipe Slide</option>
-                            <option value="style-spin-drop">4. Rotational Spin Drop Zoom</option>
-                            <option value="style-deck-peel">5. Layered Tinder Card Peel</option>
-                            <option value="style-zoom-dissolve">6. Cross-Fade Scale Dissolve</option>
-                            <option value="style-door-flip">7. Vertical Axis Center Door Flip</option>
-                            <option value="style-cube-rotation">8. 3D Cube Vertical Rotation</option>
-                            <option value="style-elastic-curtain">9. Elastic Window Blind Drop</option>
-                            <option value="style-shutter-expand">10. Horizontal Shutter Zoom Stretch</option>
-                        </select>
+                    <div class="grid-layout" style="grid-template-columns:1fr 1fr; gap:10px;">
+                        <div class="form-group">
+                            <label>Price Value Matrix</label>
+                            <input type="text" id="itemPriceInput" class="form-control" placeholder="e.g., Rs. 450">
+                        </div>
+                        <div class="form-group">
+                            <label>Food Item Photo Link (Drive Supported)</label>
+                            <input type="text" id="itemUrlInput" class="form-control" placeholder="Image URL link">
+                        </div>
                     </div>
+
+                    <button class="btn-action" onclick="injectNewFoodItem()">Commit Item to List</button>
+
+                    <div class="items-table-view" id="adminItemsContainer">
+                        </div>
                 </div>
 
-                <div class="cms-category-fieldset-box" id="logoEditorFieldsetGroup">
-                    <div class="cms-category-title-strip" style="padding-bottom: 10px; margin-bottom: 10px;">
-                        <span style="font-size:14px; font-weight:700; color:var(--champagne-gold);">Pro Photo Studio (Menu Logo)</span>
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;" id="logoUploaderFieldInputContainer">
-                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload New Logo</span>
-                        <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;">
-                    </div>
-                    
-                    <div class="pro-editor-panel">
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>
-                                <span>Zoom</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoScale" min="0.3" max="3" step="0.1" value="1" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6z"/></svg>
-                                <span>L / R</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoX" min="-150" max="150" step="1" value="0" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M9 3L6.7 5.3l2.89 2.87-1.42 1.42L5.3 6.7 3 9V3zm12 6l-2.3-2.3-2.87 2.89-1.42-1.42 2.87-2.89L15 3h6zm-6 12l2.3-2.3-2.89-2.87 1.42-1.42 2.89 2.87L18.7 17.3 21 15v6zM3 15l2.3 2.3 2.87-2.89 1.42 1.42-2.89 2.87L9 21H3z"/></svg>
-                                <span>U / D</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoY" min="-150" max="150" step="1" value="0" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/><path d="M7.11 8.53L5.7 7.11C4.8 8.4 4.24 9.92 4.07 11.55l1.98.2c.13-1.28.61-2.45 1.34-3.41l-.28-.28zM19.93 11.55c-.17-1.63-.73-3.15-1.63-4.44l-1.41 1.42c.73.96 1.21 2.13 1.34 3.41l1.7.2zM12 4.04c-1.63 .17-3.15 .73-4.44 1.63l1.42 1.41c.96-.73 2.13-1.21 3.41-1.34l.2-1.7zm0 15.92c1.63-.17 3.15-.73 4.44-1.63l-1.42-1.41c-.96.73-2.13 1.21-3.41 1.34l-.2 1.7z" opacity=".3"/></svg>
-                                <span>Rotate</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoRotate" min="0" max="360" step="1" value="0" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-                                <span>Round</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoRadius" min="0" max="50" step="1" value="0" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
-                    </div>
+                <div class="card qr-display-zone">
+                    <h2>Dynamic Themes Client QR</h2>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Scan directly to view the selected thematic layout instantly.</p>
+                    <div id="themeQrCanvas" class="qr-canvas-holder"></div>
+                    <button class="btn-action" style="background:transparent; border:1px solid var(--text-light); color:var(--text-light);" onclick="downloadQrCode('theme')">Download QR Code</button>
                 </div>
-
-                <div class="super-admin-only-panel" id="superAdminBrandingDeskBlock">
-                    <div class="mini-label-group"><span>Hotel Identity Title</span><input type="text" id="inputHotelNameField" class="mini-data-field" oninput="updateBrand()"></div>
-                    <div class="mini-label-group"><span>Tagline / Slogan</span><input type="text" id="inputHotelSloganField" class="mini-data-field" oninput="updateBrand()"></div>
-                    <div class="mini-label-group"><span>Contact Info Line</span><input type="text" id="inputHotelPhoneField" class="mini-data-field" oninput="updateBrand()"></div>
-                </div>
-                
-                <div id="administrativeFormFieldsDestination"></div>
-                
-            </div>
-            <div class="desk-footer-action-bar" id="adminPanelFooterActionContainer">
-                <button class="premium-btn btn-outline" id="addNewCategoryBtnNode" onclick="addSection()">+ Add Category</button>
-                <button class="premium-btn" style="flex:1;" onclick="saveChangesAndAlert()">Save Changes</button>
             </div>
         </div>
     </div>
 
-    <!-- Complete JavaScript Implementation -->
-    <script>
-        let brandData = { 
-            name: "Hotel Mantra Thakali & Hospitality", 
-            tag: "Premium Dining Experience", 
-            phone: "Contact: +977-9800000000" 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, collection, query, where, getDocs, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", 
+            authDomain: "hotel-menu-f25ed.firebaseapp.com", 
+            projectId: "hotel-menu-f25ed", 
+            storageBucket: "hotel-menu-f25ed.firebasestorage.app", 
+            messagingSenderId: "750886705933", 
+            appId: "1:750886705933:web:c3331f1dd8cfc99342ee44" 
         };
-        
-        let baseTemplate = [
-            { id: "cat_1", title: "Signature Selections", items: [
-                { id: 1, name: "Premium Thakali Set", price: "550", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&auto=format&fit=crop&q=80", desc: "Authentic organic presentation with local spices." },
-                { id: 2, name: "Mantra Special Curry", price: "420", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&auto=format&fit=crop&q=80", desc: "Chef's special recipe slow-cooked to perfection." }
-            ]},
-            { id: "cat_2", title: "Starters & Appetizers", items: [
-                { id: 3, name: "Steamed Momo Platter", price: "250", img: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=200&auto=format&fit=crop&q=80", desc: "Hand-wrapped juicy momos served with spicy chutney." }
-            ]}
-        ];
 
-        let themeNames = [
-            "Royal Gold Edition", "Pristine White", "Neon Cyber-Lounge", "Organic Botanical", 
-            "Glassmorphism Elegance", "Crimson Velvet", "Brutalist High Fashion", "Midnight Sapphire", 
-            "Vintage Paris Cafe", "Abstract Grid", "Sunset Horizon", "Minimalist Zen", 
-            "Synthwave 80s", "Oceanic Flow", "The Hacker Terminal", "Pastel Macaron", 
-            "High-End Steakhouse", "Floating Artistic Gallery", "Comic Pop Art", "Luxury Card Grid"
-        ];
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        const qrStyles = [
-            { name: "Telegram Blue", dots: "rounded", corners: "extra-rounded", color: "#24A1DE", bg: "#ffffff" },
-            { name: "Neon Matrix", dots: "classy", corners: "square", color: "#00ff66", bg: "#000000" },
-            { name: "Luxury Gold", dots: "dots", corners: "extra-rounded", color: "#d4af37", bg: "#1e1e1e" },
-            { name: "Sunset Gradient", dots: "rounded", corners: "rounded", color: "#f43f5e", bg: "#ffffff" },
-            { name: "Cyberpunk Pink", dots: "classy-inversed", corners: "square", color: "#ec4899", bg: "#0f172a" }
-        ];
+        // Core Scoping State Flags
+        let dynamicHotelDocumentId = "";
+        let globalHotelRuntimeObject = {};
+        let localCreatedItemsMemory = [];
+        let runningSelectedThemeType = "luxury";
 
-        let customFolioPages = [
-            "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=80"
-        ];
-        let currentFolioStyle = "style-book-flip";
-        let activeFolioPageIndex = 0;
+        // Global function attachments
+        window.switchManagementTab = switchManagementTab;
+        window.commitPortfolioImage = commitPortfolioImage;
+        window.selectThemeTrack = selectThemeTrack;
+        window.injectNewFoodItem = injectNewFoodItem;
+        window.deleteFoodItemAt = deleteFoodItemAt;
+        window.downloadQrCode = downloadQrCode;
 
-        let databases = [];
-        for(let i=1; i<=20; i++) {
-            databases.push({ id: i, title: themeNames[i-1] });
-        }
+        // Auto-detect and route interface requests immediately on page configuration
+        async function runRoutingEngine() {
+            const urlParameters = new URLSearchParams(window.location.search);
+            const operationMode = urlParameters.get("mode");
+            const structuralView = urlParameters.get("view");
+            const extractedTargetId = urlParameters.get("id");
 
-        let activeDB = []; 
-        let currentRole = ""; 
-        let currentThemeId = 1; 
-        let previewThemeId = 1;
-        let menuModeStr = "theme"; // default
-        
-        const qrCodeInstance = new QRCodeStyling({
-            width: 250, height: 250, margin: 10, type: "svg",
-            imageOptions: { crossOrigin: "anonymous", margin: 8 }
-        });
+            if (operationMode === "client" && extractedTargetId) {
+                // Instantly strip down standard editing UI wrappers completely
+                document.getElementById("adminPortalContainer").style.display = "none";
+                const publicViewport = document.getElementById("clientViewContainer");
+                publicViewport.style.display = "block";
 
-        let qrCurrentLogo = null;
-        let qrLogoRemoved = false;
-        let isClientView = false;
-
-        // Automatically format Google Drive URLs
-        function autoFormatImageUrl(url) {
-            if (url.includes("drive.google.com/file/d/")) {
-                let match = url.match(/\/d\/(.*?)\//);
-                if (match && match[1]) {
-                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                try {
+                    const snap = await getDoc(doc(db, "hotels", extractedTargetId));
+                    if(snap.exists()) {
+                        const targetData = snap.data();
+                        renderClientExclusiveInterface(publicViewport, structuralView, targetData);
+                    } else {
+                        publicViewport.innerHTML = `<p style='color:white; text-align:center; padding-top:50px;'>Menu architecture record not allocated in database.</p>`;
+                    }
+                } catch(e) {
+                    publicViewport.innerHTML = `<p style='color:white; text-align:center; padding-top:50px;'>Cloud lookup fault verification error.</p>`;
                 }
-            }
-            return url;
-        }
-
-        function loadAllSavedData() {
-            let savedDB = localStorage.getItem('masterMenuDB');
-            if (savedDB) activeDB = JSON.parse(savedDB);
-            else activeDB = JSON.parse(JSON.stringify(baseTemplate));
-
-            let savedBrand = localStorage.getItem('masterBrandData');
-            if (savedBrand) brandData = JSON.parse(savedBrand);
-
-            let savedFolio = localStorage.getItem('masterFolioPages');
-            if (savedFolio) customFolioPages = JSON.parse(savedFolio);
-
-            let savedTheme = localStorage.getItem('masterThemeId');
-            if (savedTheme) currentThemeId = parseInt(savedTheme);
-
-            let savedMode = localStorage.getItem('masterMenuMode');
-            if (savedMode) menuModeStr = savedMode;
-            
-            let savedFolioStyle = localStorage.getItem('masterFolioStyle');
-            if (savedFolioStyle) currentFolioStyle = savedFolioStyle;
-        }
-
-        function saveAllData() {
-            localStorage.setItem('masterMenuDB', JSON.stringify(activeDB));
-            localStorage.setItem('masterBrandData', JSON.stringify(brandData));
-            localStorage.setItem('masterFolioPages', JSON.stringify(customFolioPages));
-            localStorage.setItem('masterThemeId', currentThemeId);
-            localStorage.setItem('masterMenuMode', menuModeStr);
-            localStorage.setItem('masterFolioStyle', currentFolioStyle);
-        }
-
-        function saveChangesAndAlert() {
-            saveAllData();
-            alert("Changes Saved Successfully! Your live menu is updated.");
-            renderThemeMenu();
-        }
-
-        window.onload = function() {
-            loadAllSavedData();
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('view') === 'client') {
-                isClientView = true;
-                document.getElementById("authLoader").style.display = "none";
-                document.getElementById("adminMenuDashboard").style.display = "none";
-                document.getElementById("topActionBar").style.display = "none";
-                openMenu(menuModeStr, true);
             } else {
-                unlockMenu('admin');
+                // Initialize security monitoring system checks for standard administrative management roles
+                initAdminSecurityMonitor();
             }
-        };
-
-        window.unlockMenu = function(role) {
-            currentRole = role;
-            document.getElementById("authLoader").style.display = "none";
-            document.getElementById("adminMenuDashboard").style.display = "flex";
-            renderSidebarThemes();
-        };
-
-        function goBack() {
-            window.history.back();
         }
 
-        function backToDash() {
-            document.getElementById("masterWorkspaceFramework").style.display = "none";
-            document.getElementById("adminMenuDashboard").style.display = "flex";
-            toggleDesk(false);
-            toggleThemeSidebar(false);
-        }
+        // Initialize Admin Context
+        function initAdminSecurityMonitor() {
+            onAuthStateChanged(auth, async (activeUser) => {
+                const sessionFallbackEmail = localStorage.getItem("hotelUserEmail");
+                const definitiveTargetEmail = (activeUser && activeUser.email) ? activeUser.email : sessionFallbackEmail;
 
-        function openMenu(mode, clientModeOverride = false) {
-            menuModeStr = mode;
-            saveAllData();
+                if (definitiveTargetEmail) {
+                    try {
+                        const lookupQuery = query(collection(db, "hotels"), where("email", "==", definitiveTargetEmail));
+                        const structuralSnapshots = await getDocs(lookupQuery);
+                        if (!structuralSnapshots.empty) {
+                            const trackingDoc = structuralSnapshots.docs[0];
+                            dynamicHotelDocumentId = trackingDoc.id;
+                            globalHotelRuntimeObject = trackingDoc.data();
+                            
+                            document.getElementById("portalTitle").innerText = `${globalHotelRuntimeObject.hotelName || "Menu Hub"} - CMS Control`;
+                            
+                            // Initialize records arrays configurations
+                            localCreatedItemsMemory = globalHotelRuntimeObject.themedItemsList || [];
+                            runningSelectedThemeType = globalHotelRuntimeObject.activeSelectedThemeMode || "luxury";
+                            
+                            // Render operational dashboards matrices
+                            syncThemeStateDisplayEngine();
+                            refreshAdminItemsDisplay();
+                            if(globalHotelRuntimeObject.portfolioStaticMenuUrl) {
+                                document.getElementById("portfolioPreviewImage").src = globalHotelRuntimeObject.portfolioStaticMenuUrl;
+                                document.getElementById("portfolioUrlInput").value = globalHotelRuntimeObject.portfolioStaticMenuUrl;
+                            }
 
-            document.getElementById("adminMenuDashboard").style.display = "none";
-            document.getElementById("masterWorkspaceFramework").style.display = "block";
-            
-            if(!isClientView && !clientModeOverride) {
-                 document.getElementById("topActionBar").style.display = "flex";
-            }
-
-            if(mode === 'uploaded') {
-                document.getElementById("canvasMenuMainFrame").className = "luxury-menu-canvas uploaded-mode-active";
-                document.getElementById("uploadedFolioViewContainer").style.display = "block";
-                document.getElementById("dynamicMenuTarget").style.display = "none";
-                document.getElementById("brandHeaderWrapperNode").style.display = "none";
-                document.getElementById("dockThemeBtnNode").style.display = "none";
-                
-                if(!isClientView && !clientModeOverride) {
-                    document.getElementById("uploadedMenuSettingsBlock").style.display = "block";
-                    document.getElementById("logoEditorFieldsetGroup").style.display = "none";
-                    document.getElementById("superAdminBrandingDeskBlock").style.display = "none";
-                    document.getElementById("administrativeFormFieldsDestination").style.display = "none";
+                            // Generate absolute separate structural target pathways for QR code generation Engines
+                            generateSeparateSystemQrChannels();
+                        } else {
+                            bounceToLogin();
+                        }
+                    } catch(e) {
+                        console.error(e);
+                        alert("Database configuration retrieval failure.");
+                    }
+                } else {
+                    bounceToLogin();
                 }
-                
-                document.getElementById("folioTransitionStyleChooser").value = currentFolioStyle;
-                renderFolio();
-                renderFolioAdminThumbs();
-            } else {
-                document.getElementById("dockThemeBtnNode").style.display = "flex";
-                applyTheme(currentThemeId);
-                document.getElementById("canvasMenuMainFrame").classList.remove("uploaded-mode-active");
-                document.getElementById("uploadedFolioViewContainer").style.display = "none";
-                document.getElementById("dynamicMenuTarget").style.display = "block";
-                document.getElementById("brandHeaderWrapperNode").style.display = "block";
-                
-                if(!isClientView && !clientModeOverride) {
-                    document.getElementById("uploadedMenuSettingsBlock").style.display = "none";
-                    document.getElementById("logoEditorFieldsetGroup").style.display = "block";
-                    document.getElementById("superAdminBrandingDeskBlock").style.display = "grid";
-                    document.getElementById("administrativeFormFieldsDestination").style.display = "block";
-                    renderAdminFields();
-                }
-                
-                document.getElementById("liveBrandTitleNode").innerText = brandData.name;
-                document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
-                document.getElementById("liveBrandContactNode").innerText = brandData.phone;
-                
-                document.getElementById("inputHotelNameField").value = brandData.name;
-                document.getElementById("inputHotelSloganField").value = brandData.tag;
-                document.getElementById("inputHotelPhoneField").value = brandData.phone;
-
-                renderThemeMenu();
-            }
-        }
-
-        function renderSidebarThemes() {
-            let html = "";
-            databases.forEach(db => {
-                let selectedText = db.id === currentThemeId ? " <span style='color:var(--champagne-gold); font-size:10px;'>(Currently Selected)</span>" : "";
-                let selClass = db.id === previewThemeId ? "selected" : "";
-                html += `<div class="mini-theme-btn ${selClass}" onclick="previewTheme(${db.id})">${db.id}. ${db.title}${selectedText}</div>`;
             });
-            document.getElementById("sidebarThemeList").innerHTML = html;
         }
 
-        function toggleThemeSidebar(show) {
-            previewThemeId = currentThemeId;
-            renderSidebarThemes();
-            document.getElementById("themeSidebar").classList.toggle("active", show);
+        function bounceToLogin() {
+            localStorage.removeItem("hotelUserEmail");
+            localStorage.removeItem("hotelUserId");
+            window.location.href = "index.html";
         }
 
-        function previewTheme(id) {
-            previewThemeId = id;
-            renderSidebarThemes();
-            applyTheme(id);
+        // Deep extraction framework utility to instantly fix broken raw assets from Google Drive share codes
+        function cleanAssetUrlMapping(passedLinkString) {
+            if (!passedLinkString) return "";
+            let derivedString = passedLinkString.trim();
+            if (derivedString.includes("drive.google.com")) {
+                let uniqueFileId = "";
+                const directUrlPatternMatch = derivedString.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                const explicitIdPatternMatch = derivedString.match(/id=([a-zA-Z0-9_-]+)/);
+                
+                if (directUrlPatternMatch && directUrlPatternMatch[1]) {
+                    uniqueFileId = directUrlPatternMatch[1];
+                } else if (explicitIdPatternMatch && explicitIdPatternMatch[1]) {
+                    uniqueFileId = explicitIdPatternMatch[1];
+                }
+                
+                if (uniqueFileId) {
+                    return `https://lh3.googleusercontent.com/d/${uniqueFileId}`;
+                }
+            }
+            return derivedString;
         }
 
-        function applyTheme(id) {
-            document.getElementById("canvasMenuMainFrame").className = "luxury-menu-canvas theme-" + id;
+        // Tab Switching Framework
+        function switchManagementTab(targetTabSelectorId) {
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".tab-link").forEach(l => l.classList.remove("active"));
+            
+            document.getElementById(targetTabSelectorId).classList.add("active");
+            event.currentTarget.classList.add("active");
         }
 
-        function confirmThemeChange() {
-            currentThemeId = previewThemeId;
-            saveAllData();
-            toggleThemeSidebar(false);
-            renderSidebarThemes();
-        }
+        // Commit Static Graphic Execution
+        async function commitPortfolioImage() {
+            const explicitUrlString = document.getElementById("portfolioUrlInput").value;
+            const fileElementRef = document.getElementById("portfolioFileInput").files[0];
 
-        function toggleDesk(show) {
-            if(show) {
-                document.getElementById("masterWorkspaceFramework").classList.add("admin-active");
+            let finalizedUrlMatrix = cleanAssetUrlMapping(explicitUrlString);
+
+            if (fileElementRef) {
+                const readerInstance = new FileReader();
+                readerInstance.onload = async function(eventStream) {
+                    finalizedUrlMatrix = eventStream.target.result;
+                    await writePortfolioToCloud(finalizedUrlMatrix);
+                };
+                readerInstance.readAsDataURL(fileElementRef);
+            } else if (finalizedUrlMatrix) {
+                await writePortfolioToCloud(finalizedUrlMatrix);
             } else {
-                document.getElementById("masterWorkspaceFramework").classList.remove("admin-active");
+                alert("Provide a direct valid source image asset parameters path.");
             }
         }
 
-        function updateBrand() {
-            brandData.name = document.getElementById("inputHotelNameField").value;
-            brandData.tag = document.getElementById("inputHotelSloganField").value;
-            brandData.phone = document.getElementById("inputHotelPhoneField").value;
-            
-            document.getElementById("liveBrandTitleNode").innerText = brandData.name;
-            document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
-            document.getElementById("liveBrandContactNode").innerText = brandData.phone;
-        }
-
-        function renderThemeMenu() {
-            let html = "";
-            activeDB.forEach((cat, catIdx) => {
-                html += `<div class="menu-section-wrapper">
-                            <div class="menu-section-heading">${cat.title}</div>`;
-                
-                cat.items.forEach((item, itemIdx) => {
-                    html += `
-                    <div class="premium-food-card">
-                        <div class="food-card-media-frame"><img src="${item.img}" alt="food"></div>
-                        <div class="food-card-details-box">
-                            <div class="food-card-meta-top">
-                                <h4 class="food-title-text">${item.name}</h4>
-                                <span class="food-price-badge">₹${item.price}</span>
-                            </div>
-                            <p class="food-description-text">${item.desc}</p>
-                        </div>
-                    </div>`;
+        async function writePortfolioToCloud(targetBaseStringUrl) {
+            if(!dynamicHotelDocumentId) return;
+            try {
+                await updateDoc(doc(db, "hotels", dynamicHotelDocumentId), {
+                    portfolioStaticMenuUrl: targetBaseStringUrl
                 });
-                html += `</div>`;
-            });
-            document.getElementById("dynamicMenuTarget").innerHTML = html;
-        }
-
-        function renderAdminFields() {
-            let html = "";
-            activeDB.forEach((cat, catIdx) => {
-                html += `<div class="cms-category-fieldset-box">
-                            <div class="cms-category-title-strip">
-                                <input type="text" class="mini-data-field" value="${cat.title}" oninput="activeDB[${catIdx}].title=this.value;" style="flex:1;">
-                                <button class="premium-btn btn-danger" style="padding:10px; font-size:10px;" onclick="deleteCategory(${catIdx})">Delete Category</button>
-                            </div>`;
-                
-                cat.items.forEach((item, itemIdx) => {
-                    html += `
-                    <div class="compact-item-input-row">
-                        <div class="mini-label-group"><span>Item Name</span><input type="text" class="mini-data-field" value="${item.name}" oninput="activeDB[${catIdx}].items[${itemIdx}].name=this.value;"></div>
-                        <div class="mini-label-group"><span>Price</span><input type="text" class="mini-data-field" value="${item.price}" oninput="activeDB[${catIdx}].items[${itemIdx}].price=this.value;"></div>
-                        <div class="mini-label-group super-url-field-node"><span>Image URL (Drive Links Auto-Convert)</span><input type="text" class="mini-data-field" value="${item.img}" onchange="this.value=autoFormatImageUrl(this.value); activeDB[${catIdx}].items[${itemIdx}].img=this.value; renderThemeMenu();"></div>
-                        <div class="mini-label-group"><span>Description</span><input type="text" class="mini-data-field" value="${item.desc}" oninput="activeDB[${catIdx}].items[${itemIdx}].desc=this.value;"></div>
-                        <div style="display:flex; align-items:flex-end;">
-                            <button class="premium-btn btn-danger" style="width:100%; padding:12px; font-size:10px;" onclick="deleteItem(${catIdx}, ${itemIdx})">Remove Item</button>
-                        </div>
-                    </div>`;
-                });
-
-                html += `<button class="premium-btn btn-outline" style="width:100%; margin-top:10px; padding:10px; font-size:11px;" onclick="addItem(${catIdx})">+ Add Item to Category</button>
-                      </div>`;
-            });
-            document.getElementById("administrativeFormFieldsDestination").innerHTML = html;
-        }
-
-        function addSection() {
-            activeDB.push({ id: "cat_" + Date.now(), title: "New Category", items: [] });
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function deleteCategory(idx) {
-            activeDB.splice(idx, 1);
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function addItem(catIdx) {
-            activeDB[catIdx].items.push({ id: Date.now(), name: "New Item", price: "0", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200", desc: "Item description here" });
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function deleteItem(catIdx, itemIdx) {
-            activeDB[catIdx].items.splice(itemIdx, 1);
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function handleFolioUpload(event) {
-            const files = event.target.files;
-            if(!files || files.length === 0) return;
-            
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    customFolioPages.push(e.target.result);
-                    renderFolio();
-                    renderFolioAdminThumbs();
-                    saveAllData();
-                }
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function renderFolioAdminThumbs() {
-            let html = "";
-            customFolioPages.forEach((src, idx) => {
-                html += `
-                <div class="uploaded-admin-thumb-frame">
-                    <img src="${src}">
-                    <button class="thumb-remove-overlay-btn" onclick="removeFolioImage(${idx})">✕</button>
-                </div>`;
-            });
-            document.getElementById("adminFolioThumbsPreviewGrid").innerHTML = html;
-        }
-
-        function removeFolioImage(idx) {
-            customFolioPages.splice(idx, 1);
-            activeFolioPageIndex = 0;
-            renderFolio();
-            renderFolioAdminThumbs();
-            saveAllData();
-        }
-
-        function renderFolio() {
-            let html = "";
-            customFolioPages.forEach((src, idx) => {
-                let cl = "folio-page-node";
-                if(idx === activeFolioPageIndex) cl += " active-page";
-                if(idx < activeFolioPageIndex) cl += " prev-page";
-                html += `<img src="${src}" class="${cl}" onclick="nextFolioPage()">`;
-            });
-            document.getElementById("folioPagesContainerNode").innerHTML = html;
-            document.getElementById("folioViewportAnimationNode").className = "uploaded-folio-viewport " + currentFolioStyle;
-        }
-
-        function changeFolioMotionStyle(val) {
-            currentFolioStyle = val;
-            saveAllData();
-            document.getElementById("folioViewportAnimationNode").className = "uploaded-folio-viewport " + currentFolioStyle;
-        }
-
-        function nextFolioPage() {
-            activeFolioPageIndex++;
-            if(activeFolioPageIndex >= customFolioPages.length) {
-                activeFolioPageIndex = 0;
+                document.getElementById("portfolioPreviewImage").src = targetBaseStringUrl;
+                alert("Static Portfolio Content Framework Synchronized Permanently.");
+            } catch(e) {
+                alert("Transaction storage pipeline failure.");
             }
-            renderFolio();
         }
 
-        function showQR() {
-            document.getElementById("qrModalOverlay").style.display = "flex";
-            let qHtml = "";
-            qrStyles.forEach((s, i) => {
-                qHtml += `<div class="qr-style-pill ${i===0?'active-pill':''}" onclick="applyQRStyle(${i}, this)">${s.name}</div>`;
-            });
-            document.getElementById("qrStylesSelector").innerHTML = qHtml;
-            applyQRStyle(0, document.querySelector('.qr-style-pill'));
+        // Track Theme Changes Configuration Engine
+        function selectThemeTrack(chosenThemeIdentifierCode) {
+            runningSelectedThemeType = chosenThemeIdentifierCode;
+            syncThemeStateDisplayEngine();
+            pushThemeConfigurationsToDatabase();
         }
 
-        function closeQR() {
-            document.getElementById("qrModalOverlay").style.display = "none";
-        }
-
-        function applyQRStyle(index, elem) {
-            document.querySelectorAll('.qr-style-pill').forEach(e => e.classList.remove('active-pill'));
-            if(elem) elem.classList.add('active-pill');
+        function syncThemeStateDisplayEngine() {
+            document.querySelectorAll(".theme-option-card").forEach(c => c.classList.remove("selected"));
+            const localizedLookupId = `theme-${runningSelectedThemeType}`;
+            if(document.getElementById(localizedLookupId)) {
+                document.getElementById(localizedLookupId).classList.add("selected");
+            }
             
-            const s = qrStyles[index];
+            // Format labels safely mapping readable name outputs strings
+            let displayThemeTitleText = "Classic Luxury";
+            if(runningSelectedThemeType === "elegant") displayThemeTitleText = "Modern Elegant";
+            if(runningSelectedThemeType === "minimalist") displayThemeTitleText = "Pure Minimalist";
+            if(runningSelectedThemeType === "royal") displayThemeTitleText = "Imperial Royal";
+
+            document.getElementById("selectedThemeStatus").innerText = `Master Digital Themes Selected: ${displayThemeTitleText}`;
+        }
+
+        async function pushThemeConfigurationsToDatabase() {
+            if(!dynamicHotelDocumentId) return;
+            try {
+                await updateDoc(doc(db, "hotels", dynamicHotelDocumentId), {
+                    activeSelectedThemeMode: runningSelectedThemeType
+                });
+            } catch(e) {
+                console.error("Theme background backup issue: ", e);
+            }
+        }
+
+        // Food Items Array Aggregators
+        async function injectNewFoodItem() {
+            const title = document.getElementById("itemNameInput").value.trim();
+            const desc = document.getElementById("itemDescInput").value.trim();
+            const cost = document.getElementById("itemPriceInput").value.trim();
+            const rawImg = document.getElementById("itemUrlInput").value.trim();
+
+            if(!title || !cost) {
+                alert("Name and Pricing parameters matrices fields are explicitly mandatory.");
+                return;
+            }
+
+            const cleanImgUrl = cleanAssetUrlMapping(rawImg);
+
+            const packagedItemObject = {
+                id: "item_" + Date.now(),
+                name: title,
+                description: desc,
+                price: cost,
+                imageUrl: cleanImgUrl
+            };
+
+            localCreatedItemsMemory.push(packagedItemObject);
             
-            // Client view direct link with parameter
-            let baseUrl = window.location.href.split('?')[0];
-            let clientUrl = baseUrl + "?view=client";
+            // Wipe inputs
+            document.getElementById("itemNameInput").value = "";
+            document.getElementById("itemDescInput").value = "";
+            document.getElementById("itemPriceInput").value = "";
+            document.getElementById("itemUrlInput").value = "";
 
-            qrCodeInstance.update({
-                data: clientUrl,
-                dotsOptions: { color: s.color, type: s.dots },
-                cornersSquareOptions: { color: s.color, type: s.corners },
-                backgroundOptions: { color: s.bg },
-                image: qrLogoRemoved ? null : (qrCurrentLogo || "https://images.unsplash.com/photo-1559251606-c623743a6d76?w=100")
+            await pushFoodItemsArrayToCloud();
+            refreshAdminItemsDisplay();
+        }
+
+        async function deleteFoodItemAt(targetItemUniqueId) {
+            localCreatedItemsMemory = localCreatedItemsMemory.filter(item => item.id !== targetItemUniqueId);
+            await pushFoodItemsArrayToCloud();
+            refreshAdminItemsDisplay();
+        }
+
+        async function pushFoodItemsArrayToCloud() {
+            if(!dynamicHotelDocumentId) return;
+            try {
+                await updateDoc(doc(db, "hotels", dynamicHotelDocumentId), {
+                    themedItemsList: localCreatedItemsMemory
+                });
+            } catch(e) {
+                alert("Database update error tracking rows listings.");
+            }
+        }
+
+        function refreshAdminItemsDisplay() {
+            const outputBox = document.getElementById("adminItemsContainer");
+            if(localCreatedItemsMemory.length === 0) {
+                outputBox.innerHTML = `<p style='font-size:12px; color:var(--text-muted); text-align:center;'>No dynamic thematic items registered in this data tree structure.</p>`;
+                return;
+            }
+
+            let trackingUilogs = "";
+            localCreatedItemsMemory.forEach(item => {
+                trackingUilogs += `
+                    <div class="item-row">
+                        <div class="item-row-info">
+                            <h4>${item.name}</h4>
+                            <span>${item.price}</span>
+                        </div>
+                        <button class="btn-delete-item" onclick="deleteFoodItemAt('${item.id}')">Remove</button>
+                    </div>
+                `;
             });
-            document.getElementById("qrCodeContainer").innerHTML = "";
-            qrCodeInstance.append(document.getElementById("qrCodeContainer"));
+            outputBox.innerHTML = trackingUilogs;
         }
 
-        function downloadQR() {
-            qrCodeInstance.download({ name: "menu-qr", extension: "png" });
+        // QR Processing Logic Engines Core Channels Mapping
+        let instantiatedPortfolioQrObject = null;
+        let instantiatedThemeQrObject = null;
+
+        function generateSeparateSystemQrChannels() {
+            const primaryServerDomainPath = window.location.origin + window.location.pathname;
+            
+            const distinctPortfolioUrlPath = `${primaryServerDomainPath}?mode=client&view=portfolio&id=${dynamicHotelDocumentId}`;
+            const distinctThemeUrlPath = `${primaryServerDomainPath}?mode=client&view=theme&id=${dynamicHotelDocumentId}`;
+
+            // Initialize Portfolio Graphic Vector Canvas
+            instantiatedPortfolioQrObject = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                type: "svg",
+                data: distinctPortfolioUrlPath,
+                dotsOptions: { color: "#000000", type: "rounded" },
+                backgroundOptions: { color: "#ffffff" }
+            });
+            document.getElementById("portfolioQrCanvas").innerHTML = "";
+            instantiatedPortfolioQrObject.append(document.getElementById("portfolioQrCanvas"));
+
+            // Initialize Dynamic Digital Interactive Canvas Setup Channels
+            instantiatedThemeQrObject = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                type: "svg",
+                data: distinctThemeUrlPath,
+                dotsOptions: { color: "#000000", type: "square" },
+                backgroundOptions: { color: "#ffffff" }
+            });
+            document.getElementById("themeQrCanvas").innerHTML = "";
+            instantiatedThemeQrObject.append(document.getElementById("themeQrCanvas"));
         }
 
-        function adjustMainLogo() {
-            let scale = document.getElementById("mainLogoScale").value;
-            let x = document.getElementById("mainLogoX").value;
-            let y = document.getElementById("mainLogoY").value;
-            let rot = document.getElementById("mainLogoRotate").value;
-            let rad = document.getElementById("mainLogoRadius").value;
-
-            let img = document.getElementById("liveMenuLogoView");
-            img.style.transform = `scale(${scale}) translate(${x}px, ${y}px) rotate(${rot}deg)`;
-            img.style.borderRadius = `${rad}%`;
+        function downloadQrCode(qrTypeSelectorString) {
+            if(qrTypeSelectorString === 'portfolio' && instantiatedPortfolioQrObject) {
+                instantiatedPortfolioQrObject.download({ name: "portfolio-menu-qr", extension: "png" });
+            } else if(qrTypeSelectorString === 'theme' && instantiatedThemeQrObject) {
+                instantiatedThemeQrObject.download({ name: "themed-menu-qr", extension: "png" });
+            }
         }
 
+        // -------------------------------------------------------------
+        // PUBLIC CLIENT MENU ENGINE RENDERER (Pure presentation layer)
+        // -------------------------------------------------------------
+        function renderClientExclusiveInterface(domViewportContainerNode, layoutViewContextMode, backendPayloadData) {
+            if (layoutViewContextMode === "portfolio") {
+                const staticGraphicSourceUrl = backendPayloadData.portfolioStaticMenuUrl || "";
+                if (!staticGraphicSourceUrl) {
+                    domViewportContainerNode.innerHTML = `<p style='color:#fff; text-align:center; padding-top:100px; font-size:14px;'>Menu presentation photo asset is not yet initialized by management.</p>`;
+                    return;
+                }
+                domViewportContainerNode.innerHTML = `
+                    <div class="client-portfolio-wrapper">
+                        <img src="${staticGraphicSourceUrl}" alt="Menu Card Layout Platform Viewer">
+                    </div>
+                `;
+            } else {
+                // Parse Dynamic Themes Config Modules Layout Rules Matrix
+                const selectedEngineStyleTheme = backendPayloadData.activeSelectedThemeMode || "luxury";
+                const activeItemsArray = backendPayloadData.themedItemsList || [];
+                const brandEstablishmentName = backendPayloadData.hotelName || "Premium Lounge";
+
+                let generatedMenuRowsHtml = "";
+                if(activeItemsArray.length === 0) {
+                    generatedMenuRowsHtml = `<p style='text-align:center; color:gray; padding:30px; font-size:13px;'>No item menu assets are currently configured online.</p>`;
+                } else {
+                    activeItemsArray.forEach(rowItem => {
+                        const fallbackedDefaultAssetUrl = rowItem.imageUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=200&auto=format&fit=crop";
+                        generatedMenuRowsHtml += `
+                            <div class="client-menu-card-item">
+                                <img src="${fallbackedDefaultAssetUrl}" alt="Food Menu Display">
+                                <div class="client-menu-card-details">
+                                    <h3>${rowItem.name}</h3>
+                                    <p>${rowItem.description || "Fresh house specialty prepared with elite organic local standard procedures."}</p>
+                                    <div class="client-menu-card-price">${rowItem.price}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                domViewportContainerNode.className = `theme-${selectedEngineStyleTheme}`;
+                domViewportContainerNode.innerHTML = `
+                    <div class="client-theme-wrapper">
+                        <div class="client-theme-header">
+                            <h1>${brandEstablishmentName}</h1>
+                            <p>Exclusive Digital Menu Selection</p>
+                        </div>
+                        <div style="margin-top:20px;">
+                            ${generatedMenuRowsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Fire Execution Routine Engine Loops
+        runRoutingEngine();
     </script>
 </body>
 </html>
