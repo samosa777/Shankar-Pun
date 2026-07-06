@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotel Mantra Thakali & Hospitality - Premium CMS</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script> <!-- Added for URL State Compression -->
 
     <style>
         /* --- CORE LUXURY VARIABLES --- */
@@ -117,7 +120,7 @@
         /* --- UNIVERSAL MENU CANVAS --- */
         .luxury-menu-canvas { width: 100%; max-width: 550px; margin: 0 auto; padding: 30px 20px; box-sizing: border-box; transition: all 0.5s ease; min-height: 100vh; position: relative; }
         .curated-brand-header { text-align: center; margin-bottom: 30px; padding-bottom: 25px; transition: all 0.5s ease; }
-        .brand-logo-frame { width: 90px; height: 90px; margin: 0 auto 15px; overflow: hidden; background: transparent; transition: all 0.5s ease; position: relative; }
+        .brand-logo-frame { width: 90px; height: 90px; margin: 0 auto 15px; overflow: hidden; background: transparent; transition: all 0.5s ease; position: relative; display: flex; justify-content: center; align-items: center; }
         .brand-logo-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s ease, border-radius 0.2s ease; }
         .curated-brand-header h1 { margin: 0; font-size: 24px; text-transform: uppercase; transition: all 0.5s ease; }
         .curated-brand-header p { font-size: 11px; margin: 8px 0 0; text-transform: uppercase; letter-spacing: 2px; }
@@ -153,64 +156,28 @@
         .style-book-flip .folio-page-node { opacity: 0; transform: rotateY(90deg); z-index: 1; }
         .style-book-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); z-index: 5; }
         .style-book-flip .folio-page-node.prev-page { opacity: 0; transform: rotateY(-90deg); z-index: 2; }
-
         .style-vertical-slide .folio-page-node { transform: translateY(100%); }
         .style-vertical-slide .folio-page-node.active-page { transform: translateY(0); }
         .style-vertical-slide .folio-page-node.prev-page { transform: translateY(-100%); }
-
         .style-horizontal-slide .folio-page-node { transform: translateX(100%); }
         .style-horizontal-slide .folio-page-node.active-page { transform: translateX(0); }
         .style-horizontal-slide .folio-page-node.prev-page { transform: translateX(-100%); }
-
         .style-spin-drop .folio-page-node { opacity: 0; transform: rotate(180deg) scale(0.3); }
         .style-spin-drop .folio-page-node.active-page { opacity: 1; transform: rotate(0deg) scale(1); }
-
         .style-deck-peel .folio-page-node { transform: scale(0.85) translateZ(-200px); opacity: 0; }
         .style-deck-peel .folio-page-node.active-page { transform: scale(1) translateZ(0); opacity: 1; z-index: 5; }
         .style-deck-peel .folio-page-node.prev-page { transform: translateX(-120%) rotate(-15deg); opacity: 0; z-index: 6; }
-
         .style-zoom-dissolve .folio-page-node { opacity: 0; transform: scale(1.3); }
         .style-zoom-dissolve .folio-page-node.active-page { opacity: 1; transform: scale(1); }
         .style-zoom-dissolve .folio-page-node.prev-page { opacity: 0; transform: scale(0.7); }
-
         .style-door-flip .folio-page-node { opacity: 0; transform: rotateY(-180deg); transform-origin: center center; }
         .style-door-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); }
-
         .style-cube-rotation .folio-page-node { opacity: 0; transform: rotateX(-90deg) translateZ(200px); transform-origin: center bottom; }
         .style-cube-rotation .folio-page-node.active-page { opacity: 1; transform: rotateX(0deg) translateZ(0); }
-
         .style-elastic-curtain .folio-page-node { transform: translateY(-100%); transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
         .style-elastic-curtain .folio-page-node.active-page { transform: translateY(0); }
-
         .style-shutter-expand .folio-page-node { opacity: 0; transform: scaleX(0); transform-origin: center; }
         .style-shutter-expand .folio-page-node.active-page { opacity: 1; transform: scaleX(1); }
-
-        /* --- AUTO NUDGE HINT ANIMATIONS --- */
-        @keyframes nudge-horizontal {
-            0%, 100% { transform: translateX(0); }
-            5% { transform: translateX(-12px); }
-            10% { transform: translateX(0); }
-            15% { transform: translateX(-12px); }
-            20% { transform: translateX(0); }
-        }
-        @keyframes nudge-vertical {
-            0%, 100% { transform: translateY(0); }
-            5% { transform: translateY(-12px); }
-            10% { transform: translateY(0); }
-            15% { transform: translateY(-12px); }
-            20% { transform: translateY(0); }
-        }
-        @keyframes nudge-zoom {
-            0%, 100% { transform: scale(1); }
-            5% { transform: scale(0.95); }
-            10% { transform: scale(1); }
-            15% { transform: scale(0.95); }
-            20% { transform: scale(1); }
-        }
-        
-        .hint-h { animation: nudge-horizontal 4s infinite; }
-        .hint-v { animation: nudge-vertical 4s infinite; }
-        .hint-z { animation: nudge-zoom 4s infinite; }
 
         /* DIGITAL LAYOUT THEME STYLES */
         .theme-1 .luxury-menu-canvas { background: #000; color: #fff; font-family: 'Cinzel', serif; }
@@ -218,83 +185,64 @@
         .theme-1 .brand-logo-frame { border: 2px solid #D4AF37; border-radius: 50%; }
         .theme-1 h1, .theme-1 .menu-section-heading, .theme-1 .food-price-badge { color: #D4AF37; }
         .theme-1 .premium-food-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; }
-
         .theme-2 .luxury-menu-canvas { background: #ffffff; color: #111; font-family: 'Montserrat', sans-serif; }
         .theme-2 .curated-brand-header { border-bottom: 2px solid #f0f0f0; }
         .theme-2 .brand-logo-frame { border-radius: 0; }
         .theme-2 h1 { font-weight: 300; letter-spacing: 5px; }
         .theme-2 .menu-section-heading { text-align: center; letter-spacing: 3px; color: #666; }
         .theme-2 .premium-food-card { background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: none; }
-
         .theme-3 .luxury-menu-canvas { background: #050510; color: #00ffff; font-family: 'Space Mono', monospace; }
         .theme-3 .brand-logo-frame { border: 2px solid #00ffff; transform: rotate(45deg); }
         .theme-3 .brand-logo-frame img { transform: rotate(-45deg) scale(1.4); }
         .theme-3 h1 { color: #ff00ff; text-shadow: 2px 2px 10px rgba(255,0,255,0.5); }
         .theme-3 .premium-food-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(0,255,255,0.3); }
-
         .theme-4 .luxury-menu-canvas { background: #f1f4e6; color: #2c4228; font-family: 'Cormorant Garamond', serif; }
         .theme-4 .brand-logo-frame { border-radius: 50% 50% 0 50%; border: 3px solid #6b8e63; }
         .theme-4 h1, .theme-4 .menu-section-heading { font-style: italic; }
         .theme-4 .premium-food-card { background: transparent; border-bottom: 1px solid #d5ddcb; flex-direction: row-reverse; }
         .theme-4 .food-card-media-frame { border-radius: 50px; margin: 10px; }
-
         .theme-5 .luxury-menu-canvas { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); color: #fff; font-family: 'Poppins', sans-serif; }
         .theme-5 .brand-logo-frame { border-radius: 20px; }
         .theme-5 .premium-food-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; }
-
         .theme-6 .luxury-menu-canvas { background: #2b0a0a; color: #f5e6e6; font-family: 'Playfair Display', serif; }
         .theme-6 .brand-logo-frame { border: 2px solid #d84b4b; }
         .theme-6 .menu-section-heading { text-align: center; background: #d84b4b; color: #fff; padding: 5px; }
         .theme-6 .premium-food-card { background: #3d1414; border: 1px solid #5a2020; border-radius: 8px; }
-
         .theme-7 .luxury-menu-canvas { background: #dfdfdf; color: #000; font-family: 'Oswald', sans-serif; text-transform: uppercase; }
         .theme-7 .brand-logo-frame { box-shadow: 5px 5px 0 #000; }
         .theme-7 h1 { font-weight: 900; letter-spacing: -1px; }
         .theme-7 .premium-food-card { background: #fff; border: 2px solid #000; box-shadow: 5px 5px 0 #000; }
-
         .theme-8 .luxury-menu-canvas { background: #020813; color: #d0d7e5; }
         .theme-8 .brand-logo-frame { border-radius: 50%; border: 2px solid #4299e1; }
         .theme-8 .menu-section-heading { color: #63b3ed; border-bottom: 1px solid #2a4365; display: inline-block; }
         .theme-8 .premium-food-card { background: #061123; border-left: 3px solid #3182ce; }
-
         .theme-9 .luxury-menu-canvas { background: #f4ece1; color: #3e322c; font-family: 'Cormorant Garamond', serif; }
         .theme-9 .brand-logo-frame { border-radius: 50%; filter: sepia(0.5); }
         .theme-9 .premium-food-card { border-bottom: 1px solid #d4c8bf; }
-
         .theme-10 .luxury-menu-canvas { background: #ffffff; color: #000; font-family: 'Space Mono', monospace; }
         .theme-10 .curated-brand-header { border: 2px solid #000; padding: 15px; }
         .theme-10 .premium-food-card { border: 2px solid #000; }
-
         .theme-11 .luxury-menu-canvas { background: linear-gradient(to bottom, #ff7e5f, #feb47b); color: #fff; }
         .theme-11 .premium-food-card { background: rgba(255,255,255,0.9); color: #333; border-radius: 20px; }
-
         .theme-12 .luxury-menu-canvas { background: #faf9f5; color: #4a4741; }
         .theme-12 .premium-food-card { flex-direction: row-reverse; border-bottom: 1px solid #eee; }
-
         .theme-13 .luxury-menu-canvas { background: #1a0033; color: #ffb3ff; font-family: 'Oswald', sans-serif; }
         .theme-13 .premium-food-card { background: #26004d; border: 1px solid #ff00ff; border-radius: 10px; }
-
         .theme-14 .luxury-menu-canvas { background: #e0f2f1; color: #004d40; }
         .theme-14 .premium-food-card { background: #ffffff; border-radius: 30px 10px 30px 10px; }
         .theme-14 .food-card-media-frame { border-radius: 30px 0 0 10px; }
-
         .theme-15 .luxury-menu-canvas { background: #000000; color: #00ff00; font-family: 'Courier New', Courier, monospace; }
         .theme-15 .premium-food-card { background: #020a02; border: 1px solid #004400; }
-
         .theme-16 .luxury-menu-canvas { background: #fcf4f4; color: #7a6363; font-family: 'Playfair Display', serif; }
         .theme-16 .premium-food-card { background: #fff; border-radius: 25px; }
         .theme-16 .food-card-media-frame { border-radius: 25px; margin: 5px; }
-
         .theme-17 .luxury-menu-canvas { background: #1c1512; color: #d7ccc8; font-family: 'Cinzel', serif; }
         .theme-17 .premium-food-card { background: #271d19; border: 1px solid #3e2723; border-radius: 8px; }
-
         .theme-18 .luxury-menu-canvas { background: #f0f2f5; color: #333; }
         .theme-18 .premium-food-card { background: #fff; border-radius: 15px; margin-bottom: 20px; }
         .theme-18 .food-card-media-frame { border-radius: 15px 0 0 15px; }
-
         .theme-19 .luxury-menu-canvas { background: #ffeb3b; color: #000; font-family: 'Oswald', sans-serif; }
         .theme-19 .premium-food-card { background: #fff; border: 3px solid #000; border-radius: 10px; box-shadow: 4px 4px 0 #000; }
-
         .theme-20 .luxury-menu-canvas { background: #eaeaea; color: #222; }
         .theme-20 .premium-food-card { background: #fff; flex-direction: column; border-radius: 15px; border: 1px solid #ddd; }
         .theme-20 .food-card-media-frame { width: 100%; height: 140px; border-radius: 15px 15px 0 0; }
@@ -429,7 +377,8 @@
                 <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 15px;">Pro Logo Editor (QR)</div>
                 
                 <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
-                    <input type="file" id="qrLogoUploader" accept="image/*" class="mini-data-field" style="padding:8px; font-size:11px; flex:1;">
+                    <!-- Fixed missing onchange event -->
+                    <input type="file" id="qrLogoUploader" accept="image/*" class="mini-data-field" style="padding:8px; font-size:11px; flex:1;" onchange="handleQRLogoUpload(event)">
                     <button class="premium-btn btn-danger" style="padding:10px 15px; font-size:11px;" onclick="removeQRLogo()">Remove</button>
                 </div>
                 
@@ -516,7 +465,8 @@
                     
                     <div style="margin-bottom: 15px;" id="logoUploaderFieldInputContainer">
                         <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload New Logo</span>
-                        <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;">
+                        <!-- Fixed missing onchange event -->
+                        <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleMainLogoUpload(event)">
                     </div>
                     
                     <div class="pro-editor-panel">
@@ -585,10 +535,13 @@
     </div>
 
     <script>
+        // Brand Data including logo and its style settings
         let brandData = { 
             name: "Hotel Mantra Thakali & Hospitality", 
             tag: "Premium Dining Experience", 
-            phone: "Contact: +977-9800000000" 
+            phone: "Contact: +977-9800000000",
+            logo: "https://images.unsplash.com/photo-1559251606-c623743a6d76?w=300&auto=format&fit=crop&q=80",
+            logoSettings: { scale: 1, x: 0, y: 0, rotate: 0, radius: 0 }
         };
         
         let baseTemplate = [
@@ -621,10 +574,11 @@
             "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80",
             "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=80"
         ];
+        
         let currentFolioStyle = "style-book-flip";
         let activeFolioPageIndex = 0;
-
         let databases = [];
+        
         for(let i=1; i<=20; i++) {
             databases.push({ id: i, title: themeNames[i-1] });
         }
@@ -693,6 +647,32 @@
         window.onload = function() {
             loadAllSavedData();
             const urlParams = new URLSearchParams(window.location.search);
+
+            // LZ-STRING URL STATE DECODING (Crucial Fix for QR Data Sync)
+            if(urlParams.has('s')) {
+                try {
+                    let decoded = LZString.decompressFromEncodedURIComponent(urlParams.get('s'));
+                    let parsed = JSON.parse(decoded);
+                    if(parsed) {
+                        if(parsed.db) activeDB = parsed.db;
+                        if(parsed.b) {
+                            brandData.name = parsed.b.name;
+                            brandData.tag = parsed.b.tag;
+                            brandData.phone = parsed.b.phone;
+                            if(parsed.b.logoSettings) brandData.logoSettings = parsed.b.logoSettings;
+                            // Update logo only if url included it
+                            if(parsed.b.logo) brandData.logo = parsed.b.logo;
+                        }
+                        if(parsed.t) currentThemeId = parsed.t;
+                        if(parsed.m) menuModeStr = parsed.m;
+                        if(parsed.p && parsed.p.length > 0) customFolioPages = parsed.p;
+                        if(parsed.f) currentFolioStyle = parsed.f;
+                        
+                        saveAllData(); // Force save downloaded state to mobile's local storage
+                    }
+                } catch(e) { console.error("Sync data parse error", e); }
+            }
+
             if(urlParams.get('view') === 'client') {
                 isClientView = true;
                 document.body.classList.add("client-view-mode");
@@ -713,9 +693,7 @@
             renderSidebarThemes();
         };
 
-        function goBack() {
-            window.history.back();
-        }
+        function goBack() { window.history.back(); }
 
         function backToDash() {
             document.getElementById("masterWorkspaceFramework").style.display = "none";
@@ -775,8 +753,68 @@
                 document.getElementById("inputHotelNameField").value = brandData.name;
                 document.getElementById("inputHotelSloganField").value = brandData.tag;
                 document.getElementById("inputHotelPhoneField").value = brandData.phone;
-
+                
+                if(brandData.logo) {
+                    document.getElementById("liveMenuLogoView").src = brandData.logo;
+                }
+                applyLogoTransform();
                 renderThemeMenu();
+            }
+        }
+
+        // --- NEW/FIXED LOGO UPLOAD & TRANSFORM FUNCTIONS ---
+        function handleMainLogoUpload(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    brandData.logo = e.target.result;
+                    document.getElementById("liveMenuLogoView").src = brandData.logo;
+                    saveAllData();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleQRLogoUpload(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    qrCurrentLogo = evt.target.result;
+                    qrLogoRemoved = false;
+                    updateQRCustomSettings();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function adjustMainLogo() {
+            if(!brandData.logoSettings) brandData.logoSettings = {};
+            brandData.logoSettings.scale = document.getElementById("mainLogoScale").value;
+            brandData.logoSettings.x = document.getElementById("mainLogoX").value;
+            brandData.logoSettings.y = document.getElementById("mainLogoY").value;
+            brandData.logoSettings.rotate = document.getElementById("mainLogoRotate").value;
+            brandData.logoSettings.radius = document.getElementById("mainLogoRadius").value;
+            applyLogoTransform();
+            saveAllData();
+        }
+
+        function applyLogoTransform() {
+            if(brandData.logoSettings) {
+                let img = document.getElementById("liveMenuLogoView");
+                img.style.transform = `scale(${brandData.logoSettings.scale || 1}) translate(${brandData.logoSettings.x || 0}px, ${brandData.logoSettings.y || 0}px) rotate(${brandData.logoSettings.rotate || 0}deg)`;
+                img.style.borderRadius = `${brandData.logoSettings.radius || 0}%`;
+                
+                // Keep Admin inputs synced
+                let els = ['mainLogoScale','mainLogoX','mainLogoY','mainLogoRotate','mainLogoRadius'];
+                if(document.getElementById(els[0])) {
+                    document.getElementById("mainLogoScale").value = brandData.logoSettings.scale || 1;
+                    document.getElementById("mainLogoX").value = brandData.logoSettings.x || 0;
+                    document.getElementById("mainLogoY").value = brandData.logoSettings.y || 0;
+                    document.getElementById("mainLogoRotate").value = brandData.logoSettings.rotate || 0;
+                    document.getElementById("mainLogoRadius").value = brandData.logoSettings.radius || 0;
+                }
             }
         }
 
@@ -829,6 +867,7 @@
             document.getElementById("liveBrandTitleNode").innerText = brandData.name;
             document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
             document.getElementById("liveBrandContactNode").innerText = brandData.phone;
+            saveAllData(); // Important: Save so QR fetches freshest inputs
         }
 
         function renderThemeMenu() {
@@ -860,17 +899,17 @@
             activeDB.forEach((cat, catIdx) => {
                 html += `<div class="cms-category-fieldset-box">
                             <div class="cms-category-title-strip">
-                                <input type="text" class="mini-data-field" value="${cat.title}" oninput="activeDB[${catIdx}].title=this.value;" style="flex:1;">
+                                <input type="text" class="mini-data-field" value="${cat.title}" oninput="activeDB[${catIdx}].title=this.value; saveAllData();" style="flex:1;">
                                 <button class="premium-btn btn-danger" style="padding:10px; font-size:10px;" onclick="deleteCategory(${catIdx})">Delete Category</button>
                             </div>`;
                 
                 cat.items.forEach((item, itemIdx) => {
                     html += `
                     <div class="compact-item-input-row">
-                        <div class="mini-label-group"><span>Item Name</span><input type="text" class="mini-data-field" value="${item.name}" oninput="activeDB[${catIdx}].items[${itemIdx}].name=this.value;"></div>
-                        <div class="mini-label-group"><span>Price</span><input type="text" class="mini-data-field" value="${item.price}" oninput="activeDB[${catIdx}].items[${itemIdx}].price=this.value;"></div>
-                        <div class="mini-label-group super-url-field-node"><span>Image URL (Drive Links Auto-Convert)</span><input type="text" class="mini-data-field" value="${item.img}" onchange="this.value=autoFormatImageUrl(this.value); activeDB[${catIdx}].items[${itemIdx}].img=this.value; renderThemeMenu();"></div>
-                        <div class="mini-label-group"><span>Description</span><input type="text" class="mini-data-field" value="${item.desc}" oninput="activeDB[${catIdx}].items[${itemIdx}].desc=this.value;"></div>
+                        <div class="mini-label-group"><span>Item Name</span><input type="text" class="mini-data-field" value="${item.name}" oninput="activeDB[${catIdx}].items[${itemIdx}].name=this.value; saveAllData();"></div>
+                        <div class="mini-label-group"><span>Price</span><input type="text" class="mini-data-field" value="${item.price}" oninput="activeDB[${catIdx}].items[${itemIdx}].price=this.value; saveAllData();"></div>
+                        <div class="mini-label-group super-url-field-node"><span>Image URL (Drive Links Auto-Convert)</span><input type="text" class="mini-data-field" value="${item.img}" onchange="this.value=autoFormatImageUrl(this.value); activeDB[${catIdx}].items[${itemIdx}].img=this.value; renderThemeMenu(); saveAllData();"></div>
+                        <div class="mini-label-group"><span>Description</span><input type="text" class="mini-data-field" value="${item.desc}" oninput="activeDB[${catIdx}].items[${itemIdx}].desc=this.value; saveAllData();"></div>
                         <div style="display:flex; align-items:flex-end;">
                             <button class="premium-btn btn-danger" style="width:100%; padding:12px; font-size:10px;" onclick="deleteItem(${catIdx}, ${itemIdx})">Remove Item</button>
                         </div>
@@ -885,24 +924,28 @@
 
         function addSection() {
             activeDB.push({ id: "cat_" + Date.now(), title: "New Category", items: [] });
+            saveAllData();
             renderAdminFields();
             renderThemeMenu();
         }
 
         function deleteCategory(idx) {
             activeDB.splice(idx, 1);
+            saveAllData();
             renderAdminFields();
             renderThemeMenu();
         }
 
         function addItem(catIdx) {
             activeDB[catIdx].items.push({ id: Date.now(), name: "New Item", price: "0", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200", desc: "Item description here" });
+            saveAllData();
             renderAdminFields();
             renderThemeMenu();
         }
 
         function deleteItem(catIdx, itemIdx) {
             activeDB[catIdx].items.splice(itemIdx, 1);
+            saveAllData();
             renderAdminFields();
             renderThemeMenu();
         }
@@ -970,6 +1013,7 @@
         }
 
         function showQR() {
+            saveAllData(); // FORCE Save so QR generates with newest edits
             document.getElementById("qrModalOverlay").style.display = "flex";
             let qHtml = "";
             qrStyles.forEach((s, i) => {
@@ -979,8 +1023,22 @@
             applyQRStyle(0, document.querySelector('.qr-style-pill'));
         }
 
-        function closeQR() {
-            document.getElementById("qrModalOverlay").style.display = "none";
+        function closeQR() { document.getElementById("qrModalOverlay").style.display = "none"; }
+        
+        function removeQRLogo() {
+            qrCurrentLogo = null;
+            qrLogoRemoved = true;
+            updateQRCustomSettings();
+        }
+        
+        function updateQRCustomSettings() {
+            let activePill = document.querySelector('.qr-style-pill.active-pill');
+            let idx = 0;
+            if(activePill) {
+                let nodes = Array.from(document.querySelectorAll('.qr-style-pill'));
+                idx = nodes.indexOf(activePill);
+            }
+            applyQRStyle(idx, activePill);
         }
 
         function applyQRStyle(index, elem) {
@@ -989,13 +1047,42 @@
             
             const s = qrStyles[index];
             let baseUrl = window.location.href.split('?')[0];
-            let clientUrl = baseUrl + "?view=client&mode=" + menuModeStr;
+            
+            // SECURITY/SIZE FILTER: Filter out massive base64 image strings so QR doesn't break
+            let exportDB = JSON.parse(JSON.stringify(activeDB));
+            exportDB.forEach(cat => {
+                cat.items.forEach(it => {
+                    if(it.img && it.img.startsWith('data:image')) it.img = ""; 
+                });
+            });
+            let exportPages = customFolioPages.filter(p => !p.startsWith('data:image'));
+            let exportBrand = JSON.parse(JSON.stringify(brandData));
+            if(exportBrand.logo && exportBrand.logo.startsWith('data:image')) exportBrand.logo = "";
+            
+            let stateObj = {
+                t: currentThemeId,
+                m: menuModeStr,
+                b: exportBrand,
+                db: exportDB,
+                f: currentFolioStyle,
+                p: exportPages
+            };
+            
+            let compressedParams = "";
+            if(typeof LZString !== 'undefined') {
+                compressedParams = LZString.compressToEncodedURIComponent(JSON.stringify(stateObj));
+            }
+
+            let clientUrl = baseUrl + "?view=client&mode=" + menuModeStr + (compressedParams ? "&s=" + compressedParams : "");
+            
+            let customLogoSize = parseFloat(document.getElementById('qrLogoSize').value) || 0.4;
 
             qrCodeInstance.update({
                 data: clientUrl,
                 dotsOptions: { color: s.color, type: s.dots },
                 cornersSquareOptions: { color: s.color, type: s.corners },
                 backgroundOptions: { color: s.bg },
+                imageOptions: { crossOrigin: "anonymous", margin: 8, imageSize: customLogoSize },
                 image: qrLogoRemoved ? null : (qrCurrentLogo || "https://images.unsplash.com/photo-1559251606-c623743a6d76?w=100")
             });
             document.getElementById("qrCodeContainer").innerHTML = "";
@@ -1004,18 +1091,6 @@
 
         function downloadQR() {
             qrCodeInstance.download({ name: "menu-qr", extension: "png" });
-        }
-
-        function adjustMainLogo() {
-            let scale = document.getElementById("mainLogoScale").value;
-            let x = document.getElementById("mainLogoX").value;
-            let y = document.getElementById("mainLogoY").value;
-            let rot = document.getElementById("mainLogoRotate").value;
-            let rad = document.getElementById("mainLogoRadius").value;
-
-            let img = document.getElementById("liveMenuLogoView");
-            img.style.transform = `scale(${scale}) translate(${x}px, ${y}px) rotate(${rot}deg)`;
-            img.style.borderRadius = `${rad}%`;
         }
     </script>
 </body>
