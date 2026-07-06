@@ -15,67 +15,77 @@ const db = getFirestore(app);
 
 const loggedInEmail = localStorage.getItem("hotelUserEmail");
 
-async function checkAccess() {
-    if (!loggedInEmail || loggedInEmail === "superadmin@power.com") {
-        window.location.href = "index.html";
-        return;
-    }
+// 3 Minute Auto-Logout 
+let logoutTimer;
+function resetTimer() { 
+    clearTimeout(logoutTimer); 
+    logoutTimer = setTimeout(() => { 
+        localStorage.removeItem("hotelUserEmail"); 
+        localStorage.removeItem("hotelUserId");
+        window.location.href = "index.html"; 
+    }, 180000); 
+}
 
+window.onload = resetTimer; 
+window.onmousemove = resetTimer; 
+window.onkeypress = resetTimer;
+window.ontouchstart = resetTimer;
+
+async function checkAccess() {
+    if(!loggedInEmail){ 
+        window.location.href = "index.html"; 
+        return; 
+    }
+    
     try {
         const q = query(collection(db, "hotels"), where("email", "==", loggedInEmail));
-        const querySnapshot = await getDocs(q);
+        const snap = await getDocs(q);
         
-        if (!querySnapshot.empty) {
-            const hotelDoc = querySnapshot.docs[0];
-            const h = hotelDoc.data();
+        if(!snap.empty) {
+            const h = snap.docs[0].data();
             
+            if(h.status === "Inactive") {
+                alert("Corporate Session Suspended by Super Admin Command. Contact operations support framework.");
+                localStorage.removeItem("hotelUserEmail");
+                localStorage.removeItem("hotelUserId");
+                window.location.href = "index.html";
+                return;
+            }
+
             document.getElementById("authLoader").style.display = "none";
             document.getElementById("welcomeText").innerText = "Welcome, " + (h.ownerName || "Executive Officer");
             document.getElementById("hotelName").innerText = h.hotelName || "Corporate Infrastructure Unit Node";
             
-            document.getElementById("pHotel").innerText = h.hotelName || "N/A";
-            document.getElementById("pOwner").innerText = h.ownerName || "N/A";
-            document.getElementById("pEmail").innerText = h.email || "N/A";
-            document.getElementById("pMobile").innerText = h.mobile || "N/A";
-            document.getElementById("pCity").innerText = h.city || "N/A";
-            document.getElementById("pAddress").innerText = h.address || "N/A";
-            document.getElementById("pPlan").innerText = h.plan || "N/A";
+            ["pHotel", "pOwner", "pEmail", "pMobile", "pCity", "pAddress", "pPlan"].forEach(id => {
+                let key = id.substring(1).toLowerCase();
+                
+                if(key === 'hotel') key = 'hotelName';
+                if(key === 'owner') key = 'ownerName';
+                
+                const element = document.getElementById(id);
+                if(element) {
+                    element.innerText = h[key] || "Registry Matrix Unassigned";
+                }
+            });
 
-            document.getElementById("launchMenuBtn").onclick = () => {
-                window.location.href = `Menu.html?id=${hotelDoc.id}&role=hotelowner`;
-            };
-
-            const container = document.getElementById("clientPaymentListContainer");
-            const paymentsArray = h.payments || [];
-            if(paymentsArray.length === 0) {
-                container.innerHTML = `<p style="color:#888; text-align:center; padding: 40px;">No clear transacted settlement historical records trace verified on system nodes.</p>`;
-            } else {
-                paymentsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
-                let html = "";
-                paymentsArray.forEach(pay => {
-                    html += `
-                        <div class="history-item">
-                            <div>
-                                <div class="history-date">Settled on: ${pay.date || 'N/A'}</div>
-                                <div class="history-remarks">${pay.remarks || 'Standard Automated System Clearance Receipt'}</div>
-                            </div>
-                            <div class="history-amount">₹ ${Number(pay.amount).toLocaleString('en-IN')}</div>
-                        </div>`;
-                });
-                container.innerHTML = html;
+            if(typeof window.renderClientPayments === "function") {
+                window.renderClientPayments(h.payments || []);
             }
+
         } else {
-            localStorage.clear();
+            localStorage.removeItem("hotelUserEmail");
             window.location.href = "index.html";
         }
     } catch (error) {
-        alert("Ecosystem Link Interrupted. Verify hardware network parameters: " + error.message);
+        console.error("Critical Cloud Interfacing Fault: ", error);
+        alert("Ecosystem Link Interrupted. Verify hardware network parameters connectivity files.");
     }
 }
 
 checkAccess();
 
 document.getElementById("userLogoutBtn").addEventListener("click", () => {
-    localStorage.clear();
+    localStorage.removeItem("hotelUserEmail");
+    localStorage.removeItem("hotelUserId");
     window.location.href = "index.html";
 });

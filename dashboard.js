@@ -15,32 +15,50 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
+// 3 Minute Auto-Logout 
+let logoutTimer;
+function resetTimer() {
+    clearTimeout(logoutTimer);
+    logoutTimer = setTimeout(() => {
+        signOut(auth).then(() => window.location.href = "index.html");
+    }, 180000); // 3 mins in ms
+}
+window.onload = resetTimer;
+window.onmousemove = resetTimer;
+window.onkeypress = resetTimer;
+window.ontouchstart = resetTimer;
+
+onAuthStateChanged(auth, async (user) => {
     if (!user || user.email !== "superadmin@power.com") {
         window.location.href = "index.html";
-    } else {
-        document.getElementById("authLoader").style.display = "none";
+        return;
     }
-});
+    document.getElementById("authLoader").style.display = "none";
 
-async function renderMetricsSystem() {
     try {
-        const querySnapshot = await getDocs(collection(db, "hotels"));
-        let total = 0, active = 0, grandTotalRevenue = 0;
-        let clientsHtml = "", revenueHtml = "";
-
-        querySnapshot.forEach((doc) => {
+        const snapshot = await getDocs(collection(db, "hotels"));
+        
+        let total = 0;
+        let active = 0;
+        let grandTotalRevenue = 0;
+        
+        let clientsHtml = "";
+        let revenueHtml = "";
+        
+        snapshot.forEach((doc) => {
             const h = doc.data();
             total++;
-            if (h.status === "Active") active++;
+            
+            const statusClass = (h.status === "Active") ? "badge-active" : "badge-inactive";
+            if(h.status === "Active") active++;
 
             let hotelTotalPaid = 0;
-            if (h.payments && Array.isArray(h.payments)) {
-                h.payments.forEach(p => { hotelTotalPaid += (Number(p.amount) || 0); });
+            if(h.payments && Array.isArray(h.payments)) {
+                h.payments.forEach(pay => {
+                    hotelTotalPaid += Number(pay.amount) || 0;
+                });
             }
             grandTotalRevenue += hotelTotalPaid;
-
-            const statusClass = h.status === "Active" ? "badge active" : "badge inactive";
 
             clientsHtml += `
             <tr>
@@ -59,7 +77,7 @@ async function renderMetricsSystem() {
 
         document.getElementById("totalHotels").innerText = total;
         document.getElementById("activeHotels").innerText = active;
-        document.getElementById("totalRevenueDisplay").innerText = "₹ " + grandTotalRevenue.toLocaleString('en-IN');
+        document.getElementById("totalRevenueDisplay").innerText = grandTotalRevenue.toLocaleString('en-IN');
 
         document.getElementById("hotelList").innerHTML = total === 0 ? `<tr><td colspan="3" style="text-align:center; color:#666;">No dynamic records allocated.</td></tr>` : clientsHtml;
         document.getElementById("revenueList").innerHTML = total === 0 ? `<tr><td colspan="3" style="text-align:center; color:#666;">No records allocated.</td></tr>` : revenueHtml;
@@ -67,13 +85,8 @@ async function renderMetricsSystem() {
     } catch (error) {
         alert("System Data Retrieval Infrastructure Fault: " + error.message);
     }
-}
-
-renderMetricsSystem();
+});
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
-    signOut(auth).then(() => {
-        localStorage.clear();
-        window.location.href = "index.html";
-    });
+    signOut(auth).then(() => window.location.href = "index.html");
 });

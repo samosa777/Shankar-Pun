@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = { 
     apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", 
@@ -15,52 +15,128 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const urlParams = new URLSearchParams(window.location.search);
-const hotelId = urlParams.get('id');
+// 3 Minute Auto-Logout 
+let logoutTimer;
+function resetTimer() { 
+    clearTimeout(logoutTimer); 
+    logoutTimer = setTimeout(() => { signOut(auth).then(() => window.location.href = "index.html"); }, 180000); 
+}
+window.onload = resetTimer; window.onmousemove = resetTimer; window.onkeypress = resetTimer; window.ontouchstart = resetTimer;
 
-onAuthStateChanged(auth, (user) => {
-    if (!user || localStorage.getItem("hotelUserEmail") !== "superadmin@power.com") {
-        window.location.href = "index.html";
-    } else {
-        document.getElementById("authLoader").style.display = "none";
+const params = new URLSearchParams(window.location.search);
+const hotelId = params.get("id");
+
+if(hotelId) {
+    document.getElementById("superAdminMenuLink").href = `Menu.html?id=${hotelId}`;
+}
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user || user.email !== "superadmin@power.com") { window.location.href = "index.html"; return; }
+    document.getElementById("authLoader").style.display = "none";
+    if (!hotelId) { alert("Invalid Client Request Parameter."); window.location.href = "dashboard.html"; return; }
+    
+    document.getElementById('pay_date').valueAsDate = new Date();
+    loadHotel();
+});
+
+const fields = ["hotelName", "ownerName", "email", "password", "status", "mobile", "whatsapp", "address", "city", "state", "country", "maps", "website", "facebook", "instagram", "plan"];
+
+async function loadHotel() {
+    try {
+        const hotelSnap = await getDoc(doc(db, "hotels", hotelId));
+        if (!hotelSnap.exists()) return alert("Requested Database Entity Node Not Present.");
+        const data = hotelSnap.data();
+        
+        document.getElementById("displayHotelName").innerText = data.hotelName || "Unnamed Asset";
+        document.getElementById("displayDocId").innerText = "Ecosystem Location Index Node Reference ID: " + hotelId;
+
+        fields.forEach(f => {
+            if(document.getElementById(`v_${f}`)) {
+                document.getElementById(`v_${f}`).value = data[f] || "";
+            }
+        });
+
+        if(!data.status) document.getElementById("v_status").value = "Active";
+
+        renderPayments(data.payments || []);
+
+    } catch (error) { console.error(error); }
+}
+
+document.getElementById("toggleEditBtn").addEventListener("click", () => {
+    document.getElementById("toggleEditBtn").style.display = "none";
+    document.getElementById("saveBtn").style.display = "inline-block";
+    
+    fields.forEach(f => {
+        if(document.getElementById(`v_${f}`)) {
+            document.getElementById(`v_${f}`).disabled = false;
+            document.getElementById(`v_${f}`).style.border = "1px solid #D4AF37";
+            document.getElementById(`v_${f}`).style.background = "#050505";
+        }
+    });
+});
+
+document.getElementById("saveBtn").addEventListener("click", async () => {
+    try {
+        const passVal = document.getElementById("v_password").value.trim();
+        if(!passVal) {
+            alert("Cryptographic access pass phrases cannot resolve into empty vectors.");
+            return;
+        }
+
+        document.getElementById("saveBtn").innerText = "COMMITTING PARAMS...";
+        const updatedData = {};
+        fields.forEach(f => {
+            if(document.getElementById(`v_${f}`)) updatedData[f] = document.getElementById(`v_${f}`).value;
+        });
+        
+        await updateDoc(doc(db, "hotels", hotelId), updatedData);
+        alert("Systems Parameters Core Registry Updated Safely.");
+        window.location.reload();
+    } catch (e) { 
+        alert("Ecosystem File Sync Exception: " + e.message); 
+        document.getElementById("saveBtn").innerText = "Commit Parameter Modifications"; 
     }
 });
 
-if (!hotelId) {
-    alert("Null reference structural pointer error. Returning to global ledger command.");
-    window.location.href = "dashboard.html";
-}
+document.getElementById("addPaymentBtn").addEventListener("click", async () => {
+    const date = document.getElementById("pay_date").value;
+    const amount = document.getElementById("pay_amount").value;
+    const remarks = document.getElementById("pay_remarks").value;
 
-async function fetchHotelMetadata() {
-    try {
-        const docRef = doc(db, "hotels", hotelId);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            document.getElementById("hotelHeaderTitle").innerText = data.hotelName || "Corporate Architecture Unit Node";
-            document.getElementById("dHotel").innerText = data.hotelName || "N/A";
-            document.getElementById("dOwner").innerText = data.ownerName || "N/A";
-            document.getElementById("dEmail").innerText = data.email || "N/A";
-            document.getElementById("dStatus").innerText = data.status || "N/A";
-            document.getElementById("dMobile").innerText = data.mobile || "N/A";
-            document.getElementById("dCity").innerText = data.city || "N/A";
-            document.getElementById("dAddress").innerText = data.address || "N/A";
-            document.getElementById("dPlan").innerText = data.plan || "N/A";
-
-            document.getElementById("launchCmsBtn").onclick = () => {
-                window.location.href = `Menu.html?id=${hotelId}&role=admin`;
-            };
-
-            renderPayments(data.payments || []);
-        } else {
-            alert("No structural record verified under current hash mapping.");
-            window.location.href = "dashboard.html";
-        }
-    } catch (e) {
-        alert("Ecosystem Interconnectivity Core Error: " + e.message);
+    if(!date || !amount) {
+        alert("Valuation data parameters (Date and Capital Inflow metrics) must be complete.");
+        return;
     }
-}
+
+    const btn = document.getElementById("addPaymentBtn");
+    btn.innerText = "RECORDING CAPITAL NODE...";
+    btn.disabled = true;
+
+    try {
+        const newPayment = {
+            id: Date.now().toString(),
+            date: date,
+            amount: amount,
+            remarks: remarks || "System Admin Standard Remittance"
+        };
+
+        await updateDoc(doc(db, "hotels", hotelId), {
+            payments: arrayUnion(newPayment)
+        });
+
+        alert("Remittance Log Synchronized Successfully.");
+        document.getElementById("pay_amount").value = "";
+        document.getElementById("pay_remarks").value = "";
+        loadHotel();
+
+    } catch (e) {
+        alert("Capital Allocation Write Failure Exception: " + e.message);
+    } finally {
+        btn.innerText = "Commit Remittance Log";
+        btn.disabled = false;
+    }
+});
 
 function renderPayments(paymentsArray) {
     const container = document.getElementById("paymentListContainer");
@@ -81,49 +157,21 @@ function renderPayments(paymentsArray) {
         html += `
             <div class="history-item">
                 <div>
-                    <div class="history-date">${pay.date || 'N/A'}</div>
-                    <div class="history-remarks">${pay.remarks || 'Standard Automated System Clearance Receipt'}</div>
+                    <div class="history-date">${formatDate(pay.date)}</div>
+                    <div class="history-remarks">${pay.remarks}</div>
                 </div>
                 <div class="history-amount">₹ ${Number(pay.amount).toLocaleString('en-IN')}</div>
-            </div>`;
+            </div>
+        `;
     });
 
     container.innerHTML = html;
     if(totalDisplay) totalDisplay.innerText = totalAmount.toLocaleString('en-IN');
 }
 
-document.getElementById("addPaymentBtn").addEventListener("click", async () => {
-    const amt = document.getElementById("payAmount").value;
-    const dt = document.getElementById("payDate").value.trim();
-    const rem = document.getElementById("payRemarks").value.trim();
-    const btn = document.getElementById("addPaymentBtn");
-
-    if(!amt || !dt || !rem) {
-        alert("All ledger entry attributes required to commit log flow.");
-        return;
-    }
-
-    btn.innerText = "Processing Transaction Lock...";
-    btn.disabled = true;
-
-    try {
-        const docRef = doc(db, "hotels", hotelId);
-        const newPayment = { amount: Number(amt), date: dt, remarks: rem };
-        
-        await updateDoc(docRef, { payments: arrayUnion(newPayment) });
-        
-        document.getElementById("payAmount").value = "";
-        document.getElementById("payDate").value = "";
-        document.getElementById("payRemarks").value = "";
-        
-        await fetchHotelMetadata();
-        alert("Transaction lock committed successfully to architecture arrays.");
-    } catch(err) {
-        alert("Ecosystem Mutation Processing Interruption Error: " + err.message);
-    } finally {
-        btn.innerText = "Commit Remittance Log";
-        btn.disabled = false;
-    }
-});
-
-fetchHotelMetadata();
+function formatDate(dateStr) {
+    if(!dateStr) return "";
+    const parts = dateStr.split('-');
+    if(parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    return dateStr;
+}

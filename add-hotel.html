@@ -26,7 +26,6 @@
 
         .submit-btn { width: 100%; padding: 18px; margin-top: 45px; background: #D4AF37; color: #000; border: none; border-radius: 6px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; }
         .submit-btn:hover { background: #b5952f; transform: translateY(-2px); }
-        .submit-btn:disabled { background: #555; color: #888; cursor: not-allowed; transform: none; }
 
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
@@ -44,46 +43,42 @@
         <a href="dashboard.html" class="back-btn">← Command Center</a>
     </div>
 
-    <!-- Wrapped the inputs in a form element for native HTML5 validation -->
-    <form id="addHotelForm">
-        <div class="section-title">Core Operational Information</div>
-        <div class="grid">
-            <input type="text" id="hotelName" placeholder="Hotel Asset Name (e.g., Grand Palace Hospitality)" required>
-            <input type="text" id="ownerName" placeholder="Principal Director Name" required>
-            <input type="email" id="email" placeholder="System Authorization Email" required>
-            <input type="password" id="password" placeholder="Initial Cryptographic Access Key" required>
-        </div>
+    <div class="section-title">Core Operational Information</div>
+    <div class="grid">
+        <input type="text" id="hotelName" placeholder="Hotel Asset Name (e.g., Grand Palace Hospitality)" required>
+        <input type="text" id="ownerName" placeholder="Principal Director Name" required>
+        <input type="email" id="email" placeholder="System Authorization Email" required>
+        <input type="password" id="password" placeholder="Initial Cryptographic Access Key" required>
+    </div>
 
-        <div class="section-title">Geographical Parameters & Communication</div>
-        <div class="grid">
-            <input type="text" id="mobile" placeholder="Primary Mobile Node" required>
-            <input type="text" id="whatsapp" placeholder="Secure WhatsApp Node">
-            <textarea id="address" class="full" placeholder="Complete Physical Geographical Address Architecture" required></textarea>
-            <input type="text" id="city" placeholder="City Location Grid" required>
-            <input type="text" id="state" placeholder="State/Province Jurisdiction" required>
-            <input type="text" id="country" placeholder="Sovereign Country Location" required>
-            <input type="text" id="maps" class="full" placeholder="Google Maps Satellite Engine Coordinates Link">
-        </div>
+    <div class="section-title">Geographical Parameters & Communication</div>
+    <div class="grid">
+        <input type="text" id="mobile" placeholder="Primary Mobile Node" required>
+        <input type="text" id="whatsapp" placeholder="Secure WhatsApp Node">
+        <textarea id="address" class="full" placeholder="Complete Physical Geographical Address Architecture" required></textarea>
+        <input type="text" id="city" placeholder="City Location Grid" required>
+        <input type="text" id="state" placeholder="State/Province Jurisdiction" required>
+        <input type="text" id="country" placeholder="Sovereign Country Location" required>
+        <input type="text" id="maps" class="full" placeholder="Google Maps Satellite Engine Coordinates Link">
+    </div>
 
-        <div class="section-title">Digital Allocation & Subscription Metrics</div>
-        <div class="grid">
-            <input type="text" id="website" placeholder="Official Interface Domain URL">
-            <input type="text" id="facebook" placeholder="Facebook Social Anchor Link">
-            <input type="text" id="instagram" placeholder="Instagram Media Anchor Handle">
-            <select id="plan">
-                <option value="Elite Plan">Elite Subscription Architecture</option>
-                <option value="Enterprise Plan">Enterprise Subscription Architecture</option>
-            </select>
-            <input type="date" id="startDate" required>
-            <select id="status">
-                <option value="Active">Operational Activation Status</option>
-                <option value="Inactive">Suspended Status</option>
-            </select>
-        </div>
+    <div class="section-title">Digital Allocation & Subscription Metrics</div>
+    <div class="grid">
+        <input type="text" id="website" placeholder="Official Interface Domain URL">
+        <input type="text" id="facebook" placeholder="Facebook Social Anchor Link">
+        <input type="text" id="instagram" placeholder="Instagram Media Anchor Handle">
+        <select id="plan">
+            <option value="Elite Plan">Elite Subscription Architecture</option>
+            <option value="Enterprise Plan">Enterprise Subscription Architecture</option>
+        </select>
+        <input type="date" id="startDate" required>
+        <select id="status">
+            <option value="Active">Operational Activation Status</option>
+            <option value="Inactive">Suspended Status</option>
+        </select>
+    </div>
 
-        <!-- Changed to type="submit" to trigger the form event -->
-        <button type="submit" class="submit-btn" id="createHotelBtn">INITIALIZE CLIENT ALLOCATION</button>
-    </form>
+    <button class="submit-btn" id="createHotelBtn">INITIALIZE CLIENT ALLOCATION</button>
 </div>
 <script type="module" src="add-hotel.js"></script>
 </body>
