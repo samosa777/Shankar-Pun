@@ -92,7 +92,7 @@
         .theme-quick-sidebar { position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh; background: rgba(10, 12, 15, 0.95); z-index: 100000; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); padding: 25px; overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; box-sizing: border-box; backdrop-filter: blur(20px);}
         .theme-quick-sidebar.active { right: 0; }
         .theme-quick-sidebar h3 { color: var(--champagne-gold); font-family: 'Cinzel', serif; margin-top: 0; margin-bottom: 20px; font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; }
+        .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; width: 100%; }
         .mini-theme-btn:hover, .mini-theme-btn.selected { border-color: var(--champagne-gold); background: rgba(212,175,55,0.1); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
         
         /* --- TELEGRAM STYLE QR MODAL --- */
@@ -102,7 +102,7 @@
         .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
         .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0;}
         
-        .qr-styles-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
+        .qr-styles-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; width: 100%; box-sizing: border-box; }
         .qr-styles-scroll::-webkit-scrollbar { height: 4px; }
         .qr-styles-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
         .qr-style-pill { background: rgba(255,255,255,0.05); color: #fff; padding: 8px 16px; border-radius: 30px; font-size: 11px; white-space: nowrap; cursor: pointer; border: 1px solid transparent; transition: 0.3s; }
@@ -315,7 +315,7 @@
         .cms-category-title-strip { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
         .compact-item-input-row { display: grid; grid-template-columns: 1fr; gap: 10px; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.02); }
         .mini-label-group { display: flex; flex-direction: column; gap: 5px; }
-        .mini-label-group.super-url-field-node { display: flex; } /* Modified to always show for easy editing */
+        .mini-label-group.super-url-field-node { display: flex; } 
         .mini-label-group span { font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
         .mini-data-field { width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; font-size: 13px; border-radius: 10px; transition: 0.3s; font-family: 'Montserrat', sans-serif;}
         .mini-data-field:focus { border-color: var(--champagne-gold); outline: none; }
@@ -352,10 +352,9 @@
 
     <div id="authLoader">VERIFYING SECURE ACCESS...</div>
 
-    <div class="admin-dashboard-overlay" id="adminMenuDashboard">
-        
+    <!-- MAIN OVERLAY DASHBOARD -->
+    <div class="admin-dashboard-overlay" id="adminMenuDashboard" style="display: flex;">
         <div class="dashboard-top-bar">
-            <!-- Modification 1: Changed Logout to Back Action -->
             <button class="dashboard-back-btn" onclick="goBack()">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                 Back
@@ -370,24 +369,22 @@
         <div class="dashboard-section-title">Choose Your Menu Experience</div>
         
         <div class="menu-selection-grid">
-            
             <div class="menu-card-item custom-premium-card" onclick="openMenu('uploaded')">
                 <svg style="width:60px; height:60px; fill:var(--champagne-gold); margin-bottom:20px;" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
                 <h3>Your Menu Portfolio</h3>
                 <p>Interactive Photo Display Folio</p>
             </div>
 
-            <div class="menu-card-item" onclick="openMenu('theme'); setTimeout(() => toggleThemeSidebar(true), 150);">
+            <div class="menu-card-item" onclick="openMenu('theme')">
                 <svg style="width:60px; height:60px; fill:#fff; margin-bottom:20px;" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                 <h3>Master Digital Themes</h3>
                 <p>Explore 20+ Premium Layouts</p>
             </div>
-
         </div>
     </div>
 
+    <!-- FLOATING DOCK TOOLBAR -->
     <div class="modern-action-dock" id="topActionBar">
-        <!-- Modification 2: Removed exit button entirely -->
         <button class="dock-btn" onclick="backToDash()">
             <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             <span>Back</span>
@@ -406,6 +403,7 @@
         </button>
     </div>
 
+    <!-- QUICK THEME SELECTION SLIDEOUT -->
     <div class="theme-quick-sidebar" id="themeSidebar">
         <h3>Change Theme</h3>
         <div id="sidebarThemeList" style="flex-grow: 1; overflow-y: auto;"></div>
@@ -415,10 +413,11 @@
         </div>
     </div>
 
+    <!-- MODAL POPUP FOR DISTRIBUTION SCANNER (QR) -->
     <div class="qr-modal-overlay" id="qrModalOverlay">
         <div class="qr-box">
             <div class="qr-header">
-                <h2>Share Menu QR</h2>
+                <h2 id="qrTitleModeText">Share Menu QR</h2>
             </div>
             
             <div class="qr-body">
@@ -454,11 +453,13 @@
         </div>
     </div>
 
+    <!-- MAIN WORKSPACE CORE INTERFACE -->
     <div class="workspace-master-container" id="masterWorkspaceFramework">
         
+        <!-- VISUAL CANVAS SCREEN -->
         <div class="luxury-menu-canvas" id="canvasMenuMainFrame">
             <div class="curated-brand-header" id="brandHeaderWrapperNode">
-                <div class="brand-logo-frame">
+                <div class="brand-logo-frame" id="brandLogoFrameElem">
                     <img id="liveMenuLogoView" src="https://images.unsplash.com/photo-1559251606-c623743a6d76?w=300&auto=format&fit=crop&q=80" crossorigin="anonymous">
                 </div>
                 <h1 id="liveBrandTitleNode">HOTEL MANTRA</h1>
@@ -468,6 +469,7 @@
             
             <div id="dynamicMenuTarget"></div>
             
+            <!-- PHOTO BOOK CAROUSEL VIEWER -->
             <div id="uploadedFolioViewContainer" style="display: none;">
                 <div class="uploaded-folio-viewport" id="folioViewportAnimationNode">
                     <div class="uploaded-folio-track" id="folioPagesContainerNode"></div>
@@ -475,6 +477,7 @@
             </div>
         </div>
 
+        <!-- STUDIO REVISION ENGINE -->
         <div class="grand-operational-desk" id="adminOperationalDeskStudio">
             <div class="desk-header-row">
                 <h3 id="deskHeaderTitleNode">Content Studio</h3>
@@ -482,6 +485,7 @@
             </div>
             <div class="desk-scrollable-body">
                 
+                <!-- PORTFOLIO CONFIGURATIONS PANEL -->
                 <div class="cms-category-fieldset-box" id="uploadedMenuSettingsBlock" style="display: none;">
                     <div class="cms-category-title-strip">
                         <span style="font-size:14px; font-weight:700; color:var(--champagne-gold);">Custom Photo Book Configurator</span>
@@ -510,6 +514,28 @@
                     </div>
                 </div>
 
+                <!-- MASTER THEME CONFIGURATIONS PANEL -->
+                <div class="cms-category-fieldset-box" id="themeMenuSettingsBlock" style="display: none;">
+                    <div class="cms-category-title-strip">
+                        <span style="font-size:14px; font-weight:700; color:var(--champagne-gold);">Digital Brand Profile Settings</span>
+                    </div>
+                    <div class="compact-item-input-row">
+                        <div class="mini-label-group">
+                            <span>Hotel Brand Name</span>
+                            <input type="text" id="editBrandTitle" class="mini-data-field" oninput="updateLiveBrandText()">
+                        </div>
+                        <div class="mini-label-group">
+                            <span>Slogan or Category Sub-text</span>
+                            <input type="text" id="editBrandSlogan" class="mini-data-field" oninput="updateLiveBrandText()">
+                        </div>
+                        <div class="mini-label-group">
+                            <span>Contact Communications Line</span>
+                            <input type="text" id="editBrandContact" class="mini-data-field" oninput="updateLiveBrandText()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRO PHOTO STUDIO (MENU LOGO) -->
                 <div class="cms-category-fieldset-box" id="logoEditorFieldsetGroup">
                     <div class="cms-category-title-strip" style="padding-bottom: 10px; margin-bottom: 10px;">
                         <span style="font-size:14px; font-weight:700; color:var(--champagne-gold);">Pro Photo Studio (Menu Logo)</span>
@@ -517,7 +543,7 @@
                     
                     <div style="margin-bottom: 15px;" id="logoUploaderFieldInputContainer">
                         <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload New Logo</span>
-                        <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;">
+                        <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleLogoUpload(event)">
                     </div>
                     
                     <div class="pro-editor-panel">
@@ -541,486 +567,478 @@
                         </div>
                         <div class="editor-control-row">
                             <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M9 3L6.7 5.3l2.89 2.87-1.42 1.42L5.3 6.7 3 9V3zm12 6l-2.3-2.3-2.87 2.89-1.42-1.42 2.87-2.89L15 3h6zm-6 12l2.3-2.3-2.89-2.87 1.42-1.42 2.89 2.87L18.7 17.3 21 15v6zM3 15l2.3 2.3 2.87-2.89 1.42 1.42-2.89 2.87L9 21H3z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M9 3L6.7 5.3l2.89 2.87-1.42 1.42L5.3 6.7 3 9V3zm12 6l-2.3-2.3-2.87 2.89-1.42-1.42 2.87-2.89L15 3h6zm-6 11l-2.3 2.3-2.89-2.87 1.42-1.42 2.87 2.89L15 21v-6z"/></svg>
                                 <span>U / D</span>
                             </div>
                             <div class="editor-slider-wrap">
                                 <input type="range" id="mainLogoY" min="-150" max="150" step="1" value="0" oninput="adjustMainLogo()">
                             </div>
                         </div>
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/><path d="M7.11 8.53L5.7 7.11C4.8 8.4 4.24 9.92 4.07 11.55l1.98.2c.13-1.28.61-2.45 1.34-3.41l-.28-.28zM19.93 11.55c-.17-1.63-.73-3.15-1.63-4.44l-1.41 1.42c.73.96 1.21 2.13 1.34 3.41l1.7.2zM12 4.04c-1.63 .17-3.15 .73-4.44 1.63l1.42 1.41c.96-.73 2.13-1.21 3.41-1.34l.2-1.7zm0 15.92c1.63-.17 3.15-.73 4.44-1.63l-1.42-1.41c-.96.73-2.13 1.21-3.41 1.34l-.2 1.7z" opacity=".3"/></svg>
-                                <span>Rotate</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoRotate" min="0" max="360" step="1" value="0" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
-                        <div class="editor-control-row">
-                            <div class="editor-icon-label">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-                                <span>Round</span>
-                            </div>
-                            <div class="editor-slider-wrap">
-                                <input type="range" id="mainLogoRadius" min="0" max="50" step="1" value="0" oninput="adjustMainLogo()">
-                            </div>
-                        </div>
                     </div>
                 </div>
-
-                <div class="super-admin-only-panel" id="superAdminBrandingDeskBlock">
-                    <div class="mini-label-group"><span>Hotel Identity Title</span><input type="text" id="inputHotelNameField" class="mini-data-field" oninput="updateBrand()"></div>
-                    <div class="mini-label-group"><span>Tagline / Slogan</span><input type="text" id="inputHotelSloganField" class="mini-data-field" oninput="updateBrand()"></div>
-                    <div class="mini-label-group"><span>Contact Info Line</span><input type="text" id="inputHotelPhoneField" class="mini-data-field" oninput="updateBrand()"></div>
-                </div>
-                
-                <div id="administrativeFormFieldsDestination"></div>
-                
             </div>
-            <div class="desk-footer-action-bar" id="adminPanelFooterActionContainer">
-                <button class="premium-btn btn-outline" id="addNewCategoryBtnNode" onclick="addSection()">+ Add Category</button>
-                <button class="premium-btn" style="flex:1;" onclick="saveChangesAndAlert()">Save Changes</button>
+            <div class="desk-footer-action-bar">
+                <button class="premium-btn" style="width: 100%;" onclick="toggleDesk(false)">Save & Close Workspace</button>
             </div>
         </div>
     </div>
 
-    <!-- Complete JavaScript Implementation -->
+    <!-- MAIN OPERATIONS ENGINE SCRIPT -->
     <script>
-        let brandData = { 
-            name: "Hotel Mantra Thakali & Hospitality", 
-            tag: "Premium Dining Experience", 
-            phone: "Contact: +977-9800000000" 
-        };
+        // GLOBAL STATE VARIABLE PROPERTIES
+        let currentMenuMode = 'theme'; // Tracks active execution environment: 'uploaded' | 'theme'
+        let currentThemeIndex = 1;
+        let activeQRStylingInstance = null;
+        let selectedThemeTemp = 1;
+
+        // LOCAL CHIEF CACHE REPOSITORIES (MOCK INTEGRATIONS REPLACING FIREBASE CHANNELS)
+        let localPortfolioImages = [
+            "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=600&auto=format&fit=crop&q=80",
+            "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=80"
+        ];
         
-        let baseTemplate = [
-            { id: "cat_1", title: "Signature Selections", items: [
-                { id: 1, name: "Premium Thakali Set", price: "550", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&auto=format&fit=crop&q=80", desc: "Authentic organic presentation with local spices." },
-                { id: 2, name: "Mantra Special Curry", price: "420", img: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&auto=format&fit=crop&q=80", desc: "Chef's special recipe slow-cooked to perfection." }
-            ]},
-            { id: "cat_2", title: "Starters & Appetizers", items: [
-                { id: 3, name: "Steamed Momo Platter", price: "250", img: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=200&auto=format&fit=crop&q=80", desc: "Hand-wrapped juicy momos served with spicy chutney." }
-            ]}
+        let localActivePageIndex = 0;
+
+        const sampleThemeMenuStructure = [
+            {
+                category: "Signature Premium Entrées",
+                items: [
+                    { name: "Authentic Thakali Mutton Platter", price: "Rs. 750", desc: "Traditional slow-cooked mountain mutton served with aromatic buckwheat delis and organic ghee." },
+                    { name: "Himalayan Herbs Smoked Trout", price: "Rs. 920", desc: "Fresh river trout infused with wild local herbs and wood-fired over local oak embers." }
+                ]
+            },
+            {
+                category: "Handcrafted Traditional Staples",
+                items: [
+                    { name: "Buckwheat Dhido Gourmet Matrix", price: "Rs. 550", desc: "Fresh organic stone-ground buckwheat mash, whipped extensively to perfection, served with local accompaniments." },
+                    { name: "Mountain Lentil Velouté", price: "Rs. 320", desc: "A smooth purée of indigenous black lentils tempered with jimbu and wild himalayan spices." }
+                ]
+            }
         ];
 
-        let themeNames = [
-            "Royal Gold Edition", "Pristine White", "Neon Cyber-Lounge", "Organic Botanical", 
-            "Glassmorphism Elegance", "Crimson Velvet", "Brutalist High Fashion", "Midnight Sapphire", 
-            "Vintage Paris Cafe", "Abstract Grid", "Sunset Horizon", "Minimalist Zen", 
-            "Synthwave 80s", "Oceanic Flow", "The Hacker Terminal", "Pastel Macaron", 
-            "High-End Steakhouse", "Floating Artistic Gallery", "Comic Pop Art", "Luxury Card Grid"
-        ];
+        // ENGINE SYSTEM BOOT SEQUENCE
+        document.addEventListener("DOMContentLoaded", () => {
+            // Dismiss loader framework safely
+            setTimeout(() => {
+                const loader = document.getElementById("authLoader");
+                if(loader) loader.style.display = "none";
+            }, 800);
 
-        const qrStyles = [
-            { name: "Telegram Blue", dots: "rounded", corners: "extra-rounded", color: "#24A1DE", bg: "#ffffff" },
-            { name: "Neon Matrix", dots: "classy", corners: "square", color: "#00ff66", bg: "#000000" },
-            { name: "Luxury Gold", dots: "dots", corners: "extra-rounded", color: "#d4af37", bg: "#1e1e1e" },
-            { name: "Sunset Gradient", dots: "rounded", corners: "rounded", color: "#f43f5e", bg: "#ffffff" },
-            { name: "Cyberpunk Pink", dots: "classy-inversed", corners: "square", color: "#ec4899", bg: "#0f172a" }
-        ];
+            // Populate system configuration fields with structural mock data
+            document.getElementById("editBrandTitle").value = "HOTEL MANTRA";
+            document.getElementById("editBrandSlogan").value = "Thakali & Hospitality";
+            document.getElementById("editBrandContact").value = "Contact: +977-9800000000";
 
-        let customFolioPages = [
-            "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80",
-            "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=80"
-        ];
-        let currentFolioStyle = "style-book-flip";
-        let activeFolioPageIndex = 0;
-
-        let databases = [];
-        for(let i=1; i<=20; i++) {
-            databases.push({ id: i, title: themeNames[i-1] });
-        }
-
-        let activeDB = []; 
-        let currentRole = ""; 
-        let currentThemeId = 1; 
-        let previewThemeId = 1;
-        let menuModeStr = "theme"; // default
-        
-        const qrCodeInstance = new QRCodeStyling({
-            width: 250, height: 250, margin: 10, type: "svg",
-            imageOptions: { crossOrigin: "anonymous", margin: 8 }
+            // Initialize interface layouts
+            generateThemeGridListOptions();
+            renderDigitalThemeContentMenu();
+            buildFolioPageStructureElements();
         });
 
-        let qrCurrentLogo = null;
-        let qrLogoRemoved = false;
-        let isClientView = false;
-
-        // Automatically format Google Drive URLs
-        function autoFormatImageUrl(url) {
-            if (url.includes("drive.google.com/file/d/")) {
-                let match = url.match(/\/d\/(.*?)\//);
-                if (match && match[1]) {
-                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-                }
-            }
-            return url;
-        }
-
-        function loadAllSavedData() {
-            let savedDB = localStorage.getItem('masterMenuDB');
-            if (savedDB) activeDB = JSON.parse(savedDB);
-            else activeDB = JSON.parse(JSON.stringify(baseTemplate));
-
-            let savedBrand = localStorage.getItem('masterBrandData');
-            if (savedBrand) brandData = JSON.parse(savedBrand);
-
-            let savedFolio = localStorage.getItem('masterFolioPages');
-            if (savedFolio) customFolioPages = JSON.parse(savedFolio);
-
-            let savedTheme = localStorage.getItem('masterThemeId');
-            if (savedTheme) currentThemeId = parseInt(savedTheme);
-
-            let savedMode = localStorage.getItem('masterMenuMode');
-            if (savedMode) menuModeStr = savedMode;
-            
-            let savedFolioStyle = localStorage.getItem('masterFolioStyle');
-            if (savedFolioStyle) currentFolioStyle = savedFolioStyle;
-        }
-
-        function saveAllData() {
-            localStorage.setItem('masterMenuDB', JSON.stringify(activeDB));
-            localStorage.setItem('masterBrandData', JSON.stringify(brandData));
-            localStorage.setItem('masterFolioPages', JSON.stringify(customFolioPages));
-            localStorage.setItem('masterThemeId', currentThemeId);
-            localStorage.setItem('masterMenuMode', menuModeStr);
-            localStorage.setItem('masterFolioStyle', currentFolioStyle);
-        }
-
-        function saveChangesAndAlert() {
-            saveAllData();
-            alert("Changes Saved Successfully! Your live menu is updated.");
-            renderThemeMenu();
-        }
-
-        window.onload = function() {
-            loadAllSavedData();
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('view') === 'client') {
-                isClientView = true;
-                document.getElementById("authLoader").style.display = "none";
-                document.getElementById("adminMenuDashboard").style.display = "none";
-                document.getElementById("topActionBar").style.display = "none";
-                openMenu(menuModeStr, true);
-            } else {
-                unlockMenu('admin');
-            }
-        };
-
-        window.unlockMenu = function(role) {
-            currentRole = role;
-            document.getElementById("authLoader").style.display = "none";
-            document.getElementById("adminMenuDashboard").style.display = "flex";
-            renderSidebarThemes();
-        };
-
+        // VIEW CONTROLLER ENGINE LOGIC
         function goBack() {
-            window.history.back();
+            window.location.href = "hotel-details.html";
         }
 
         function backToDash() {
-            document.getElementById("masterWorkspaceFramework").style.display = "none";
-            document.getElementById("adminMenuDashboard").style.display = "flex";
             toggleDesk(false);
             toggleThemeSidebar(false);
+            document.getElementById("masterWorkspaceFramework").style.display = "none";
+            document.getElementById("topActionBar").style.display = "none";
+            document.getElementById("adminMenuDashboard").style.display = "flex";
         }
 
-        function openMenu(mode, clientModeOverride = false) {
-            menuModeStr = mode;
-            saveAllData();
-
+        function openMenu(mode) {
+            currentMenuMode = mode;
             document.getElementById("adminMenuDashboard").style.display = "none";
             document.getElementById("masterWorkspaceFramework").style.display = "block";
-            
-            if(!isClientView && !clientModeOverride) {
-                 document.getElementById("topActionBar").style.display = "flex";
-            }
+            document.getElementById("topActionBar").style.display = "flex";
+
+            const canvas = document.getElementById("canvasMenuMainFrame");
+            const header = document.getElementById("brandHeaderWrapperNode");
+            const digitalTarget = document.getElementById("dynamicMenuTarget");
+            const uploadedTarget = document.getElementById("uploadedFolioViewContainer");
+            const themeBtn = document.getElementById("dockThemeBtnNode");
 
             if(mode === 'uploaded') {
-                document.getElementById("canvasMenuMainFrame").className = "luxury-menu-canvas uploaded-mode-active";
-                document.getElementById("uploadedFolioViewContainer").style.display = "block";
-                document.getElementById("dynamicMenuTarget").style.display = "none";
-                document.getElementById("brandHeaderWrapperNode").style.display = "none";
-                document.getElementById("dockThemeBtnNode").style.display = "none";
-                
-                if(!isClientView && !clientModeOverride) {
-                    document.getElementById("uploadedMenuSettingsBlock").style.display = "block";
-                    document.getElementById("logoEditorFieldsetGroup").style.display = "none";
-                    document.getElementById("superAdminBrandingDeskBlock").style.display = "none";
-                    document.getElementById("administrativeFormFieldsDestination").style.display = "none";
-                }
-                
-                document.getElementById("folioTransitionStyleChooser").value = currentFolioStyle;
-                renderFolio();
-                renderFolioAdminThumbs();
+                canvas.classList.add("uploaded-mode-active");
+                header.style.display = "none";
+                digitalTarget.style.display = "none";
+                uploadedTarget.style.display = "block";
+                themeBtn.style.display = "none"; // Hide layout engine configuration buttons
             } else {
-                document.getElementById("dockThemeBtnNode").style.display = "flex";
-                applyTheme(currentThemeId);
-                document.getElementById("canvasMenuMainFrame").classList.remove("uploaded-mode-active");
-                document.getElementById("uploadedFolioViewContainer").style.display = "none";
-                document.getElementById("dynamicMenuTarget").style.display = "block";
-                document.getElementById("brandHeaderWrapperNode").style.display = "block";
-                
-                if(!isClientView && !clientModeOverride) {
-                    document.getElementById("uploadedMenuSettingsBlock").style.display = "none";
-                    document.getElementById("logoEditorFieldsetGroup").style.display = "block";
-                    document.getElementById("superAdminBrandingDeskBlock").style.display = "grid";
-                    document.getElementById("administrativeFormFieldsDestination").style.display = "block";
-                    renderAdminFields();
-                }
-                
-                document.getElementById("liveBrandTitleNode").innerText = brandData.name;
-                document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
-                document.getElementById("liveBrandContactNode").innerText = brandData.phone;
-                
-                document.getElementById("inputHotelNameField").value = brandData.name;
-                document.getElementById("inputHotelSloganField").value = brandData.tag;
-                document.getElementById("inputHotelPhoneField").value = brandData.phone;
-
-                renderThemeMenu();
+                canvas.classList.remove("uploaded-mode-active");
+                header.style.display = "block";
+                digitalTarget.style.display = "block";
+                uploadedTarget.style.display = "none";
+                themeBtn.style.display = "flex";
+                applyVisualThemeCoreIndex(currentThemeIndex);
             }
         }
 
-        function renderSidebarThemes() {
-            let html = "";
-            databases.forEach(db => {
-                let selectedText = db.id === currentThemeId ? " <span style='color:var(--champagne-gold); font-size:10px;'>(Currently Selected)</span>" : "";
-                let selClass = db.id === previewThemeId ? "selected" : "";
-                html += `<div class="mini-theme-btn ${selClass}" onclick="previewTheme(${db.id})">${db.id}. ${db.title}${selectedText}</div>`;
-            });
-            document.getElementById("sidebarThemeList").innerHTML = html;
-        }
-
-        function toggleThemeSidebar(show) {
-            previewThemeId = currentThemeId;
-            renderSidebarThemes();
-            document.getElementById("themeSidebar").classList.toggle("active", show);
-        }
-
-        function previewTheme(id) {
-            previewThemeId = id;
-            renderSidebarThemes();
-            applyTheme(id);
-        }
-
-        function applyTheme(id) {
-            document.getElementById("canvasMenuMainFrame").className = "luxury-menu-canvas theme-" + id;
-        }
-
-        function confirmThemeChange() {
-            currentThemeId = previewThemeId;
-            saveAllData();
-            toggleThemeSidebar(false);
-            renderSidebarThemes();
-        }
-
+        // DESK EXPANSION ENGINE OVERRIDE
         function toggleDesk(show) {
+            const workspace = document.getElementById("masterWorkspaceFramework");
+            const uploadedBlock = document.getElementById("uploadedMenuSettingsBlock");
+            const themeBlock = document.getElementById("themeMenuSettingsBlock");
+
             if(show) {
-                document.getElementById("masterWorkspaceFramework").classList.add("admin-active");
+                workspace.classList.add("admin-active");
+                if(currentMenuMode === 'uploaded') {
+                    uploadedBlock.style.display = "block";
+                    themeBlock.style.display = "none";
+                    document.getElementById("deskHeaderTitleNode").innerText = "Portfolio Page Editor";
+                } else {
+                    uploadedBlock.style.display = "none";
+                    themeBlock.style.display = "block";
+                    document.getElementById("deskHeaderTitleNode").innerText = "Digital Layout Theme Studio";
+                }
             } else {
-                document.getElementById("masterWorkspaceFramework").classList.remove("admin-active");
+                workspace.classList.remove("admin-active");
             }
         }
 
-        function updateBrand() {
-            brandData.name = document.getElementById("inputHotelNameField").value;
-            brandData.tag = document.getElementById("inputHotelSloganField").value;
-            brandData.phone = document.getElementById("inputHotelPhoneField").value;
-            
-            document.getElementById("liveBrandTitleNode").innerText = brandData.name;
-            document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
-            document.getElementById("liveBrandContactNode").innerText = brandData.phone;
+        // DIGITAL LAYOUT IMPLEMENTATION CHANNELS
+        function updateLiveBrandText() {
+            const titleVal = document.getElementById("editBrandTitle").value;
+            const sloganVal = document.getElementById("editBrandSlogan").value;
+            const contactVal = document.getElementById("editBrandContact").value;
+
+            document.getElementById("liveBrandTitleNode").innerText = titleVal ? titleVal : "HOTEL BRAND";
+            document.getElementById("liveBrandSloganNode").innerText = sloganVal ? sloganVal : "";
+            document.getElementById("liveBrandContactNode").innerText = contactVal ? contactVal : "";
         }
 
-        function renderThemeMenu() {
+        function renderDigitalThemeContentMenu() {
+            const target = document.getElementById("dynamicMenuTarget");
             let html = "";
-            activeDB.forEach((cat, catIdx) => {
-                html += `<div class="menu-section-wrapper">
-                            <div class="menu-section-heading">${cat.title}</div>`;
-                
-                cat.items.forEach((item, itemIdx) => {
+
+            sampleThemeMenuStructure.forEach(sect => {
+                html += `<div class="menu-section-wrapper">`;
+                html += `<div class="menu-section-heading">${sect.category}</div>`;
+                sect.items.forEach(item => {
                     html += `
                     <div class="premium-food-card">
-                        <div class="food-card-media-frame"><img src="${item.img}" alt="food"></div>
+                        <div class="food-card-media-frame">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&auto=format&fit=crop&q=80">
+                        </div>
                         <div class="food-card-details-box">
                             <div class="food-card-meta-top">
-                                <h4 class="food-title-text">${item.name}</h4>
-                                <span class="food-price-badge">₹${item.price}</span>
+                                <div class="food-title-text">${item.name}</div>
+                                <div class="food-price-badge">${item.price}</div>
                             </div>
-                            <p class="food-description-text">${item.desc}</p>
+                            <div class="food-description-text">${item.desc}</div>
                         </div>
                     </div>`;
                 });
                 html += `</div>`;
             });
-            document.getElementById("dynamicMenuTarget").innerHTML = html;
+
+            target.innerHTML = html;
         }
 
-        function renderAdminFields() {
+        function generateThemeGridListOptions() {
+            const container = document.getElementById("sidebarThemeList");
             let html = "";
-            activeDB.forEach((cat, catIdx) => {
-                html += `<div class="cms-category-fieldset-box">
-                            <div class="cms-category-title-strip">
-                                <input type="text" class="mini-data-field" value="${cat.title}" oninput="activeDB[${catIdx}].title=this.value;" style="flex:1;">
-                                <button class="premium-btn btn-danger" style="padding:10px; font-size:10px;" onclick="deleteCategory(${catIdx})">Delete Category</button>
-                            </div>`;
+            for(let i=1; i<=20; i++) {
+                html += `<button class="mini-theme-btn ${i===1?'selected':''}" id="themePillNode-${i}" onclick="selectThemeTempIndex(${i})">Premium Custom Theme Layout Style Vector #${i}</button>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function toggleThemeSidebar(show) {
+            const sidebar = document.getElementById("themeSidebar");
+            if(show) {
+                selectedThemeTemp = currentThemeIndex;
+                selectThemeTempIndex(currentThemeIndex);
+                sidebar.classList.add("active");
+            } else {
+                sidebar.classList.remove("active");
+            }
+        }
+
+        function selectThemeTempIndex(idx) {
+            selectedThemeTemp = idx;
+            document.querySelectorAll(".mini-theme-btn").forEach(btn => btn.classList.remove("selected"));
+            const activePill = document.getElementById(`themePillNode-${idx}`);
+            if(activePill) activePill.classList.add("selected");
+        }
+
+        function confirmThemeChange() {
+            currentThemeIndex = selectedThemeTemp;
+            applyVisualThemeCoreIndex(currentThemeIndex);
+            toggleThemeSidebar(false);
+        }
+
+        function applyVisualThemeCoreIndex(idx) {
+            const canvas = document.getElementById("canvasMenuMainFrame");
+            // Scrub theme classes safely
+            for(let i=1; i<=20; i++) {
+                canvas.classList.remove(`theme-${i}`);
+            }
+            canvas.classList.add(`theme-${idx}`);
+        }
+
+        // PHOTO PORTFOLIO LIFECYCLE MANAGEMENT ENGINE
+        function buildFolioPageStructureElements() {
+            const track = document.getElementById("folioPagesContainerNode");
+            const thumbs = document.getElementById("adminFolioThumbsPreviewGrid");
+            
+            let trackHtml = "";
+            let thumbsHtml = "";
+
+            if(localPortfolioImages.length === 0) {
+                track.innerHTML = `<div style="color:#666; display:flex; justify-content:center; align-items:center; height:100%; font-size:14px;">No Menu Portfolio Sheets Configured. Click edit to upload pages.</div>`;
+                thumbs.innerHTML = "";
+                return;
+            }
+
+            localPortfolioImages.forEach((imgSrc, idx) => {
+                const activeClass = (idx === localActivePageIndex) ? "active-page" : "";
+                trackHtml += `<img src="${imgSrc}" class="folio-page-node ${activeClass}" id="folioPageElement-${idx}">`;
                 
-                cat.items.forEach((item, itemIdx) => {
-                    html += `
-                    <div class="compact-item-input-row">
-                        <div class="mini-label-group"><span>Item Name</span><input type="text" class="mini-data-field" value="${item.name}" oninput="activeDB[${catIdx}].items[${itemIdx}].name=this.value;"></div>
-                        <div class="mini-label-group"><span>Price</span><input type="text" class="mini-data-field" value="${item.price}" oninput="activeDB[${catIdx}].items[${itemIdx}].price=this.value;"></div>
-                        <div class="mini-label-group super-url-field-node"><span>Image URL (Drive Links Auto-Convert)</span><input type="text" class="mini-data-field" value="${item.img}" onchange="this.value=autoFormatImageUrl(this.value); activeDB[${catIdx}].items[${itemIdx}].img=this.value; renderThemeMenu();"></div>
-                        <div class="mini-label-group"><span>Description</span><input type="text" class="mini-data-field" value="${item.desc}" oninput="activeDB[${catIdx}].items[${itemIdx}].desc=this.value;"></div>
-                        <div style="display:flex; align-items:flex-end;">
-                            <button class="premium-btn btn-danger" style="width:100%; padding:12px; font-size:10px;" onclick="deleteItem(${catIdx}, ${itemIdx})">Remove Item</button>
-                        </div>
-                    </div>`;
-                });
-
-                html += `<button class="premium-btn btn-outline" style="width:100%; margin-top:10px; padding:10px; font-size:11px;" onclick="addItem(${catIdx})">+ Add Item to Category</button>
-                      </div>`;
+                thumbsHtml += `
+                <div class="uploaded-admin-thumb-frame">
+                    <img src="${imgSrc}">
+                    <button class="thumb-remove-overlay-btn" onclick="removeFolioSheetIndex(${idx})">✕</button>
+                </div>`;
             });
-            document.getElementById("administrativeFormFieldsDestination").innerHTML = html;
-        }
 
-        function addSection() {
-            activeDB.push({ id: "cat_" + Date.now(), title: "New Category", items: [] });
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function deleteCategory(idx) {
-            activeDB.splice(idx, 1);
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function addItem(catIdx) {
-            activeDB[catIdx].items.push({ id: Date.now(), name: "New Item", price: "0", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200", desc: "Item description here" });
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
-        function deleteItem(catIdx, itemIdx) {
-            activeDB[catIdx].items.splice(itemIdx, 1);
-            renderAdminFields();
-            renderThemeMenu();
+            track.innerHTML = trackHtml;
+            thumbs.innerHTML = thumbsHtml;
+            
+            // Re-apply orientation layout hinting animations 
+            applyFolioMotionStyle(document.getElementById("folioTransitionStyleChooser").value);
         }
 
         function handleFolioUpload(event) {
             const files = event.target.files;
-            if(!files || files.length === 0) return;
+            if(!files) return;
             
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    customFolioPages.push(e.target.result);
-                    renderFolio();
-                    renderFolioAdminThumbs();
-                    saveAllData();
-                }
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function renderFolioAdminThumbs() {
-            let html = "";
-            customFolioPages.forEach((src, idx) => {
-                html += `
-                <div class="uploaded-admin-thumb-frame">
-                    <img src="${src}">
-                    <button class="thumb-remove-overlay-btn" onclick="removeFolioImage(${idx})">✕</button>
-                </div>`;
-            });
-            document.getElementById("adminFolioThumbsPreviewGrid").innerHTML = html;
-        }
-
-        function removeFolioImage(idx) {
-            customFolioPages.splice(idx, 1);
-            activeFolioPageIndex = 0;
-            renderFolio();
-            renderFolioAdminThumbs();
-            saveAllData();
-        }
-
-        function renderFolio() {
-            let html = "";
-            customFolioPages.forEach((src, idx) => {
-                let cl = "folio-page-node";
-                if(idx === activeFolioPageIndex) cl += " active-page";
-                if(idx < activeFolioPageIndex) cl += " prev-page";
-                html += `<img src="${src}" class="${cl}" onclick="nextFolioPage()">`;
-            });
-            document.getElementById("folioPagesContainerNode").innerHTML = html;
-            document.getElementById("folioViewportAnimationNode").className = "uploaded-folio-viewport " + currentFolioStyle;
-        }
-
-        function changeFolioMotionStyle(val) {
-            currentFolioStyle = val;
-            saveAllData();
-            document.getElementById("folioViewportAnimationNode").className = "uploaded-folio-viewport " + currentFolioStyle;
-        }
-
-        function nextFolioPage() {
-            activeFolioPageIndex++;
-            if(activeFolioPageIndex >= customFolioPages.length) {
-                activeFolioPageIndex = 0;
+            let loadPromises = [];
+            for(let i=0; i<files.length; i++) {
+                loadPromises.push(new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(files[i]);
+                }));
             }
-            renderFolio();
+
+            Promise.all(loadPromises).then(base64Images => {
+                localPortfolioImages = localPortfolioImages.concat(base64Images);
+                localActivePageIndex = 0;
+                buildFolioPageStructureElements();
+            });
         }
 
+        function removeFolioSheetIndex(idx) {
+            localPortfolioImages.splice(idx, 1);
+            if(localActivePageIndex >= localPortfolioImages.length) {
+                localActivePageIndex = Math.max(0, localPortfolioImages.length - 1);
+            }
+            buildFolioPageStructureElements();
+        }
+
+        function changeFolioMotionStyle(className) {
+            applyFolioMotionStyle(className);
+        }
+
+        function applyFolioMotionStyle(className) {
+            const viewport = document.getElementById("folioViewportAnimationNode");
+            // Scrub explicit kinetic classes
+            viewport.className = "uploaded-folio-viewport";
+            viewport.classList.add(className);
+            
+            // Add automated motion micro gesture cues
+            const track = document.getElementById("folioPagesContainerNode");
+            if(track && track.firstElementChild) {
+                track.firstElementChild.className = "folio-page-node active-page";
+                if(className.includes("horizontal") || className.includes("book")) {
+                    track.firstElementChild.classList.add("hint-h");
+                } else if(className.includes("vertical")) {
+                    track.firstElementChild.classList.add("hint-v");
+                } else {
+                    track.firstElementChild.classList.add("hint-z");
+                }
+            }
+        }
+
+        // Handle portfolio navigation clicks
+        document.getElementById("folioViewportAnimationNode").addEventListener("click", (e) => {
+            if(localPortfolioImages.length <= 1) return;
+            
+            // Clear hints on interactive contact
+            const currentActiveNode = document.getElementById(`folioPageElement-${localActivePageIndex}`);
+            if(currentActiveNode) {
+                currentActiveNode.classList.remove("hint-h", "hint-v", "hint-z");
+            }
+
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            
+            let previousIndex = localActivePageIndex;
+
+            if(clickX > rect.width / 2) {
+                // Advance page index forward
+                localActivePageIndex = (localActivePageIndex + 1) % localPortfolioImages.length;
+            } else {
+                // Retreat page index backward
+                localActivePageIndex = (localActivePageIndex - 1 + localPortfolioImages.length) % localPortfolioImages.length;
+            }
+
+            // Sync visual components state architecture
+            document.querySelectorAll(".folio-page-node").forEach((node, idx) => {
+                node.classList.remove("active-page", "prev-page");
+                if(idx === localActivePageIndex) {
+                    node.classList.add("active-page");
+                }
+                if(idx === previousIndex) {
+                    node.classList.add("prev-page");
+                }
+            });
+        });
+
+        // BRAND LOGO STUDIO OPERATIONS
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById("liveMenuMenuLogoView").src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function adjustMainLogo() {
+            const scale = document.getElementById("mainLogoScale").value;
+            const posX = document.getElementById("mainLogoX").value;
+            const posY = document.getElementById("mainLogoY").value;
+            const img = document.getElementById("liveMenuLogoView");
+            if(img) {
+                img.style.transform = `scale(${scale}) translate(${posX}px, ${posY}px)`;
+            }
+        }
+
+        // DISTINCT INDEPENDENT QR GENERATION SUITE
         function showQR() {
             document.getElementById("qrModalOverlay").style.display = "flex";
-            let qHtml = "";
-            qrStyles.forEach((s, i) => {
-                qHtml += `<div class="qr-style-pill ${i===0?'active-pill':''}" onclick="applyQRStyle(${i}, this)">${s.name}</div>`;
+            
+            // Construct distinct separated endpoints for output modes mapping 
+            // "Your Menu Portfolio" and "Master Digital Themes" use completely unique routing paths
+            const originBase = window.location.origin + window.location.pathname;
+            let targetRedirectionUrl = "";
+
+            if(currentMenuMode === 'uploaded') {
+                targetRedirectionUrl = `${originBase}?view=uploaded`;
+                document.getElementById("qrTitleModeText").innerText = "Portfolio Layout QR (Unlinked)";
+            } else {
+                targetRedirectionUrl = `${originBase}?view=theme&style=${currentThemeIndex}`;
+                document.getElementById("qrTitleModeText").innerText = "Digital Theme Menu QR (Unlinked)";
+            }
+
+            // Render distribution metrics vector graphics code
+            document.getElementById("qrCodeContainer").innerHTML = "";
+            activeQRStylingInstance = new QRCodeStyling({
+                width: 260,
+                height: 260,
+                type: "svg",
+                data: targetRedirectionUrl,
+                dotsOptions: { color: "#000000", type: "extra-rounded" },
+                backgroundOptions: { color: "#ffffff" },
+                imageOptions: { crossOrigin: "anonymous", hideBackgroundDots: true, imageSize: 0.4, margin: 5 }
             });
-            document.getElementById("qrStylesSelector").innerHTML = qHtml;
-            applyQRStyle(0, document.querySelector('.qr-style-pill'));
+            
+            activeQRStylingInstance.append(document.getElementById("qrCodeContainer"));
+            generateQRDesignStylePills();
+        }
+
+        function generateQRDesignStylePills() {
+            const container = document.getElementById("qrStylesSelector");
+            const styles = [
+                { name: "Classic Onyx", dots: "#000000", bg: "#ffffff" },
+                { name: "Luxury Gold", dots: "#D4AF37", bg: "#0a0a0c" },
+                { name: "Obsidian Velvet", dots: "#ffffff", bg: "#121215" },
+                { name: "Himalayan Teal", dots: "#00eeff", bg: "#050510" }
+            ];
+
+            let html = "";
+            styles.forEach((style, idx) => {
+                html += `<div class="qr-style-pill ${idx===0?'active-pill':''}" id="qrPillNode-${idx}" onclick="applyQRColorSchema(${idx}, '${style.dots}', '${style.bg}')">${style.name}</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function applyQRColorSchema(idx, dotsColor, backgroundColor) {
+            document.querySelectorAll(".qr-style-pill").forEach(p => p.classList.remove("active-pill"));
+            const targetPill = document.getElementById(`qrPillNode-${idx}`);
+            if(targetPill) targetPill.classList.add("active-pill");
+
+            if(activeQRStylingInstance) {
+                activeQRStylingInstance.update({
+                    dotsOptions: { color: dotsColor },
+                    backgroundOptions: { color: backgroundColor }
+                });
+            }
+        }
+
+        function updateQRCustomSettings() {
+            const sizeValue = parseFloat(document.getElementById("qrLogoSize").value);
+            if(activeQRStylingInstance) {
+                activeQRStylingInstance.update({
+                    imageOptions: { imageSize: sizeValue }
+                });
+            }
+        }
+
+        // Handle uploaded logo files injection into QR matrices 
+        document.getElementById("qrLogoUploader").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                if(activeQRStylingInstance) {
+                    activeQRStylingInstance.update({
+                        image: event.target.result
+                    });
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function removeQRLogo() {
+            document.getElementById("qrLogoUploader").value = "";
+            if(activeQRStylingInstance) {
+                activeQRStylingInstance.update({ image: "" });
+            }
+        }
+
+        function downloadQR() {
+            if(activeQRStylingInstance) {
+                const nameSuffix = (currentMenuMode === 'uploaded') ? 'portfolio_menu' : 'digital_theme_menu';
+                activeQRStylingInstance.download({ name: `hotel_mantra_${nameSuffix}_qr`, extension: "png" });
+            }
         }
 
         function closeQR() {
             document.getElementById("qrModalOverlay").style.display = "none";
         }
 
-        function applyQRStyle(index, elem) {
-            document.querySelectorAll('.qr-style-pill').forEach(e => e.classList.remove('active-pill'));
-            if(elem) elem.classList.add('active-pill');
-            
-            const s = qrStyles[index];
-            
-            // Client view direct link with parameter
-            let baseUrl = window.location.href.split('?')[0];
-            let clientUrl = baseUrl + "?view=client";
+        // DEPLOY DIRECT ROUTE DETECTOR LINK PARSER PIPELINES
+        (function runtimeRouteInitializationScanner() {
+            const URLParametersMapping = new URLSearchParams(window.location.search);
+            const targetedViewPipeline = URLParametersMapping.get("view");
+            const targetedStylePipeline = URLParametersMapping.get("style");
 
-            qrCodeInstance.update({
-                data: clientUrl,
-                dotsOptions: { color: s.color, type: s.dots },
-                cornersSquareOptions: { color: s.color, type: s.corners },
-                backgroundOptions: { color: s.bg },
-                image: qrLogoRemoved ? null : (qrCurrentLogo || "https://images.unsplash.com/photo-1559251606-c623743a6d76?w=100")
-            });
-            document.getElementById("qrCodeContainer").innerHTML = "";
-            qrCodeInstance.append(document.getElementById("qrCodeContainer"));
-        }
-
-        function downloadQR() {
-            qrCodeInstance.download({ name: "menu-qr", extension: "png" });
-        }
-
-        function adjustMainLogo() {
-            let scale = document.getElementById("mainLogoScale").value;
-            let x = document.getElementById("mainLogoX").value;
-            let y = document.getElementById("mainLogoY").value;
-            let rot = document.getElementById("mainLogoRotate").value;
-            let rad = document.getElementById("mainLogoRadius").value;
-
-            let img = document.getElementById("liveMenuLogoView");
-            img.style.transform = `scale(${scale}) translate(${x}px, ${y}px) rotate(${rot}deg)`;
-            img.style.borderRadius = `${rad}%`;
-        }
-
+            if(targetedViewPipeline === "uploaded") {
+                openMenu("uploaded");
+            } else if(targetedViewPipeline === "theme") {
+                if(targetedStylePipeline) {
+                    currentThemeIndex = parseInt(targetedStylePipeline);
+                }
+                openMenu("theme");
+            }
+        })();
     </script>
 </body>
 </html>
