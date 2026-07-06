@@ -100,14 +100,10 @@
         
         /* --- TELEGRAM STYLE QR MODAL --- */
         .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
-        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 440px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
+        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
         .qr-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
-        
-        /* Optimized for high-contrast and easy scannability */
-        .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0; transition: background 0.3s ease;}
-        #qrCodeContainer { width: 100%; display: flex; justify-content: center; align-items: center; }
-        #qrCodeContainer svg { width: 100% !important; height: auto !important; max-width: 340px; }
+        .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0;}
         
         .qr-styles-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-styles-scroll::-webkit-scrollbar { height: 4px; }
@@ -566,13 +562,12 @@
             "High-End Steakhouse", "Floating Artistic Gallery", "Comic Pop Art", "Luxury Card Grid"
         ];
 
-        // Redesigned with precise standard shapes for instant camera scanning
         const qrStyles = [
-            { name: "Telegram Classic", dots: "square", corners: "extra-rounded", color: "#24A1DE", bg: "#ffffff" },
-            { name: "Telegram Dark", dots: "square", corners: "extra-rounded", color: "#ffffff", bg: "#182533" },
-            { name: "Standard Minimal", dots: "square", corners: "square", color: "#000000", bg: "#ffffff" },
-            { name: "Luxury Gold", dots: "rounded", corners: "extra-rounded", color: "#d4af37", bg: "#121215" },
-            { name: "Sunset Crisp", dots: "square", corners: "rounded", color: "#e11d48", bg: "#ffffff" }
+            { name: "Telegram Blue", dots: "rounded", corners: "extra-rounded", color: "#24A1DE", bg: "#ffffff" },
+            { name: "Neon Matrix", dots: "classy", corners: "square", color: "#00ff66", bg: "#000000" },
+            { name: "Luxury Gold", dots: "dots", corners: "extra-rounded", color: "#d4af37", bg: "#1e1e1e" },
+            { name: "Sunset Gradient", dots: "rounded", corners: "rounded", color: "#f43f5e", bg: "#ffffff" },
+            { name: "Cyberpunk Pink", dots: "classy-inversed", corners: "square", color: "#ec4899", bg: "#0f172a" }
         ];
 
         let customFolioPages = [
@@ -594,10 +589,9 @@
         let previewThemeId = 1;
         let menuModeStr = "theme"; 
         
-        // Increased footprint size globally to resolve micro-scanning issues on phones
         const qrCodeInstance = new QRCodeStyling({
-            width: 340, height: 340, margin: 15, type: "svg",
-            imageOptions: { crossOrigin: "anonymous", margin: 10 }
+            width: 250, height: 250, margin: 10, type: "svg",
+            imageOptions: { crossOrigin: "anonymous", margin: 8 }
         });
 
         let qrCurrentLogo = null;
@@ -1052,11 +1046,6 @@
             if(elem) elem.classList.add('active-pill');
             
             const s = qrStyles[index];
-            
-            // Sync background dynamically for card layout consistency
-            const qrBodyNode = document.querySelector('.qr-body');
-            if(qrBodyNode) qrBodyNode.style.background = s.bg;
-            
             let baseUrl = window.location.href.split('?')[0];
             
             // SECURITY/SIZE FILTER: Filter out massive base64 image strings so QR doesn't break
