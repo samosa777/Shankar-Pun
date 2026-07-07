@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotel Mantra Thakali & Hospitality - Premium CMS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=600;700&family=Montserrat:wght=300;400;500;600;700&family=Poppins:wght=300;400;500;700&family=Space+Mono:wght=400;700&family=Playfair+Display:ital,wght=0,400;0,600;1,400&family=Cormorant+Garamond:wght=600;700&family=Oswald:wght=400;600&display=swap" rel="stylesheet">
     
     <!-- External Libraries -->
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script> <!-- Added for URL State Compression -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
 
     <style>
         /* --- CORE LUXURY VARIABLES --- */
@@ -98,8 +98,8 @@
         .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; }
         .mini-theme-btn:hover, .mini-theme-btn.selected { border-color: var(--champagne-gold); background: rgba(212,175,55,0.1); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
         
-        /* --- TELEGRAM STYLE QR MODAL --- */
-        .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
+        /* --- QR CODE SYSTEM MODAL --- */
+        .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
         .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 440px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
         .qr-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
@@ -114,7 +114,7 @@
         .qr-footer { display: flex; gap: 10px; padding: 20px; background: #121215; flex-shrink: 0;}
         .qr-footer button { flex: 1; padding: 12px; }
 
-        /* --- WORKSPACE OVERALL --- */
+        /* --- WORKSPACE LAYOUT --- */
         .workspace-master-container { display: none; width: 100%; min-height: 100vh; position: relative; padding-bottom: 90px; flex-direction: column; }
 
         /* --- UNIVERSAL MENU CANVAS --- */
@@ -138,7 +138,7 @@
         .food-price-badge { font-size: 14px; font-weight: 700; white-space: nowrap; }
         .food-description-text { font-size: 10px; margin: 6px 0 0; line-height: 1.4; opacity: 0.8; }
 
-        /* --- 10 DYNAMIC BOOK TRANSITION STYLES --- */
+        /* --- 10 DYNAMIC PORTFOLIO BOOK MOTION STYLES --- */
         #uploadedFolioViewContainer { position: absolute; top: 0; left: 0; width: 100%; height: 100vh; z-index: 10; background: #000; }
         .uploaded-folio-viewport { position: relative; width: 100%; height: 100%; margin: 0; overflow: hidden; border-radius: 0; box-shadow: none; background: transparent; perspective: 1500px; cursor: pointer; touch-action: none; }
         .uploaded-folio-track { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
@@ -152,7 +152,7 @@
         .folio-page-node.active-page { visibility: visible; opacity: 1; pointer-events: auto; z-index: 5; transform: none; }
         .folio-page-node.prev-page { visibility: visible; }
 
-        /* Style Transforms */
+        /* Motion Style Rulesets */
         .style-book-flip .folio-page-node { opacity: 0; transform: rotateY(90deg); z-index: 1; }
         .style-book-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); z-index: 5; }
         .style-book-flip .folio-page-node.prev-page { opacity: 0; transform: rotateY(-90deg); z-index: 2; }
@@ -179,7 +179,7 @@
         .style-shutter-expand .folio-page-node { opacity: 0; transform: scaleX(0); transform-origin: center; }
         .style-shutter-expand .folio-page-node.active-page { opacity: 1; transform: scaleX(1); }
 
-        /* DIGITAL LAYOUT THEME STYLES */
+        /* 20 ARCHITECTURAL LAYOUT THEMES */
         .theme-1 .luxury-menu-canvas { background: #000; color: #fff; font-family: 'Cinzel', serif; }
         .theme-1 .curated-brand-header { border-bottom: 1px solid #D4AF37; }
         .theme-1 .brand-logo-frame { border: 2px solid #D4AF37; border-radius: 50%; }
@@ -247,7 +247,7 @@
         .theme-20 .premium-food-card { background: #fff; flex-direction: column; border-radius: 15px; border: 1px solid #ddd; }
         .theme-20 .food-card-media-frame { width: 100%; height: 140px; border-radius: 15px 15px 0 0; }
 
-        /* --- THE OPERATIONAL STUDIO PANEL (Admin Desk) --- */
+        /* --- CONTROL STUDIO DESK PANEL --- */
         .grand-operational-desk { position: fixed; bottom: 0; left: 0; width: 100%; height: 85vh; background: rgba(18,18,21,0.98); border-radius: 24px 24px 0 0; box-shadow: 0 -20px 60px rgba(0,0,0,0.9); z-index: 10000; display: flex; flex-direction: column; overflow: hidden; transform: translateY(100%); transition: var(--interface-transition); font-family: 'Montserrat', sans-serif; backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); }
         .workspace-master-container.admin-active .grand-operational-desk { transform: translateY(0); }
         .desk-header-row { display: flex; justify-content: space-between; align-items: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.3); }
@@ -275,7 +275,7 @@
         .uploaded-admin-thumb-frame img { width: 100%; height: 100%; object-fit: cover; }
         .thumb-remove-overlay-btn { position: absolute; top: 2px; right: 2px; background: rgba(255,0,0,0.8); border: none; color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        /* Client View Adaptive Engine Fixes */
+        /* Adaptive Desktop Framework Extensions */
         .client-view-mode .luxury-menu-canvas { margin: 0 auto !important; max-width: 550px !important; flex: 1 !important; border-right: none !important; }
         .client-view-mode .luxury-menu-canvas.uploaded-mode-active { max-width: 100% !important; display: flex; justify-content: center; align-items: center; }
         .client-view-mode #uploadedFolioViewContainer { max-width: 550px; margin: 0 auto; position: relative; }
@@ -370,21 +370,16 @@
             </div>
             
             <div class="qr-body" id="qrCaptureArea">
-                <!-- QR Code Text Options Added Here -->
                 <div id="qrCodeContainer"></div>
                 <div id="qrBelowText" style="margin-top: 15px; font-size: 16px; font-weight: 700; color: #111; font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px;"></div>
             </div>
 
             <div class="qr-custom-logo-settings" style="padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); text-align:left;">
-                
-                <!-- NEW ADDITION: QR Text Label Option -->
                 <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 10px;">Add Name Below QR</div>
                 <input type="text" id="qrTextLabelInput" class="mini-data-field" placeholder="E.g. Scan for Menu" oninput="document.getElementById('qrBelowText').innerText = this.value;" style="width: 100%; margin-bottom: 20px; box-sizing: border-box;">
 
                 <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 15px;">Pro Logo Editor (QR)</div>
-                
                 <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
-                    <!-- Fixed missing onchange event -->
                     <input type="file" id="qrLogoUploader" accept="image/*" class="mini-data-field" style="padding:8px; font-size:11px; flex:1;" onchange="handleQRLogoUpload(event)">
                     <button class="premium-btn btn-danger" style="padding:10px 15px; font-size:11px;" onclick="removeQRLogo()">Remove</button>
                 </div>
@@ -446,7 +441,6 @@
                         <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload Menu Pages (Local only)</span>
                         <input type="file" id="folioPageImagesUploader" accept="image/*" multiple class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleFolioUpload(event)">
                         
-                        <!-- NEW ADDITION: URL option for Portfolio images so it works across QR -->
                         <div style="margin-top: 15px;">
                             <span style="font-size: 9px; color: var(--champagne-gold); text-transform: uppercase; font-weight: 600;">Add Menu Page URL (Recommended for QR Share)</span>
                             <div style="display:flex; gap:10px; margin-top:5px;">
@@ -482,7 +476,6 @@
                     
                     <div style="margin-bottom: 15px;" id="logoUploaderFieldInputContainer">
                         <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload New Logo</span>
-                        <!-- Fixed missing onchange event -->
                         <input type="file" id="mainLogoUploader" accept="image/*" class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleMainLogoUpload(event)">
                     </div>
                     
@@ -552,7 +545,7 @@
     </div>
 
     <script>
-        // Brand Data including logo and its style settings
+        // Brand Data & Settings Configurations
         let brandData = { 
             name: "Hotel Mantra Thakali & Hospitality", 
             tag: "Premium Dining Experience", 
@@ -606,7 +599,6 @@
         let previewThemeId = 1;
         let menuModeStr = "theme"; 
         
-        // BIG QR FIX: Updated size from 250x250 to 340x340
         const qrCodeInstance = new QRCodeStyling({
             width: 340, height: 340, margin: 5, type: "svg",
             imageOptions: { crossOrigin: "anonymous", margin: 8 }
@@ -666,7 +658,6 @@
             loadAllSavedData();
             const urlParams = new URLSearchParams(window.location.search);
 
-            // LZ-STRING URL STATE DECODING (Crucial Fix for QR Data Sync)
             if(urlParams.has('s')) {
                 try {
                     let decoded = LZString.decompressFromEncodedURIComponent(urlParams.get('s'));
@@ -678,17 +669,15 @@
                             brandData.tag = parsed.b.tag;
                             brandData.phone = parsed.b.phone;
                             if(parsed.b.logoSettings) brandData.logoSettings = parsed.b.logoSettings;
-                            // Update logo only if url included it
                             if(parsed.b.logo) brandData.logo = parsed.b.logo;
                         }
                         if(parsed.t) currentThemeId = parsed.t;
                         if(parsed.m) menuModeStr = parsed.m;
                         if(parsed.p && parsed.p.length > 0) customFolioPages = parsed.p;
                         if(parsed.f) currentFolioStyle = parsed.f;
-                        
-                        saveAllData(); // Force save downloaded state to mobile's local storage
+                        saveAllData();
                     }
-                } catch(e) { console.error("Sync data parse error", e); }
+                } catch(e) { console.error("Sync decoding error occurred", e); }
             }
 
             if(urlParams.get('view') === 'client') {
@@ -959,6 +948,13 @@
             renderThemeMenu();
         }
 
+        function deleteItem(catIdx, itemIdx) {
+            activeDB[catIdx].items.splice(itemIdx, 1);
+            saveAllData();
+            renderAdminFields();
+            renderThemeMenu();
+        }
+
         function handleFolioUpload(event) {
             const files = event.target.files;
             if(!files || files.length === 0) return;
@@ -975,7 +971,6 @@
             });
         }
         
-        // NEW FEATURE FUNCTION: Add Portfolio Image via URL
         function addFolioUrl() {
             let url = document.getElementById("folioUrlInput").value;
             if(url) {
@@ -1070,7 +1065,6 @@
             const s = qrStyles[index];
             let baseUrl = window.location.href.split('?')[0];
             
-            // SECURITY/SIZE FILTER: Filter out massive base64 image strings so QR doesn't break
             let exportDB = JSON.parse(JSON.stringify(activeDB));
             exportDB.forEach(cat => {
                 cat.items.forEach(it => {
@@ -1078,8 +1072,6 @@
                 });
             });
             
-            // Note: Uploaded file Base64 is filtered here to save QR from breaking. 
-            // URL added images are NOT filtered, which fixes your Portfolio issue!
             let exportPages = customFolioPages.filter(p => !p.startsWith('data:image')); 
             
             let exportBrand = JSON.parse(JSON.stringify(brandData));
@@ -1100,7 +1092,6 @@
             }
 
             let clientUrl = baseUrl + "?view=client&mode=" + menuModeStr + (compressedParams ? "&s=" + compressedParams : "");
-            
             let customLogoSize = parseFloat(document.getElementById('qrLogoSize').value) || 0.4;
 
             qrCodeInstance.update({
@@ -1115,7 +1106,6 @@
             qrCodeInstance.append(document.getElementById("qrCodeContainer"));
         }
 
-        // NEW FIX: html2canvas function modified to download QR WITH text together
         function downloadQR() {
             const captureArea = document.getElementById('qrCaptureArea');
             html2canvas(captureArea, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
