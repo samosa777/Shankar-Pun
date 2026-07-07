@@ -100,7 +100,7 @@
         
         /* --- TELEGRAM STYLE QR MODAL --- */
         .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
-        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
+        .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 440px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
         .qr-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
         .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0;}
@@ -369,11 +369,18 @@
                 <h2>Share Menu QR</h2>
             </div>
             
-            <div class="qr-body">
+            <div class="qr-body" id="qrCaptureArea">
+                <!-- QR Code Text Options Added Here -->
                 <div id="qrCodeContainer"></div>
+                <div id="qrBelowText" style="margin-top: 15px; font-size: 16px; font-weight: 700; color: #111; font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1px;"></div>
             </div>
 
             <div class="qr-custom-logo-settings" style="padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); text-align:left;">
+                
+                <!-- NEW ADDITION: QR Text Label Option -->
+                <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 10px;">Add Name Below QR</div>
+                <input type="text" id="qrTextLabelInput" class="mini-data-field" placeholder="E.g. Scan for Menu" oninput="document.getElementById('qrBelowText').innerText = this.value;" style="width: 100%; margin-bottom: 20px; box-sizing: border-box;">
+
                 <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 15px;">Pro Logo Editor (QR)</div>
                 
                 <div style="display:flex; gap:10px; align-items:center; margin-bottom: 15px;">
@@ -436,8 +443,18 @@
                     </div>
                     
                     <div style="margin-bottom: 15px;" id="adminUploadActionFieldsNode">
-                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload Menu Pages (Max 50 Images)</span>
+                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload Menu Pages (Local only)</span>
                         <input type="file" id="folioPageImagesUploader" accept="image/*" multiple class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;" onchange="handleFolioUpload(event)">
+                        
+                        <!-- NEW ADDITION: URL option for Portfolio images so it works across QR -->
+                        <div style="margin-top: 15px;">
+                            <span style="font-size: 9px; color: var(--champagne-gold); text-transform: uppercase; font-weight: 600;">Add Menu Page URL (Recommended for QR Share)</span>
+                            <div style="display:flex; gap:10px; margin-top:5px;">
+                                <input type="text" id="folioUrlInput" class="mini-data-field" placeholder="Paste Drive/Imgur Link...">
+                                <button class="premium-btn btn-outline" style="padding: 10px 15px; font-size: 11px; white-space: nowrap;" onclick="addFolioUrl()">Add URL</button>
+                            </div>
+                        </div>
+
                         <div class="uploaded-images-admin-grid" id="adminFolioThumbsPreviewGrid"></div>
                     </div>
 
@@ -589,8 +606,9 @@
         let previewThemeId = 1;
         let menuModeStr = "theme"; 
         
+        // BIG QR FIX: Updated size from 250x250 to 340x340
         const qrCodeInstance = new QRCodeStyling({
-            width: 250, height: 250, margin: 10, type: "svg",
+            width: 340, height: 340, margin: 5, type: "svg",
             imageOptions: { crossOrigin: "anonymous", margin: 8 }
         });
 
@@ -762,7 +780,6 @@
             }
         }
 
-        // --- NEW/FIXED LOGO UPLOAD & TRANSFORM FUNCTIONS ---
         function handleMainLogoUpload(event) {
             const file = event.target.files[0];
             if(file) {
@@ -806,7 +823,6 @@
                 img.style.transform = `scale(${brandData.logoSettings.scale || 1}) translate(${brandData.logoSettings.x || 0}px, ${brandData.logoSettings.y || 0}px) rotate(${brandData.logoSettings.rotate || 0}deg)`;
                 img.style.borderRadius = `${brandData.logoSettings.radius || 0}%`;
                 
-                // Keep Admin inputs synced
                 let els = ['mainLogoScale','mainLogoX','mainLogoY','mainLogoRotate','mainLogoRadius'];
                 if(document.getElementById(els[0])) {
                     document.getElementById("mainLogoScale").value = brandData.logoSettings.scale || 1;
@@ -867,7 +883,7 @@
             document.getElementById("liveBrandTitleNode").innerText = brandData.name;
             document.getElementById("liveBrandSloganNode").innerText = brandData.tag;
             document.getElementById("liveBrandContactNode").innerText = brandData.phone;
-            saveAllData(); // Important: Save so QR fetches freshest inputs
+            saveAllData(); 
         }
 
         function renderThemeMenu() {
@@ -943,13 +959,6 @@
             renderThemeMenu();
         }
 
-        function deleteItem(catIdx, itemIdx) {
-            activeDB[catIdx].items.splice(itemIdx, 1);
-            saveAllData();
-            renderAdminFields();
-            renderThemeMenu();
-        }
-
         function handleFolioUpload(event) {
             const files = event.target.files;
             if(!files || files.length === 0) return;
@@ -964,6 +973,19 @@
                 }
                 reader.readAsDataURL(file);
             });
+        }
+        
+        // NEW FEATURE FUNCTION: Add Portfolio Image via URL
+        function addFolioUrl() {
+            let url = document.getElementById("folioUrlInput").value;
+            if(url) {
+                url = autoFormatImageUrl(url);
+                customFolioPages.push(url);
+                document.getElementById("folioUrlInput").value = "";
+                renderFolio();
+                renderFolioAdminThumbs();
+                saveAllData();
+            }
         }
 
         function renderFolioAdminThumbs() {
@@ -1013,7 +1035,7 @@
         }
 
         function showQR() {
-            saveAllData(); // FORCE Save so QR generates with newest edits
+            saveAllData(); 
             document.getElementById("qrModalOverlay").style.display = "flex";
             let qHtml = "";
             qrStyles.forEach((s, i) => {
@@ -1055,7 +1077,11 @@
                     if(it.img && it.img.startsWith('data:image')) it.img = ""; 
                 });
             });
-            let exportPages = customFolioPages.filter(p => !p.startsWith('data:image'));
+            
+            // Note: Uploaded file Base64 is filtered here to save QR from breaking. 
+            // URL added images are NOT filtered, which fixes your Portfolio issue!
+            let exportPages = customFolioPages.filter(p => !p.startsWith('data:image')); 
+            
             let exportBrand = JSON.parse(JSON.stringify(brandData));
             if(exportBrand.logo && exportBrand.logo.startsWith('data:image')) exportBrand.logo = "";
             
@@ -1089,8 +1115,15 @@
             qrCodeInstance.append(document.getElementById("qrCodeContainer"));
         }
 
+        // NEW FIX: html2canvas function modified to download QR WITH text together
         function downloadQR() {
-            qrCodeInstance.download({ name: "menu-qr", extension: "png" });
+            const captureArea = document.getElementById('qrCaptureArea');
+            html2canvas(captureArea, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Share-Menu-QR.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
         }
     </script>
 </body>
