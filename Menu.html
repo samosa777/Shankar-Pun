@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hotel Mantra Thakali & Hospitality - Premium CMS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@400;600&family=Dancing+Script:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Cormorant+Garamond:wght@600;700&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -27,7 +27,7 @@
         .admin-dashboard-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--obsidian-dark); z-index: 99995; display: none; flex-direction: column; align-items: center; padding: 20px 15px; overflow-y: auto; box-sizing: border-box; }
         .dashboard-top-bar { width: 100%; max-width: 1200px; display: flex; justify-content: flex-end; margin-bottom: 15px; }
         .dashboard-back-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-size: 11px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .dashboard-back-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #fff; }
+        .dashboard-back-btn:hover { background: rgba(255, 51, 51, 0.1); border-color: rgba(255, 51, 51, 0.3); color: var(--danger-red); }
 
         .dashboard-header { text-align: center; margin-bottom: 30px; margin-top: 10px; }
         .dashboard-header h1 { font-family: 'Cinzel', serif; color: var(--champagne-gold); font-size: 28px; margin: 0 0 10px; }
@@ -62,6 +62,8 @@
         }
         .dock-btn svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; }
         .dock-btn:hover { background: rgba(255,255,255,0.1); opacity: 1; color: var(--champagne-gold); }
+        .dock-btn.danger { color: #ff6b6b; }
+        .dock-btn.danger:hover { background: rgba(255,107,107,0.15); }
 
         /* General Buttons */
         .premium-btn { background: var(--champagne-gold); color: #000; border: none; padding: 14px 20px; font-size: 13px; font-weight: 700; border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2); }
@@ -90,16 +92,15 @@
         .theme-quick-sidebar { position: fixed; top: 0; right: -100%; width: 100%; max-width: 320px; height: 100vh; background: rgba(10, 12, 15, 0.95); z-index: 100000; transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1); padding: 25px; overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,0.8); display: flex; flex-direction: column; box-sizing: border-box; backdrop-filter: blur(20px);}
         .theme-quick-sidebar.active { right: 0; }
         .theme-quick-sidebar h3 { color: var(--champagne-gold); font-family: 'Cinzel', serif; margin-top: 0; margin-bottom: 20px; font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; display:flex; justify-content:space-between; align-items:center; }
+        .mini-theme-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s; font-size: 13px; font-weight: 500; }
         .mini-theme-btn:hover, .mini-theme-btn.selected { border-color: var(--champagne-gold); background: rgba(212,175,55,0.1); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
-        .theme-sel-label { font-size: 10px; color: var(--champagne-gold); font-weight: bold; text-transform: uppercase; }
-
+        
         /* --- TELEGRAM STYLE QR MODAL --- */
         .qr-modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.85); z-index: 100001; display: none; justify-content: center; align-items: center; backdrop-filter: blur(10px); padding: 20px; box-sizing: border-box;}
         .qr-box { background: #121215; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; box-shadow: 0 30px 60px rgba(0,0,0,0.9); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto;}
         .qr-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-header h2 { font-family: 'Montserrat', sans-serif; color: #fff; margin: 0; font-size: 18px; font-weight: 600; }
-        .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #222; flex-shrink: 0;}
+        .qr-body { padding: 25px; display: flex; flex-direction: column; align-items: center; background: #fff; flex-shrink: 0;}
         
         .qr-styles-scroll { display: flex; overflow-x: auto; gap: 10px; padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;}
         .qr-styles-scroll::-webkit-scrollbar { height: 4px; }
@@ -114,15 +115,15 @@
         .workspace-master-container { display: none; width: 100%; min-height: 100vh; position: relative; padding-bottom: 90px; }
 
         /* --- UNIVERSAL MENU CANVAS --- */
-        .luxury-menu-canvas { width: 100%; max-width: 550px; margin: 0 auto; padding: 30px 20px; box-sizing: border-box; transition: all 0.5s ease; min-height: 100vh; position: relative; overflow: hidden; }
-        .curated-brand-header { text-align: center; margin-bottom: 30px; padding-bottom: 25px; transition: all 0.5s ease; position:relative; z-index:2;}
+        .luxury-menu-canvas { width: 100%; max-width: 550px; margin: 0 auto; padding: 30px 20px; box-sizing: border-box; transition: all 0.5s ease; min-height: 100vh; position: relative; }
+        .curated-brand-header { text-align: center; margin-bottom: 30px; padding-bottom: 25px; transition: all 0.5s ease; }
         .brand-logo-frame { width: 90px; height: 90px; margin: 0 auto 15px; overflow: hidden; background: transparent; transition: all 0.5s ease; position: relative; }
         .brand-logo-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s ease, border-radius 0.2s ease; }
         .curated-brand-header h1 { margin: 0; font-size: 24px; text-transform: uppercase; transition: all 0.5s ease; }
         .curated-brand-header p { font-size: 11px; margin: 8px 0 0; text-transform: uppercase; letter-spacing: 2px; }
         .header-phone-contact { font-size: 12px; margin-top: 12px; font-weight: 600; opacity: 0.8; }
         
-        .menu-section-wrapper { margin-bottom: 35px; position:relative; z-index:2; }
+        .menu-section-wrapper { margin-bottom: 35px; }
         .menu-section-heading { font-size: 16px; text-transform: uppercase; margin-bottom: 15px; font-weight: 700; transition: all 0.5s ease; }
         .premium-food-card { display: flex; overflow: hidden; margin-bottom: 15px; min-height: 90px; transition: all 0.5s ease; cursor: default; }
         .food-card-media-frame { width: 90px; min-width: 90px; height: 90px; transition: all 0.5s ease; }
@@ -152,38 +153,77 @@
         .style-book-flip .folio-page-node { opacity: 0; transform: rotateY(90deg); z-index: 1; }
         .style-book-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); z-index: 5; }
         .style-book-flip .folio-page-node.prev-page { opacity: 0; transform: rotateY(-90deg); z-index: 2; }
+
         .style-vertical-slide .folio-page-node { transform: translateY(100%); }
         .style-vertical-slide .folio-page-node.active-page { transform: translateY(0); }
         .style-vertical-slide .folio-page-node.prev-page { transform: translateY(-100%); }
+
         .style-horizontal-slide .folio-page-node { transform: translateX(100%); }
         .style-horizontal-slide .folio-page-node.active-page { transform: translateX(0); }
         .style-horizontal-slide .folio-page-node.prev-page { transform: translateX(-100%); }
+
         .style-spin-drop .folio-page-node { opacity: 0; transform: rotate(180deg) scale(0.3); }
         .style-spin-drop .folio-page-node.active-page { opacity: 1; transform: rotate(0deg) scale(1); }
+
         .style-deck-peel .folio-page-node { transform: scale(0.85) translateZ(-200px); opacity: 0; }
         .style-deck-peel .folio-page-node.active-page { transform: scale(1) translateZ(0); opacity: 1; z-index: 5; }
         .style-deck-peel .folio-page-node.prev-page { transform: translateX(-120%) rotate(-15deg); opacity: 0; z-index: 6; }
+
         .style-zoom-dissolve .folio-page-node { opacity: 0; transform: scale(1.3); }
         .style-zoom-dissolve .folio-page-node.active-page { opacity: 1; transform: scale(1); }
         .style-zoom-dissolve .folio-page-node.prev-page { opacity: 0; transform: scale(0.7); }
+
         .style-door-flip .folio-page-node { opacity: 0; transform: rotateY(-180deg); transform-origin: center center; }
         .style-door-flip .folio-page-node.active-page { opacity: 1; transform: rotateY(0deg); }
+
         .style-cube-rotation .folio-page-node { opacity: 0; transform: rotateX(-90deg) translateZ(200px); transform-origin: center bottom; }
         .style-cube-rotation .folio-page-node.active-page { opacity: 1; transform: rotateX(0deg) translateZ(0); }
+
         .style-elastic-curtain .folio-page-node { transform: translateY(-100%); transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
         .style-elastic-curtain .folio-page-node.active-page { transform: translateY(0); }
+
         .style-shutter-expand .folio-page-node { opacity: 0; transform: scaleX(0); transform-origin: center; }
         .style-shutter-expand .folio-page-node.active-page { opacity: 1; transform: scaleX(1); }
 
-        /* --- DIGITAL LAYOUT THEME STYLES (1 to 20 Existing) --- */
+        /* --- AUTO NUDGE HINT ANIMATIONS --- */
+        @keyframes nudge-horizontal {
+            0%, 100% { transform: translateX(0); }
+            5% { transform: translateX(-12px); }
+            10% { transform: translateX(0); }
+            15% { transform: translateX(-12px); }
+            20% { transform: translateX(0); }
+        }
+        @keyframes nudge-vertical {
+            0%, 100% { transform: translateY(0); }
+            5% { transform: translateY(-12px); }
+            10% { transform: translateY(0); }
+            15% { transform: translateY(-12px); }
+            20% { transform: translateY(0); }
+        }
+        @keyframes nudge-zoom {
+            0%, 100% { transform: scale(1); }
+            5% { transform: scale(0.95); }
+            10% { transform: scale(1); }
+            15% { transform: scale(0.95); }
+            20% { transform: scale(1); }
+        }
+        
+        .hint-h { animation: nudge-horizontal 4s infinite; }
+        .hint-v { animation: nudge-vertical 4s infinite; }
+        .hint-z { animation: nudge-zoom 4s infinite; }
+
+        /* DIGITAL LAYOUT THEME STYLES */
         .theme-1 .luxury-menu-canvas { background: #000; color: #fff; font-family: 'Cinzel', serif; }
         .theme-1 .curated-brand-header { border-bottom: 1px solid #D4AF37; }
         .theme-1 .brand-logo-frame { border: 2px solid #D4AF37; border-radius: 50%; }
         .theme-1 h1, .theme-1 .menu-section-heading, .theme-1 .food-price-badge { color: #D4AF37; }
         .theme-1 .premium-food-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; }
-        
+
         .theme-2 .luxury-menu-canvas { background: #ffffff; color: #111; font-family: 'Montserrat', sans-serif; }
         .theme-2 .curated-brand-header { border-bottom: 2px solid #f0f0f0; }
+        .theme-2 .brand-logo-frame { border-radius: 0; }
+        .theme-2 h1 { font-weight: 300; letter-spacing: 5px; }
+        .theme-2 .menu-section-heading { text-align: center; letter-spacing: 3px; color: #666; }
         .theme-2 .premium-food-card { background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: none; }
 
         .theme-3 .luxury-menu-canvas { background: #050510; color: #00ffff; font-family: 'Space Mono', monospace; }
@@ -196,8 +236,10 @@
         .theme-4 .brand-logo-frame { border-radius: 50% 50% 0 50%; border: 3px solid #6b8e63; }
         .theme-4 h1, .theme-4 .menu-section-heading { font-style: italic; }
         .theme-4 .premium-food-card { background: transparent; border-bottom: 1px solid #d5ddcb; flex-direction: row-reverse; }
+        .theme-4 .food-card-media-frame { border-radius: 50px; margin: 10px; }
 
         .theme-5 .luxury-menu-canvas { background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%); color: #fff; font-family: 'Poppins', sans-serif; }
+        .theme-5 .brand-logo-frame { border-radius: 20px; }
         .theme-5 .premium-food-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; }
 
         .theme-6 .luxury-menu-canvas { background: #2b0a0a; color: #f5e6e6; font-family: 'Playfair Display', serif; }
@@ -206,6 +248,8 @@
         .theme-6 .premium-food-card { background: #3d1414; border: 1px solid #5a2020; border-radius: 8px; }
 
         .theme-7 .luxury-menu-canvas { background: #dfdfdf; color: #000; font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+        .theme-7 .brand-logo-frame { box-shadow: 5px 5px 0 #000; }
+        .theme-7 h1 { font-weight: 900; letter-spacing: -1px; }
         .theme-7 .premium-food-card { background: #fff; border: 2px solid #000; box-shadow: 5px 5px 0 #000; }
 
         .theme-8 .luxury-menu-canvas { background: #020813; color: #d0d7e5; }
@@ -214,6 +258,7 @@
         .theme-8 .premium-food-card { background: #061123; border-left: 3px solid #3182ce; }
 
         .theme-9 .luxury-menu-canvas { background: #f4ece1; color: #3e322c; font-family: 'Cormorant Garamond', serif; }
+        .theme-9 .brand-logo-frame { border-radius: 50%; filter: sepia(0.5); }
         .theme-9 .premium-food-card { border-bottom: 1px solid #d4c8bf; }
 
         .theme-10 .luxury-menu-canvas { background: #ffffff; color: #000; font-family: 'Space Mono', monospace; }
@@ -253,71 +298,6 @@
         .theme-20 .luxury-menu-canvas { background: #eaeaea; color: #222; }
         .theme-20 .premium-food-card { background: #fff; flex-direction: column; border-radius: 15px; border: 1px solid #ddd; }
         .theme-20 .food-card-media-frame { width: 100%; height: 140px; border-radius: 15px 15px 0 0; }
-
-        /* --- NEW 10 ANIMATED THEMES (21 to 30) --- */
-        @keyframes float-anim-1 { 0%, 100% {transform: translateY(0) rotate(0deg);} 50% {transform: translateY(-25px) rotate(10deg);} }
-        @keyframes float-anim-2 { 0%, 100% {transform: translateY(0) rotate(0deg);} 50% {transform: translateY(-15px) rotate(-15deg);} }
-
-        /* 21. Ice Cream Parlor */
-        .theme-21 .luxury-menu-canvas { background: #ffebf0; color: #d81b60; font-family: 'Pacifico', cursive; }
-        .theme-21 .premium-food-card { background: #fff; border-radius: 20px; box-shadow: 0 5px 15px rgba(216,27,96,0.1); border: 2px dashed #f48fb1; }
-        .theme-21 .luxury-menu-canvas::before { content: '🍦'; position:absolute; top:5%; left:5%; font-size:60px; animation: float-anim-1 4s infinite; opacity:0.3; z-index:1;}
-        .theme-21 .luxury-menu-canvas::after { content: '🍨'; position:absolute; top:40%; right:5%; font-size:50px; animation: float-anim-2 5s infinite; opacity:0.3; z-index:1;}
-        
-        /* 22. Cake Shop */
-        .theme-22 .luxury-menu-canvas { background: #fff3e0; color: #e65100; font-family: 'Dancing Script', cursive; font-size: 110%; }
-        .theme-22 .premium-food-card { background: #fff; border-radius: 10px; border-bottom: 3px solid #ffb74d; }
-        .theme-22 .luxury-menu-canvas::before { content: '🍰'; position:absolute; top:15%; right:10%; font-size:65px; animation: float-anim-1 6s infinite; opacity:0.25; z-index:1;}
-        .theme-22 .luxury-menu-canvas::after { content: '🎂'; position:absolute; bottom:20%; left:5%; font-size:55px; animation: float-anim-2 4.5s infinite; opacity:0.25; z-index:1;}
-
-        /* 23. Coffee Shop */
-        .theme-23 .luxury-menu-canvas { background: #efebe9; color: #4e342e; font-family: 'Playfair Display', serif; }
-        .theme-23 .premium-food-card { background: #d7ccc8; border-radius: 8px; border-left: 5px solid #5d4037; }
-        .theme-23 .luxury-menu-canvas::before { content: '☕'; position:absolute; top:10%; left:8%; font-size:60px; animation: float-anim-1 5s infinite; opacity:0.2; z-index:1;}
-        .theme-23 .luxury-menu-canvas::after { content: '🤎'; position:absolute; top:60%; right:10%; font-size:40px; animation: float-anim-2 3.5s infinite; opacity:0.2; z-index:1;}
-
-        /* 24. Restaurant Classic */
-        .theme-24 .luxury-menu-canvas { background: #fdfbf7; color: #1a1a1a; font-family: 'Cinzel', serif; }
-        .theme-24 .premium-food-card { background: #fff; border: 1px solid #d4af37; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .theme-24 .luxury-menu-canvas::before { content: '🍽️'; position:absolute; top:25%; left:5%; font-size:70px; animation: float-anim-1 7s infinite; opacity:0.1; z-index:1;}
-        .theme-24 .luxury-menu-canvas::after { content: '🍷'; position:absolute; bottom:15%; right:5%; font-size:60px; animation: float-anim-2 6s infinite; opacity:0.1; z-index:1;}
-
-        /* 25. Sweet Shop */
-        .theme-25 .luxury-menu-canvas { background: #fce4ec; color: #880e4f; font-family: 'Poppins', sans-serif; }
-        .theme-25 .premium-food-card { background: #fff; border-radius: 30px; border: 2px solid #f8bbd0; }
-        .theme-25 .luxury-menu-canvas::before { content: '🍬'; position:absolute; top:8%; right:15%; font-size:55px; animation: float-anim-1 3.5s infinite; opacity:0.3; z-index:1;}
-        .theme-25 .luxury-menu-canvas::after { content: '🍭'; position:absolute; bottom:30%; left:10%; font-size:65px; animation: float-anim-2 4.2s infinite; opacity:0.3; z-index:1;}
-
-        /* 26. Bakery */
-        .theme-26 .luxury-menu-canvas { background: #f5f5f5; color: #5d4037; font-family: 'Montserrat', sans-serif; }
-        .theme-26 .premium-food-card { background: #fff; border-radius: 5px; box-shadow: 2px 2px 8px rgba(139,69,19,0.1); }
-        .theme-26 .luxury-menu-canvas::before { content: '🥐'; position:absolute; top:12%; left:12%; font-size:60px; animation: float-anim-1 4.5s infinite; opacity:0.2; z-index:1;}
-        .theme-26 .luxury-menu-canvas::after { content: '🥖'; position:absolute; bottom:25%; right:12%; font-size:55px; animation: float-anim-2 5.5s infinite; opacity:0.2; z-index:1;}
-
-        /* 27. Juice & Shake */
-        .theme-27 .luxury-menu-canvas { background: #e8f5e9; color: #1b5e20; font-family: 'Oswald', sans-serif; }
-        .theme-27 .premium-food-card { background: #fff; border-radius: 15px; border-right: 4px solid #4caf50; }
-        .theme-27 .luxury-menu-canvas::before { content: '🧃'; position:absolute; top:20%; right:8%; font-size:60px; animation: float-anim-1 4s infinite; opacity:0.25; z-index:1;}
-        .theme-27 .luxury-menu-canvas::after { content: '🍹'; position:absolute; top:60%; left:8%; font-size:60px; animation: float-anim-2 5s infinite; opacity:0.25; z-index:1;}
-
-        /* 28. Fast Food Corner */
-        .theme-28 .luxury-menu-canvas { background: #fffde7; color: #b71c1c; font-family: 'Oswald', sans-serif; text-transform: uppercase; }
-        .theme-28 .premium-food-card { background: #fff; border: 2px solid #ffeb3b; box-shadow: 4px 4px 0 #b71c1c; }
-        .theme-28 .luxury-menu-canvas::before { content: '🍟'; position:absolute; top:5%; left:15%; font-size:65px; animation: float-anim-1 3s infinite; opacity:0.2; z-index:1;}
-        .theme-28 .luxury-menu-canvas::after { content: '🌭'; position:absolute; bottom:15%; right:15%; font-size:60px; animation: float-anim-2 3.8s infinite; opacity:0.2; z-index:1;}
-
-        /* 29. Pizza & Burger */
-        .theme-29 .luxury-menu-canvas { background: #212121; color: #ff9800; font-family: 'Space Mono', monospace; }
-        .theme-29 .premium-food-card { background: #333; border-radius: 12px; border: 1px solid #ff5722; }
-        .theme-29 .luxury-menu-canvas::before { content: '🍕'; position:absolute; top:18%; left:8%; font-size:70px; animation: float-anim-1 5s infinite; opacity:0.25; z-index:1;}
-        .theme-29 .luxury-menu-canvas::after { content: '🍔'; position:absolute; bottom:22%; right:8%; font-size:65px; animation: float-anim-2 4.5s infinite; opacity:0.25; z-index:1;}
-
-        /* 30. Multi-Cuisine Hub */
-        .theme-30 .luxury-menu-canvas { background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%); color: #fff; font-family: 'Poppins', sans-serif; }
-        .theme-30 .premium-food-card { background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); border-radius: 20px; }
-        .theme-30 .luxury-menu-canvas::before { content: '🥘'; position:absolute; top:12%; right:5%; font-size:60px; animation: float-anim-1 6s infinite; opacity:0.3; z-index:1;}
-        .theme-30 .luxury-menu-canvas::after { content: '🍜'; position:absolute; bottom:12%; left:5%; font-size:60px; animation: float-anim-2 5.5s infinite; opacity:0.3; z-index:1;}
-
 
         /* --- THE OPERATIONAL STUDIO PANEL (Admin) --- */
         .grand-operational-desk { position: fixed; bottom: 0; left: 0; width: 100%; height: 85vh; background: rgba(18,18,21,0.98); border-radius: 24px 24px 0 0; box-shadow: 0 -20px 60px rgba(0,0,0,0.9); z-index: 10000; display: flex; flex-direction: column; overflow: hidden; transform: translateY(100%); transition: var(--interface-transition); font-family: 'Montserrat', sans-serif; backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.1); }
@@ -386,9 +366,9 @@
     <div class="admin-dashboard-overlay" id="adminMenuDashboard">
         
         <div class="dashboard-top-bar">
-            <button class="dashboard-back-btn" onclick="window.history.back()">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-                Go Back
+            <button class="dashboard-back-btn" onclick="executeLogout()">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                Logout / Back
             </button>
         </div>
 
@@ -410,7 +390,7 @@
             <div class="menu-card-item" onclick="openMenu(1); setTimeout(() => toggleThemeSidebar(true), 150);">
                 <svg style="width:60px; height:60px; fill:#fff; margin-bottom:20px;" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                 <h3>Master Digital Themes</h3>
-                <p>Explore 30 Premium Layouts</p>
+                <p>Explore 20+ Premium Layouts</p>
             </div>
 
         </div>
@@ -437,7 +417,11 @@
             <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
             <span>Edit</span>
         </button>
-        </div>
+        <button class="dock-btn danger" onclick="executeLogout()">
+            <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+            <span>Exit</span>
+        </button>
+    </div>
 
     <div class="theme-quick-sidebar" id="themeSidebar">
         <h3>Change Theme</h3>
@@ -454,25 +438,8 @@
                 <h2>Share Menu QR</h2>
             </div>
             
-            <div class="qr-body" style="padding-bottom:10px;">
-                <div id="qrExportWrapper" style="background:#fff; padding:20px; border-radius:15px; display:inline-block; max-width:100%;">
-                    <div id="qrCodeContainer"></div>
-                    <div id="qrTextOverlay" style="color:#000; font-size:20px; margin-top:15px; font-weight:bold; letter-spacing:1px; word-wrap:break-word;"></div>
-                </div>
-            </div>
-
-            <div style="padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); text-align:left;">
-                <div style="font-size:11px; color:var(--text-dim); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom: 10px;">Customize QR Title</div>
-                <input type="text" id="qrCustomTitleInput" class="mini-data-field" placeholder="Enter Hotel Name for QR" style="margin-bottom:10px;" oninput="updateQRTextOverlay()">
-                
-                <select id="qrFontSelector" class="mini-data-field" onchange="updateQRTextOverlay()">
-                    <option value="'Montserrat', sans-serif">Montserrat (Modern)</option>
-                    <option value="'Cinzel', serif">Cinzel (Luxury)</option>
-                    <option value="'Dancing Script', cursive">Dancing Script (Stylish)</option>
-                    <option value="'Pacifico', cursive">Pacifico (Fun)</option>
-                    <option value="'Playfair Display', serif">Playfair (Classic)</option>
-                    <option value="'Oswald', sans-serif">Oswald (Bold)</option>
-                </select>
+            <div class="qr-body">
+                <div id="qrCodeContainer"></div>
             </div>
 
             <div class="qr-custom-logo-settings" style="padding: 15px 20px; background: #0a0a0c; border-top: 1px solid rgba(255,255,255,0.05); text-align:left;">
@@ -538,10 +505,8 @@
                     </div>
                     
                     <div style="margin-bottom: 15px;" id="adminUploadActionFieldsNode">
-                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload via Image / Google Drive URLs (One URL per line)</span>
-                        <textarea id="folioUrlsInput" class="mini-data-field" rows="4" style="margin-top:5px;" placeholder="Paste Google Drive URL or direct image links here..."></textarea>
-                        <button class="premium-btn btn-outline" style="width:100%; margin-top:10px; font-size:11px;" onclick="loadFolioUrls()">Load Images from URLs</button>
-                        
+                        <span style="font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Upload Menu Pages (Max 50 Images)</span>
+                        <input type="file" id="folioPageImagesUploader" accept="image/*" multiple class="mini-data-field" style="padding: 10px; background: rgba(255,255,255,0.05); margin-top:5px;">
                         <div class="uploaded-images-admin-grid" id="adminFolioThumbsPreviewGrid"></div>
                     </div>
 
@@ -632,13 +597,12 @@
             </div>
             <div class="desk-footer-action-bar" id="adminPanelFooterActionContainer">
                 <button class="premium-btn btn-outline" id="addNewCategoryBtnNode" onclick="addSection()">+ Add Category</button>
-                <button class="premium-btn" style="flex:1;" onclick="window.saveMenuDataToCloud()">Save Changes</button>
+                <button class="premium-btn" style="flex:1;" onclick="alert('Configuration Published Safely!')">Save Changes</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Using correct Hotel Mantra Identity
         let brandData = { 
             name: "Hotel Mantra Thakali & Hospitality", 
             tag: "Premium Dining Experience", 
@@ -655,16 +619,12 @@
             ]}
         ];
 
-        // REQ 4: Expanded to 30 themes tailored to specific food outlets
         let themeNames = [
             "Royal Gold Edition", "Pristine White", "Neon Cyber-Lounge", "Organic Botanical", 
             "Glassmorphism Elegance", "Crimson Velvet", "Brutalist High Fashion", "Midnight Sapphire", 
             "Vintage Paris Cafe", "Abstract Grid", "Sunset Horizon", "Minimalist Zen", 
             "Synthwave 80s", "Oceanic Flow", "The Hacker Terminal", "Pastel Macaron", 
-            "High-End Steakhouse", "Floating Artistic Gallery", "Comic Pop Art", "Luxury Card Grid",
-            "Ice Cream Parlor Magic", "Cake Shop Delights", "Coffee Shop Aroma", "Restaurant Classic",
-            "Sweet Shop Treats", "Bakery Fresh Oven", "Juice & Shake Splash", "Fast Food Express",
-            "Pizza & Burger Hub", "Ultimate Multi-Cuisine"
+            "High-End Steakhouse", "Floating Artistic Gallery", "Comic Pop Art", "Luxury Card Grid"
         ];
 
         const qrStyles = [
@@ -683,7 +643,7 @@
         let activeFolioPageIndex = 0;
 
         let databases = [];
-        for(let i=1; i<=30; i++) {
+        for(let i=1; i<=20; i++) {
             databases.push({ id: i, title: themeNames[i-1] });
         }
 
@@ -701,6 +661,7 @@
         let qrLogoRemoved = false;
         let nudgeHintTimer = null; 
 
+        // System Initialization passed from Firebase Auth
         window.unlockMenu = function(role) {
             currentRole = role;
             document.getElementById("authLoader").style.display = "none";
@@ -721,6 +682,7 @@
             
             buildQrStyleSelectorPills();
             setupLogoUploadListeners();
+            setupFolioImageUploadListeners();
             setupSwipeGestures();
 
             if (viewMode === 'uploaded') {
@@ -765,31 +727,31 @@
             });
         }
 
-        // REQ 3: Processing Google Drive URLs instead of direct File Upload
-        function loadFolioUrls() {
-            if(currentRole !== 'super_admin' && currentRole !== 'hotel_user') {
-                alert('Action denied.');
-                return;
-            }
-            
-            let text = document.getElementById("folioUrlsInput").value;
-            let urls = text.split('\n').map(u => u.trim()).filter(u => u.length > 0);
-            
-            if (urls.length === 0) return;
-            customFolioPages = [];
+        function setupFolioImageUploadListeners() {
+            document.getElementById('folioPageImagesUploader').addEventListener('change', function(e) {
+                if(currentRole !== 'super_admin' && currentRole !== 'hotel_user') {
+                    alert('Action denied. Non-authorized upload execution.');
+                    return;
+                }
+                if(e.target.files) {
+                    const filesArray = Array.from(e.target.files).slice(0, 50);
+                    customFolioPages = []; 
+                    let loadedCount = 0;
 
-            urls.forEach(url => {
-                let driveMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                if(driveMatch && driveMatch[1]) {
-                    customFolioPages.push(`https://drive.google.com/uc?export=view&id=${driveMatch[1]}`);
-                } else {
-                    customFolioPages.push(url);
+                    filesArray.forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(evt) {
+                            customFolioPages.push(evt.target.result);
+                            loadedCount++;
+                            if (loadedCount === filesArray.length) {
+                                activeFolioPageIndex = 0;
+                                drawWorkspace();
+                            }
+                        }
+                        reader.readAsDataURL(file);
+                    });
                 }
             });
-
-            activeFolioPageIndex = 0;
-            document.getElementById("folioUrlsInput").value = "";
-            drawWorkspace();
         }
 
         function setupSwipeGestures() {
@@ -991,7 +953,7 @@
 
         function applyThemeClass(id) {
             let fw = document.getElementById("masterWorkspaceFramework");
-            for(let i=1; i<=30; i++) fw.classList.remove('theme-'+i);
+            for(let i=1; i<=20; i++) fw.classList.remove('theme-'+i);
             if(id !== 'uploaded') fw.classList.add('theme-'+id);
         }
 
@@ -1027,15 +989,11 @@
             }
         }
 
-        // REQ 5: Theme Selected Label Integration
         function renderThemeSidebar() {
             let html = "";
             databases.forEach(db => {
                 let sel = (db.id === previewThemeId) ? 'selected' : '';
-                let label = (db.id === previewThemeId) ? `<span class="theme-sel-label">✓ Selected</span>` : '';
-                html += `<div class="mini-theme-btn ${sel}" onclick="previewTheme(${db.id})">
-                    <span>Theme ${db.id}: ${db.title}</span> ${label}
-                </div>`;
+                html += `<div class="mini-theme-btn ${sel}" onclick="previewTheme(${db.id})">Theme ${db.id}: ${db.title}</div>`;
             });
             document.getElementById('sidebarThemeList').innerHTML = html;
         }
@@ -1048,7 +1006,6 @@
             openMenu(previewThemeId); toggleThemeSidebar(false);
         }
 
-        // REQ 7: Isolated QR logic
         function showQR() {
             let baseUrl = window.location.href.split('?')[0];
             let linkedUrl = "";
@@ -1076,16 +1033,7 @@
             
             applyQRStyle(0); 
             qrCodeInstance.append(document.getElementById("qrCodeContainer"));
-            document.getElementById("qrCustomTitleInput").value = brandData.name;
-            updateQRTextOverlay();
-            
             document.getElementById('qrModalOverlay').style.display = 'flex';
-        }
-        
-        function updateQRTextOverlay() {
-            let textNode = document.getElementById("qrTextOverlay");
-            textNode.innerText = document.getElementById("qrCustomTitleInput").value;
-            textNode.style.fontFamily = document.getElementById("qrFontSelector").value;
         }
 
         function updateQRCustomSettings() {
@@ -1120,17 +1068,9 @@
             });
         }
 
-        // REQ 8: Download QR with Text Overlay using html2canvas
         function downloadQR() {
             let fileLabel = currentThemeId === 'uploaded' ? "Uploaded_Folio" : "Theme_" + currentThemeId;
-            let exportArea = document.getElementById("qrExportWrapper");
-            
-            html2canvas(exportArea, { scale: 3, useCORS: true, backgroundColor: null }).then(canvas => {
-                let link = document.createElement("a");
-                link.download = "Hotel_Mantra_QR_" + fileLabel + ".png";
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-            });
+            qrCodeInstance.download({ name: "Hotel_Mantra_QR_" + fileLabel, extension: "png" });
         }
 
         function closeQR() {
@@ -1290,7 +1230,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = { 
             apiKey: "AIzaSyBkRWPYZtmjS-lpiojtNtY_6h4IORZ6xjc", 
@@ -1304,33 +1244,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // REQ 6: Save edited menu data to Cloud Firestore (Real-time updates)
-        window.saveMenuDataToCloud = async function() {
-            try {
-                await setDoc(doc(db, "hotel_menus", "Hotel_Mantra_DB"), {
-                    menuData: activeDB,
-                    folioImages: customFolioPages
-                });
-                alert('Menu Data Synced to Cloud Successfully!');
-            } catch(e) {
-                console.error("Cloud Save Failed: ", e);
-                alert("Saved locally (Cloud configuration error)");
-            }
-        }
-
-        window.loadMenuDataFromCloud = async function() {
-            try {
-                let snap = await getDoc(doc(db, "hotel_menus", "Hotel_Mantra_DB"));
-                if(snap.exists()) {
-                    let data = snap.data();
-                    if(data.menuData) activeDB = data.menuData;
-                    if(data.folioImages) customFolioPages = data.folioImages;
-                }
-            } catch(e) {
-                console.error("Cloud Load Failed: ", e);
-            }
-        }
 
         // 3 Minute Auto-Logout 
         let logoutTimer;
@@ -1352,45 +1265,28 @@
             });
         }
 
-        // Customer Direct Access Handler (For QR Scans)
-        const urlParamsCheck = new URLSearchParams(window.location.search);
-        if (urlParamsCheck.get('mode') === 'uploaded' || urlParamsCheck.get('theme')) {
-            // Customer scanning QR - Bypass auth to show menu directly
-            document.getElementById("authLoader").style.display = "none";
-            window.loadMenuDataFromCloud().then(() => {
-                if (urlParamsCheck.get('mode') === 'uploaded') {
-                    openMenu('uploaded');
-                } else {
-                    openMenu(parseInt(urlParamsCheck.get('theme')));
-                }
-            });
-        } else {
-            // Admin Flow
-            onAuthStateChanged(auth, async (user) => {
-                const hotelEmail = localStorage.getItem("hotelUserEmail");
-                
-                if (user && user.email === "superadmin@power.com") {
-                    await window.loadMenuDataFromCloud();
-                    window.unlockMenu("super_admin");
-                } else if (hotelEmail) {
-                    try {
-                        const q = query(collection(db, "hotels"), where("email", "==", hotelEmail));
-                        const snap = await getDocs(q);
-                        if (!snap.empty && snap.docs[0].data().status === "Active") {
-                            await window.loadMenuDataFromCloud();
-                            window.unlockMenu("hotel_user");
-                        } else {
-                            forceLogout();
-                        }
-                    } catch(e) {
-                        alert("Verification Failed.");
+        onAuthStateChanged(auth, async (user) => {
+            const hotelEmail = localStorage.getItem("hotelUserEmail");
+            
+            if (user && user.email === "superadmin@power.com") {
+                window.unlockMenu("super_admin");
+            } else if (hotelEmail) {
+                try {
+                    const q = query(collection(db, "hotels"), where("email", "==", hotelEmail));
+                    const snap = await getDocs(q);
+                    if (!snap.empty && snap.docs[0].data().status === "Active") {
+                        window.unlockMenu("hotel_user");
+                    } else {
                         forceLogout();
                     }
-                } else {
+                } catch(e) {
+                    alert("Verification Failed.");
                     forceLogout();
                 }
-            });
-        }
+            } else {
+                forceLogout();
+            }
+        });
     </script>
 </body>
 </html>
